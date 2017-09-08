@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>periph_i2c_rom_interrupt</name>
+	<comment></comment>
+	<projects>
+		<project>lpc_chip_82x</project>
+		<project>lpc_board_nxp_lpcxpresso_824</project>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.cdt.managedbuilder.core.genmakebuilder</name>
+			<triggers>clean,full,incremental,</triggers>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.cdt.managedbuilder.core.ScannerConfigBuilder</name>
+			<triggers>full,incremental,</triggers>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.cdt.core.cnature</nature>
+		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
+		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>src/i2c_rom_interrupt.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-WORKSPACE_LOC/examples_82x/periph_i2c_rom_interrupt/src/i2c_rom_interrupt.c</locationURI>                                                                      
+		</link>
+    	<link>
+			<name>src/cr_startup_lpc82x.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-WORKSPACE_LOC/chip_82x/startup/cr_startup_lpc82x.c</locationURI>
+		</link>
+        <link>
+			<name>src/crp.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-WORKSPACE_LOC/chip_82x/startup/crp.c</locationURI>
+		</link>
+		<link>
+			<name>src/mtb.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-WORKSPACE_LOC/chip_82x/startup/mtb.c</locationURI>
+		</link>
+		<link>
+			<name>src/sysinit.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-WORKSPACE_LOC/chip_82x/startup/sysinit.c</locationURI>
+		</link>
+		<link>
+			<name>readme.txt</name>
+			<type>1</type>
+			<locationURI>PARENT-2-WORKSPACE_LOC/examples_82x/periph_i2c_rom_interrupt/readme.txt</locationURI>
+		</link>
+	</linkedResources>
+</projectDescription>
+
+

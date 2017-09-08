@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<workspace>
+  <project>
+    <path>$WS_DIR$\lib_chip_8xx\lib_chip_8xx.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$\lib_board_lpcxpresso824\lib_board_lpcxpresso824.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$\freertos_blinky\freertos_blinky.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>lib_board_lpcxpresso824</project>
+        <configuration>nxp_lpcxpresso_824</configuration>
+      </member>
+      <member>
+        <project>lib_chip_8xx</project>
+        <configuration>chip_8xx_lib</configuration>
+      </member>
+      <member>
+        <project>freertos_blinky</project>
+        <configuration>iflash_nxp_lpcxpresso_812</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>
+
+
