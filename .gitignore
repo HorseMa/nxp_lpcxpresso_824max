@@ -1,0 +1,13 @@
+lpcxpresso824/prj_xpresso82x/iar/freertos_blinky/settings/
+lpcxpresso824/prj_xpresso82x/iar/lib_board_lpcxpresso824/settings/
+lpcxpresso824/prj_xpresso82x/iar/lib_chip_8xx/settings/
+lpcxpresso824/prj_xpresso82x/iar/lib_board_lpcxpresso824/iar_output/List/
+lpcxpresso824/prj_xpresso82x/iar/lib_board_lpcxpresso824/iar_output/Obj/
+lpcxpresso824/prj_xpresso82x/iar/lib_chip_8xx/iar_output/List/
+lpcxpresso824/prj_xpresso82x/iar/lib_chip_8xx/iar_output/Obj/
+lpcxpresso824/prj_xpresso82x/iar/freertos_blinky/iflash_nxp_lpcxpresso_812/List/
+lpcxpresso824/prj_xpresso82x/iar/freertos_blinky/iflash_nxp_lpcxpresso_812/Obj/
+lpcxpresso824/prj_xpresso82x/iar/lib_chip_8xx/chip_8xx_lib/Obj/
+lpcxpresso824/prj_xpresso82x/iar/lib_board_lpcxpresso824/nxp_lpcxpresso_824/Obj/
+*.out
+*.sim

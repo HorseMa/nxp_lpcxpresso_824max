@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<project>
+  <fileVersion>2</fileVersion>
+  <fileChecksum>2778622091</fileChecksum>
+  <configuration>
+    <name>iflash_nxp_lpcxpresso_812</name>
+    <outputs>
+      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\include\task.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\iap.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\stdlib.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\rom_uart_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\adc_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\romapi_8xx.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\yvals.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\ycheck.h</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\timers.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\acmp_8xx.h</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Exe\freertos_blinky.sim</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Exe\freertos_blinky.out</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\freertos_blinky.pbd</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\sct_pwm_8xx.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\DLib_Defaults.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\stdint.h</file>
+      <file>$PROJ_DIR$\..\..\..\brd_xpresso824\inc\board_api.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\i2cm_8xx.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\cmsis_iar.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\cmsis.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\clock_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\gpio_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\wwdt_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\pinint_8xx.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
+      <file>$PROJ_DIR$\..\lib_chip_8xx\iar_output\Exe\chip_8xx_lib.a</file>
+      <file>$TOOLKIT_DIR$\inc\c\intrinsics.h</file>
+      <file>$PROJ_DIR$\..\lib_board_lpcxpresso824\iar_output\Exe\board_nxp_lpcxpresso_824.a</file>
+      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\timers.c</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\core_cmInstr.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\rom_i2c_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\core_cm0plus.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\include\mpu_wrappers.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\inmux_8xx.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\stdbool.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\include\FreeRTOS.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\i2c_common_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\ring_buffer.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\irc_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\spim_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\include\list.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\sct_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\freertos\freertoslpc\FreeRTOSCommonHooks.c</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\startup\iar_startup_lpc82x.s</file>
+      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\tasks.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\croutine.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\portable\IAR\ARM_CM0\portasm.s</file>
+      <file>$PROJ_DIR$\..\..\..\examples_82x\periph_wwdt\readme.txt</file>
+      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\list.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\portable\MemMang\heap_2.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\queue.c</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\startup\sysinit.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\portable\IAR\ARM_CM0\port.c</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\swm_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\spi_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\fmc_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\syscon_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\sys_config.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\iocon_8xx.h</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\tasks.pbi</file>
+      <file>$TOOLKIT_DIR$\inc\c\DLib_Config_Normal.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\pmu_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\wkt_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\mrt_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\lpc_types.h</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\queue.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\crc_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\uart_8xx.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\DLib_Threads.h</file>
+      <file>$PROJ_DIR$\..\..\..\examples_82x\freertos_blinky\src\freertos_blinky.c</file>
+      <file>$TOOLKIT_DIR$\inc\c\stddef.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\chip.h</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\croutine.pbi</file>
+      <file>$TOOLKIT_DIR$\inc\c\ysizet.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\portable\IAR\ARM_CM0\portmacro.h</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\FreeRTOSCommonHooks.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\include\portable.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\rom_pwr_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\examples_82x\freertos_blinky\inc\FreeRTOSConfig.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\include\projdefs.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\ystdio.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\stdio.h</file>
+      <file>$PROJ_DIR$\..\..\..\brd_xpresso824\inc\board.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\spi_common_8xx.h</file>
+      <file>$TOOLKIT_DIR$\config\linker\NXP\LPC824M201.icf</file>
+      <file>$TOOLKIT_DIR$\lib\m6M_tl.a</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\error_8xx.h</file>
+      <file>$TOOLKIT_DIR$\lib\dl6M_tln.a</file>
+      <file>$TOOLKIT_DIR$\lib\rt6M_tl.a</file>
+      <file>$TOOLKIT_DIR$\inc\c\xencoding_limits.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\include\croutine.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\i2cs_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\spis_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\dma_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\core_cmFunc.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\freertos\freertoslpc\FreeRTOSCommonHooks.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\DLib_Product_string.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\string.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\include\timers.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\include\queue.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\include\StackMacros.h</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\list.pbi</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\port.pbi</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\FreeRTOSCommonHooks.o</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\freertos_blinky.o</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\heap_2.pbi</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\heap_2.o</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\croutine.o</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\sysinit.o</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\freertos_blinky.pbi</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\timers.o</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\portasm.o</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\queue.o</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\port.o</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\list.o</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\iar_startup_lpc82x.o</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\tasks.o</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\sysinit.pbi</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Exe\freertos_blinky.hex</file>
+    </outputs>
+    <file>
+      <name>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Exe\freertos_blinky.out</name>
+      <outputs>
+        <tool>
+          <name>OBJCOPY</name>
+          <file> 10 118</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ILINK</name>
+          <file> 84 27 25 107 104 103 106 115 114 113 111 112 108 116 110 88 85 87</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\timers.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 110</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 8</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 2 7 6 14 60 24 89 68 73 35 70 15 79 78 82 71 64 34 57 19 31 29 18 26 94 5 1 86 30 77 3 56 20 58 53 55 23 61 9 66 21 63 67 37 62 22 41 13 54 83 17 36 91 39 92 38 4 93 33 16 81 80 76 74 32 0 40 99 98</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 73 89 41 7 61 64 99 78 6 58 63 91 3 83 35 79 76 82 57 56 55 66 62 54 92 93 34 31 29 26 1 32 40 0 98 14 68 60 24 70 15 71 16 19 5 20 53 23 9 21 67 22 13 17 39 38 4 33 94 18 30 81 80 2 86 77 37 36 74</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\freertos\freertoslpc\FreeRTOSCommonHooks.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 103</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 75</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 35 70 7 6 14 60 24 89 68 73 15 79 78 82 71 64 34 57 19 31 29 18 26 94 5 1 86 30 77 3 56 20 58 53 55 23 61 9 66 21 63 67 37 62 22 41 13 54 83 17 36 91 39 92 38 4 93 33 16 81 80 76 74 32 0 40 95</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 33 7 1 71 21 89 19 20 17 18 73 78 16 23 22 38 94 3 95 79 76 64 5 53 9 67 13 39 4 15 57 30 36 0 70 6 14 68 60 24 82 56 58 55 61 66 63 62 41 54 91 92 93 34 31 29 26 86 77 37 74 35 83 81 80 32 40</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\chip_82x\startup\iar_startup_lpc82x.s</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 115</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\tasks.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 116</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 59</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 2 7 6 14 60 24 89 68 73 97 96 35 70 15 79 78 82 71 64 34 57 19 31 29 18 26 94 5 1 86 30 77 3 56 20 58 53 55 23 61 9 66 21 63 67 37 62 22 41 13 54 83 17 36 91 39 92 38 4 93 33 16 81 80 76 74 32 0 40 98 100</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 76 93 82 36 66 6 24 79 57 56 54 31 26 37 74 2 97 98 89 7 14 68 60 73 55 62 92 34 29 77 0 35 100 96 78 58 61 63 41 91 64 86 70 15 71 16 19 5 20 53 23 9 21 67 22 13 17 39 38 4 33 94 18 1 30 3 83 81 80 32 40</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\croutine.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 107</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 72</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 35 70 7 6 14 60 24 89 68 73 15 79 78 82 71 64 34 57 19 31 29 18 26 94 5 1 86 30 77 3 56 20 58 53 55 23 61 9 66 21 63 67 37 62 22 41 13 54 83 17 36 91 39 92 38 4 93 33 16 81 80 76 74 32 0 40 90</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\portable\IAR\ARM_CM0\portasm.s</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 111</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>AARM</name>
+          <file> 78</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\list.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 114</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 101</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 2 7 6 14 60 24 89 68 73 35 70 15 79 78 82 71 64 34 57 19 31 29 18 26 94 5 1 86 30 77 3 56 20 58 53 55 23 61 9 66 21 63 67 37 62 22 41 13 54 83 17 36 91 39 92 38 4 93 33 16 81 80 76 74 32 40</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 5 89 60 64 13 6 9 4 57 15 73 7 14 68 53 67 39 40 24 70 71 16 19 20 23 21 22 17 38 33 94 18 86 36 35 79 78 76 82 56 58 55 61 66 63 62 41 54 91 92 93 34 31 29 26 77 37 74 2 1 30 3 83 81 80 32</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\portable\MemMang\heap_2.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 106</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 105</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 2 7 6 14 60 24 89 68 73 35 70 15 79 78 82 71 64 34 57 19 31 29 18 26 94 5 1 86 30 77 3 56 20 58 53 55 23 61 9 66 21 63 67 37 62 22 41 13 54 83 17 36 91 39 92 38 4 93 33 16 81 80 76 74 32 0 40</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 83 55 64 92 7 2 73 62 34 29 3 6 79 76 82 57 56 66 54 93 31 26 35 89 78 58 61 63 41 91 1 32 40 0 14 68 60 24 70 15 71 16 19 5 20 53 23 9 21 67 22 13 17 39 38 4 33 94 18 30 81 80 86 77 37 36 74</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\queue.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 112</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 65</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 2 7 6 14 60 24 89 68 73 97 96 35 70 15 79 78 82 71 64 34 57 19 31 29 18 26 94 5 1 86 30 77 3 56 20 58 53 55 23 61 9 66 21 63 67 37 62 22 41 13 54 83 17 36 91 39 92 38 4 93 33 16 81 80 76 74 32 0 40 99</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 57 7 24 9 15 6 4 18 96 64 5 13 80 99 89 14 68 60 73 53 67 39 30 81 2 97 35 0 70 71 16 19 20 23 21 22 17 38 33 94 1 3 83 32 40 79 78 76 82 56 58 55 61 66 63 62 41 54 91 92 93 34 31 29 26 86 77 37 36 74</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\chip_82x\startup\sysinit.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 108</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 117</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 82 71 64 15 7 6 14 60 24 89 68 34 57 19 31 29 18 26 94 5 1 86 30 77 3 56 20 58 53 55 23 61 9 66 21 63 67 37 62 22 41 13 54 83 17 36 91 39 92 38 4 93 33 16 81 73 80</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 64 9 4 60 5 13 7 6 53 67 39 15 14 68 86 36 71 16 19 20 23 21 22 17 38 33 24 31 29 26 77 73 57 56 58 55 61 66 63 62 41 54 91 92 93 34 89 94 18 1 30 3 37 82 83 81 80</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\portable\IAR\ARM_CM0\port.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 113</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 102</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 26 7 35 70 6 14 60 24 89 68 73 15 79 78 82 71 64 34 57 19 31 29 18 94 5 1 86 30 77 3 56 20 58 53 55 23 61 9 66 21 63 67 37 62 22 41 13 54 83 17 36 91 39 92 38 4 93 33 16 81 80 76 74 32 0 40</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 34 83 64 73 6 62 29 55 92 79 76 24 82 57 56 66 54 93 31 26 86 0 7 78 14 68 60 58 61 63 41 91 77 32 40 35 70 15 89 71 16 19 5 20 53 23 9 21 67 22 13 17 39 38 4 33 94 18 1 30 3 81 80 37 36 74</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\examples_82x\freertos_blinky\src\freertos_blinky.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 104</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 109</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 82 71 64 15 7 6 14 60 24 89 68 34 57 19 31 29 18 26 94 5 1 86 30 77 3 56 20 58 53 55 23 61 9 66 21 63 67 37 62 22 41 13 54 83 17 36 91 39 92 38 4 93 33 16 81 73 80 35 70 79 78 76 74 32 0 40</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 9 64 4 60 5 13 7 6 53 67 39 15 14 68 86 70 0 71 16 19 20 23 21 22 17 38 33 24 31 29 26 77 37 36 32 40 35 57 56 58 55 61 66 63 62 41 54 91 92 93 34 89 94 18 1 30 3 73 82 83 81 80 79 78 76 74</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>ILINK</name>
+          <file> 11</file>
+        </tool>
+      </outputs>
+    </file>
+    <forcedrebuild>
+      <name>[REBUILD_ALL]</name>
+    </forcedrebuild>
+  </configuration>
+</project>
+
+

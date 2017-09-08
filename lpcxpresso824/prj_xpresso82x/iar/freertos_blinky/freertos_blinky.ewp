@@ -12,20 +12,25 @@
       <name>General</name>
       <archiveVersion>3</archiveVersion>
       <data>
-        <version>24</version>
+        <version>22</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
           <name>ExePath</name>
-          <state>iar_output\Exe</state>
+          <state>iflash_nxp_lpcxpresso_812\Exe</state>
         </option>
         <option>
           <name>ObjPath</name>
-          <state>iar_output\Obj</state>
+          <state>iflash_nxp_lpcxpresso_812\Obj</state>
         </option>
         <option>
           <name>ListPath</name>
-          <state>iar_output\List</state>
+          <state>iflash_nxp_lpcxpresso_812\List</state>
+        </option>
+        <option>
+          <name>Variant</name>
+          <version>21</version>
+          <state>35</state>
         </option>
         <option>
           <name>GEndianMode</name>
@@ -54,6 +59,11 @@
           <state>0</state>
         </option>
         <option>
+          <name>FPU</name>
+          <version>3</version>
+          <state>0</state>
+        </option>
+        <option>
           <name>OGCoreOrChip</name>
           <state>1</state>
         </option>
@@ -73,11 +83,11 @@
         </option>
         <option>
           <name>OGProductVersion</name>
-          <state>5.40.0.51529</state>
+          <state>7.30.3.8061</state>
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>7.70.1.11471</state>
+          <state>7.30.3.8061</state>
         </option>
         <option>
           <name>GeneralEnableMisra</name>
@@ -126,8 +136,13 @@
           <state>$TOOLKIT_DIR$\INC\c\DLib_Config_Normal.h</state>
         </option>
         <option>
+          <name>GFPUCoreSlave</name>
+          <version>21</version>
+          <state>35</state>
+        </option>
+        <option>
           <name>GBECoreSlave</name>
-          <version>24</version>
+          <version>21</version>
           <state>35</state>
         </option>
         <option>
@@ -141,34 +156,6 @@
         <option>
           <name>GRuntimeLibThreads</name>
           <state>0</state>
-        </option>
-        <option>
-          <name>CoreVariant</name>
-          <version>24</version>
-          <state>35</state>
-        </option>
-        <option>
-          <name>GFPUDeviceSlave</name>
-          <state>LPC824M201	NXP LPC824M201</state>
-        </option>
-        <option>
-          <name>FPU2</name>
-          <version>0</version>
-          <state>0</state>
-        </option>
-        <option>
-          <name>NrRegs</name>
-          <version>0</version>
-          <state>0</state>
-        </option>
-        <option>
-          <name>NEON</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>GFPUCoreSlave2</name>
-          <version>24</version>
-          <state>35</state>
         </option>
       </data>
     </settings>
@@ -609,8 +596,8 @@
         <debug>0</debug>
         <option>
           <name>OOCOutputFormat</name>
-          <version>3</version>
-          <state>3</state>
+          <version>2</version>
+          <state>1</state>
         </option>
         <option>
           <name>OCOutputOverride</name>
@@ -618,7 +605,7 @@
         </option>
         <option>
           <name>OOCOutputFile</name>
-          <state>freertos_blinky.bin</state>
+          <state>freertos_blinky.hex</state>
         </option>
         <option>
           <name>OOCCommandLineProducer</name>
@@ -656,7 +643,7 @@
       <name>ILINK</name>
       <archiveVersion>0</archiveVersion>
       <data>
-        <version>17</version>
+        <version>16</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -709,7 +696,7 @@
         </option>
         <option>
           <name>IlinkMapFile</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>IlinkLogFile</name>
@@ -888,7 +875,7 @@
         </option>
         <option>
           <name>IlinkOptInline</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>IlinkOptExceptionsAllow</name>
@@ -939,10 +926,6 @@
         <option>
           <name>IlinkThreadsSlave</name>
           <state>1</state>
-        </option>
-        <option>
-          <name>IlinkLogCallGraph</name>
-          <state>0</state>
         </option>
       </data>
     </settings>
