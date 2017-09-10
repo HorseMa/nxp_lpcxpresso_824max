@@ -140,6 +140,42 @@
       <name>$PROJ_DIR$\..\lib_chip_8xx\iar_output\Exe\chip_8xx_lib.a</name>
     </file>
   </group>
+  <group>
+    <name>lorawan</name>
+    <group>
+      <name>mac</name>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\lorawan\mac\LoRaMac.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\lorawan\mac\LoRaMac.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\lorawan\mac\LoRaMacCrypto.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\lorawan\mac\LoRaMacCrypto.h</name>
+      </file>
+    </group>
+    <group>
+      <name>radio</name>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\lorawan\radio\radio.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\lorawan\radio\sx1276\sx1276.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\lorawan\radio\sx1276\sx1276.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\lorawan\radio\sx1276\sx1276Regs-Fsk.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\lorawan\radio\sx1276\sx1276Regs-LoRa.h</name>
+      </file>
+    </group>
+  </group>
 </project>
 
 
