@@ -12,3 +12,6 @@ lpcxpresso824/prj_xpresso82x/iar/lib_board_lpcxpresso824/nxp_lpcxpresso_824/Obj/
 lpcxpresso824/prj_xpresso82x/iar/settings/
 *.out
 *.sim
+lpcxpresso824/prj_xpresso82x/iar/freertos_blinky/ClassA/
+lpcxpresso824/prj_xpresso82x/iar/freertos_blinky/ClassB/
+lpcxpresso824/prj_xpresso82x/iar/freertos_blinky/ClassC/

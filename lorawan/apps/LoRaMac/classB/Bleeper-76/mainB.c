@@ -6,7 +6,7 @@
 (______/|_____)_|_|_| \__)_____)\____)_| |_|
     (C)2013 Semtech
 
-Description: LoRaMac classC device implementation
+Description: LoRaMac classB device implementation
 
 License: Revised BSD License, see LICENSE.TXT file include in the project
 
@@ -15,9 +15,9 @@ Maintainer: Miguel Luis and Gregory Cristian
 #include <string.h>
 #include <math.h>
 #include "board.h"
-
+#include "timer.h"
 #include "LoRaMac.h"
-
+#include "utilities.h"
 /*!
  * When set to 1 the application uses the Over-the-Air activation procedure
  * When set to 0 the application uses the Personalization activation procedure
@@ -220,12 +220,12 @@ static void PrepareTxFrame( uint8_t port )
             int16_t temperature = 0;
             uint8_t batteryLevel = 0;
             
-            pressure = ( uint16_t )( MPL3115ReadPressure( ) / 10 );             // in hPa / 10
-            temperature = ( int16_t )( MPL3115ReadTemperature( ) * 100 );       // in °C * 100
-            altitudeBar = ( int16_t )( MPL3115ReadAltitude( ) * 10 );           // in m * 10
-            batteryLevel = BoardGetBatteryLevel( );                             // 1 (very low) to 254 (fully charged)
+            //pressure = ( uint16_t )( MPL3115ReadPressure( ) / 10 );             // in hPa / 10
+            //temperature = ( int16_t )( MPL3115ReadTemperature( ) * 100 );       // in °C * 100
+            //altitudeBar = ( int16_t )( MPL3115ReadAltitude( ) * 10 );           // in m * 10
+            //batteryLevel = BoardGetBatteryLevel( );                             // 1 (very low) to 254 (fully charged)
             
-            AppData[0] = ( SelectorGetValue( ) << 4 ) | AppLedStateOn;
+            //AppData[0] = ( SelectorGetValue( ) << 4 ) | AppLedStateOn;
             AppData[1] = ( pressure >> 8 ) & 0xFF;
             AppData[2] = pressure & 0xFF;
             AppData[3] = ( temperature >> 8 ) & 0xFF;
@@ -363,18 +363,18 @@ int main( void )
 #endif
     bool trySendingFrameAgain = false;
 
-    BoardInitMcu( );
-    BoardInitPeriph( );
+    //BoardInitMcu( );
+    //BoardInitPeriph( );
 
     LoRaMacCallbacks.MacEvent = OnMacEvent;
-    LoRaMacCallbacks.GetBatteryLevel = BoardGetBatteryLevel;
+    //LoRaMacCallbacks.GetBatteryLevel = BoardGetBatteryLevel;
     LoRaMacInit( &LoRaMacCallbacks );
 
     IsNetworkJoined = false;
 
 #if( OVER_THE_AIR_ACTIVATION == 0 )
     // Random seed initialization
-    srand1( BoardGetRandomSeed( ) );
+    //srand1( BoardGetRandomSeed( ) );
     // Choose a random device address based on Board unique ID
     // NwkAddr rand [0, 33554431]
     DevAddr = randr( 0, 0x01FFFFFF );
@@ -403,7 +403,6 @@ int main( void )
     LoRaMacSetAdrOn( LORAWAN_ADR_ON );
     LoRaMacTestSetDutyCycleOn( LORAWAN_DUTYCYCLE_ON );
     LoRaMacSetPublicNetwork( LORAWAN_PUBLIC_NETWORK );
-    LoRaMacSetDeviceClass( CLASS_C );
 
     while( 1 )
     {
@@ -438,24 +437,24 @@ int main( void )
         {
             Led1StateChanged = false;
             // Switch LED 1 OFF
-            GpioWrite( &Led1, 1 );
+            //GpioWrite( &Led1, 1 );
         }
         if( Led2StateChanged == true )
         {
             Led2StateChanged = false;
             // Switch LED 2 OFF
-            GpioWrite( &Led2, 1 );
+            //GpioWrite( &Led2, 1 );
         }
         if( Led3StateChanged == true )
         {
             Led3StateChanged = false;
-            GpioWrite( &Led3, ( ( AppLedStateOn & 0x01 ) != 0 ) ? 0 : 1 );
+            //GpioWrite( &Led3, ( ( AppLedStateOn & 0x01 ) != 0 ) ? 0 : 1 );
         }
         if( DownlinkStatusUpdate == true )
         {
             DownlinkStatusUpdate = false;
             // Switch LED 2 ON for each received downlink
-            GpioWrite( &Led2, 0 );
+            //GpioWrite( &Led2, 0 );
         }
 
         if( ScheduleNextTx == true )
@@ -479,7 +478,7 @@ int main( void )
             PrepareTxFrame( AppPort );
             
             // Switch LED 1 ON
-            GpioWrite( &Led1, 0 );
+            //GpioWrite( &Led1, 0 );
             TimerStart( &Led1Timer );
             
             trySendingFrameAgain = SendFrame( );
