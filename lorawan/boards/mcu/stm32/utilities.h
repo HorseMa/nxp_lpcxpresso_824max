@@ -14,7 +14,7 @@ Maintainer: Miguel Luis and Gregory Cristian
 */
 #ifndef __UTILITIES_H__
 #define __UTILITIES_H__
-
+#include "board.h"
 /*!
  * \brief Returns the minimum value betwen a and b
  *
@@ -22,8 +22,9 @@ Maintainer: Miguel Luis and Gregory Cristian
  * \param [IN] b 2nd value
  * \retval minValue Minimum value
  */
+#if !defined(MIN)
 #define MIN( a, b ) ( ( ( a ) < ( b ) ) ? ( a ) : ( b ) )
-
+#endif
 /*!
  * \brief Returns the maximum value betwen a and b
  *
@@ -31,8 +32,9 @@ Maintainer: Miguel Luis and Gregory Cristian
  * \param [IN] b 2nd value
  * \retval maxValue Maximum value
  */
+#if !defined(MAX)
 #define MAX( a, b ) ( ( ( a ) > ( b ) ) ? ( a ) : ( b ) )
-
+#endif
 /*!
  * \brief Returns 2 raised to the power of n
  *

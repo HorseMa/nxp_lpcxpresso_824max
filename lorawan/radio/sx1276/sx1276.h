@@ -17,7 +17,7 @@ Maintainer: Miguel Luis and Gregory Cristian
 
 #include "sx1276Regs-Fsk.h"
 #include "sx1276Regs-LoRa.h"
-
+#include "board.h"
 /*!
  * Radio wakeup time from SLEEP mode
  */
@@ -108,14 +108,14 @@ typedef struct
  */
 typedef struct SX1276_s
 {
-    Gpio_t        Reset;
-    Gpio_t        DIO0;
-    Gpio_t        DIO1;
-    Gpio_t        DIO2;
-    Gpio_t        DIO3;
-    Gpio_t        DIO4;
-    Gpio_t        DIO5;
-    Spi_t         Spi;
+    uint8_t        Reset;
+    uint8_t        DIO0;
+    uint8_t        DIO1;
+    uint8_t        DIO2;
+    uint8_t        DIO3;
+    uint8_t        DIO4;
+    uint8_t        DIO5;
+    uint8_t         Spi;
     uint8_t       RxTx;
     RadioSettings_t Settings;
 }SX1276_t;

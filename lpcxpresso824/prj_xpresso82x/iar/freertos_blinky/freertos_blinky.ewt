@@ -95,6 +95,9 @@
       <name>$PROJ_DIR$\..\..\..\chip_82x\startup\iar_startup_lpc82x.s</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classA\Bleeper-76\main.c</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\..\..\examples_82x\periph_wwdt\readme.txt</name>
     </file>
     <file>
@@ -142,6 +145,30 @@
   </group>
   <group>
     <name>lorawan</name>
+    <group>
+      <name>hal</name>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\lorawan\system\crypto\aes.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\lorawan\system\crypto\aes.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\lorawan\system\crypto\cmac.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\lorawan\system\crypto\cmac.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\lorawan\boards\Bleeper-76\sx1276-board.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\lorawan\system\timer.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\lorawan\boards\mcu\stm32\utilities.c</name>
+      </file>
+    </group>
     <group>
       <name>mac</name>
       <file>

@@ -13,8 +13,7 @@ License: Revised BSD License, see LICENSE.TXT file include in the project
 Maintainer: Miguel Luis and Gregory Cristian
 */
 #include "board.h"
-#include "rtc-board.h"
-#include "timer-board.h"
+#include "timer.h"
 
 static bool LowPowerModeEnable = true;
 
@@ -385,11 +384,11 @@ void TimerSetValue( TimerEvent_t *obj, uint32_t value )
 
     if( LowPowerModeEnable == true )
     {
-        minValue = RtcGetMinimumTimeout( );
+        //minValue = RtcGetMinimumTimeout( );
     }
     else
     {
-        minValue = TimerHwGetMinimumTimeout( );
+        //minValue = TimerHwGetMinimumTimeout( );
     }
     
     if( value < minValue )
@@ -403,6 +402,7 @@ void TimerSetValue( TimerEvent_t *obj, uint32_t value )
 
 uint32_t TimerGetValue( void )
 {
+#if 0
     if( LowPowerModeEnable == true )
     {
         return RtcGetTimerElapsedTime( );
@@ -411,18 +411,21 @@ uint32_t TimerGetValue( void )
     {
         return TimerHwGetElapsedTime( );
     }
+#endif
+    return 0;
 }
 
 TimerTime_t TimerGetCurrentTime( void )
 {
     if( LowPowerModeEnable == true )
     {
-        return RtcGetTimerValue( );
+        //return RtcGetTimerValue( );
     }
     else
     {
-        return TimerHwGetTime( );
+        //return TimerHwGetTime( );
     }
+    return 0;
 }
 
 static void TimerSetTimeout( TimerEvent_t *obj )
@@ -431,11 +434,11 @@ static void TimerSetTimeout( TimerEvent_t *obj )
 
     if( LowPowerModeEnable == true )
     {
-        RtcSetTimeout( obj->Timestamp );
+        //RtcSetTimeout( obj->Timestamp );
     }
     else
     {
-        TimerHwStart( obj->Timestamp );
+        //TimerHwStart( obj->Timestamp );
     }
 }
 
@@ -453,11 +456,11 @@ void TimerLowPowerHandler( void )
     
             if( LowPowerModeEnable == true )
             {
-                RtcEnterLowPowerStopMode( );
+                //RtcEnterLowPowerStopMode( );
             }
             else
             {
-                TimerHwEnterLowPowerStopMode( );
+                //TimerHwEnterLowPowerStopMode( );
             }
         }
     }

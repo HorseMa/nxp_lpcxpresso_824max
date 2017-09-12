@@ -173,6 +173,7 @@
         <option>
           <name>CCDefines</name>
           <state>CORE_M0PLUS</state>
+          <state>USE_BAND_433</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -311,6 +312,11 @@
           <state>$PROJ_DIR$\..\..\..\..\lorawan</state>
           <state>$PROJ_DIR$\..\..\..\..\lorawan\radio</state>
           <state>$PROJ_DIR$\..\..\..\..\lorawan\radio\sx1276</state>
+          <state>$PROJ_DIR$\..\..\..\..\lorawan\boards\Bleeper-76</state>
+          <state>$PROJ_DIR$\..\..\..\..\lorawan\boards\mcu\stm32</state>
+          <state>$PROJ_DIR$\..\..\..\..\lorawan\system\crypto</state>
+          <state>$PROJ_DIR$\..\..\..\..\lorawan\system\</state>
+          <state>$PROJ_DIR$\..\..\..\..\lorawan\mac</state>
         </option>
         <option>
           <name>CCStdIncCheck</name>
@@ -699,7 +705,7 @@
         </option>
         <option>
           <name>IlinkMapFile</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>IlinkLogFile</name>
@@ -963,9 +969,15 @@
     <name>example</name>
     <file>
       <name>$PROJ_DIR$\..\..\..\examples_82x\freertos_blinky\src\freertos_blinky.c</name>
+      <excluded>
+        <configuration>iflash_nxp_lpcxpresso_812</configuration>
+      </excluded>
     </file>
     <file>
       <name>$PROJ_DIR$\..\..\..\chip_82x\startup\iar_startup_lpc82x.s</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classA\Bleeper-76\main.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\..\..\..\examples_82x\periph_wwdt\readme.txt</name>
@@ -1015,6 +1027,30 @@
   </group>
   <group>
     <name>lorawan</name>
+    <group>
+      <name>hal</name>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\lorawan\system\crypto\aes.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\lorawan\system\crypto\aes.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\lorawan\system\crypto\cmac.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\lorawan\system\crypto\cmac.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\lorawan\boards\Bleeper-76\sx1276-board.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\lorawan\system\timer.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\lorawan\boards\mcu\stm32\utilities.c</name>
+      </file>
+    </group>
     <group>
       <name>mac</name>
       <file>

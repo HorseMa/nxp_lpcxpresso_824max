@@ -18,6 +18,7 @@ Maintainer: Miguel Luis, Gregory Cristian and Wael Guibene
 #include "radio.h"
 #include "sx1276.h"
 #include "sx1276-board.h"
+#include "timer.h"
 
 /*
  * Local types definition
@@ -268,7 +269,7 @@ bool SX1276IsChannelFree( RadioModems_t modem, uint32_t freq, int16_t rssiThresh
     
     SX1276SetOpMode( RF_OPMODE_RECEIVER );
 
-    DelayMs( 1 );
+    //DelayMs( 1 );
     
     rssi = SX1276ReadRssi( modem );
     
@@ -307,7 +308,7 @@ uint32_t SX1276Random( void )
 
     for( i = 0; i < 32; i++ )
     {
-        DelayMs( 1 );
+        //DelayMs( 1 );
         // Unfiltered RSSI value reading. Only takes the LSB value
         rnd |= ( ( uint32_t )SX1276Read( REG_LR_RSSIWIDEBAND ) & 0x01 ) << i;
     }
@@ -870,7 +871,7 @@ void SX1276Send( uint8_t *buffer, uint8_t size )
             if( ( SX1276Read( REG_OPMODE ) & ~RF_OPMODE_MASK ) == RF_OPMODE_SLEEP )
             {
                 SX1276SetStby( );
-                DelayMs( 1 );
+                //DelayMs( 1 );
             }
             // Write payload buffer
             SX1276WriteFifo( buffer, size );
@@ -1188,17 +1189,19 @@ int16_t SX1276ReadRssi( RadioModems_t modem )
 
 void SX1276Reset( void )
 {
+#if 0
     // Set RESET pin to 0
     GpioInit( &SX1276.Reset, RADIO_RESET, PIN_OUTPUT, PIN_PUSH_PULL, PIN_NO_PULL, 0 );
 
     // Wait 1 ms
-    DelayMs( 1 );
+    //DelayMs( 1 );
 
     // Configure RESET as input
     GpioInit( &SX1276.Reset, RADIO_RESET, PIN_INPUT, PIN_PUSH_PULL, PIN_NO_PULL, 1 );
 
     // Wait 6 ms
-    DelayMs( 6 );
+    //DelayMs( 6 );
+#endif
 }
 
 void SX1276SetOpMode( uint8_t opMode )
@@ -1230,7 +1233,7 @@ void SX1276SetOpMode( uint8_t opMode )
 
 void SX1276SetModem( RadioModems_t modem )
 {
-    if( SX1276.Spi.Spi == NULL )
+    if( SX1276.Spi == NULL )
     {
         while( 1 );
     }
@@ -1275,7 +1278,7 @@ uint8_t SX1276Read( uint8_t addr )
 void SX1276WriteBuffer( uint8_t addr, uint8_t *buffer, uint8_t size )
 {
     uint8_t i;
-
+#if 0
     //NSS = 0;
     GpioWrite( &SX1276.Spi.Nss, 0 );
 
@@ -1287,12 +1290,13 @@ void SX1276WriteBuffer( uint8_t addr, uint8_t *buffer, uint8_t size )
 
     //NSS = 1;
     GpioWrite( &SX1276.Spi.Nss, 1 );
+#endif
 }
 
 void SX1276ReadBuffer( uint8_t addr, uint8_t *buffer, uint8_t size )
 {
     uint8_t i;
-
+#if 0
     //NSS = 0;
     GpioWrite( &SX1276.Spi.Nss, 0 );
 
@@ -1305,6 +1309,7 @@ void SX1276ReadBuffer( uint8_t addr, uint8_t *buffer, uint8_t size )
 
     //NSS = 1;
     GpioWrite( &SX1276.Spi.Nss, 1 );
+#endif
 }
 
 void SX1276WriteFifo( uint8_t *buffer, uint8_t size )
