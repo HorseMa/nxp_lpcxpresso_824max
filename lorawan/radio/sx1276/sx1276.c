@@ -211,6 +211,15 @@ TimerEvent_t TxTimeoutTimer;
 TimerEvent_t RxTimeoutTimer;
 TimerEvent_t RxTimeoutSyncWord;
 
+static uint16_t TxBuf[BUFFER_SIZE];
+
+/* Rx buffer */
+static uint16_t RxBuf[BUFFER_SIZE];
+
+static SPI_DATA_SETUP_T XfSetup;
+
+static volatile uint8_t  isXferCompleted = 0;
+
 /*
  * Radio driver functions implementation
  */
@@ -1278,6 +1287,15 @@ uint8_t SX1276Read( uint8_t addr )
 void SX1276WriteBuffer( uint8_t addr, uint8_t *buffer, uint8_t size )
 {
     uint8_t i;
+
+    TxBuf[0] = addr;
+    memcpy(TxBuf,buffer,size);
+    XfSetup.Length = size + 1;
+    XfSetup.pTx = TxBuf;
+    XfSetup.RxCnt = XfSetup.TxCnt = 0;
+    XfSetup.DataSize = 8;
+
+    Chip_SPI_WriteFrames_Blocking(LPC_SPI, &XfSetup);
 #if 0
     //NSS = 0;
     GpioWrite( &SX1276.Spi.Nss, 0 );
@@ -1296,6 +1314,14 @@ void SX1276WriteBuffer( uint8_t addr, uint8_t *buffer, uint8_t size )
 void SX1276ReadBuffer( uint8_t addr, uint8_t *buffer, uint8_t size )
 {
     uint8_t i;
+
+    TxBuf[0] = addr;
+    XfSetup.Length = 1;
+    XfSetup.pTx = TxBuf;
+    XfSetup.RxCnt = XfSetup.TxCnt = 0;
+    XfSetup.DataSize = 8;
+    Chip_SPI_RWFrames_Blocking(LPC_SPI, &XfSetup);
+    memcpy(buffer);
 #if 0
     //NSS = 0;
     GpioWrite( &SX1276.Spi.Nss, 0 );
