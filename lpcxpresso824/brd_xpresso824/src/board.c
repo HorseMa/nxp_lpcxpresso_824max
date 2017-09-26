@@ -203,8 +203,8 @@ void Board_GPIO_Init(void)
 	Chip_SWM_DisableFixedPin(SWM_FIXED_ACMP_I4);
 	//Chip_SWM_DisableFixedPin(SWM_FIXED_SWCLK);
 	//Chip_SWM_DisableFixedPin(SWM_FIXED_SWDIO);
-	//Chip_SWM_DisableFixedPin(SWM_FIXED_XTALIN);
-	//Chip_SWM_DisableFixedPin(SWM_FIXED_XTALOUT);
+	Chip_SWM_EnableFixedPin(SWM_FIXED_XTALIN);
+	Chip_SWM_EnableFixedPin(SWM_FIXED_XTALOUT);
 	//Chip_SWM_DisableFixedPin(SWM_FIXED_RST);
 	Chip_SWM_DisableFixedPin(SWM_FIXED_CLKIN);
 	Chip_SWM_DisableFixedPin(SWM_FIXED_VDDCMP);
@@ -255,20 +255,20 @@ void Board_GPIO_Init(void)
 	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO27,PIN_MODE_INACTIVE);
 	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO28,PIN_MODE_INACTIVE);
 
-	Chip_SWM_MovablePinAssign(SWM_SCT_IN1_I, GPIO_PININT);
+	Chip_SWM_MovablePinAssign(SWM_SCT_IN1_I, 4);
 
 	/* Configure channel 0 interrupt as edge sensitive and falling edge interrupt */
 	Chip_PININT_SetPinModeEdge(LPC_PININT, PININTCH0);
 	Chip_PININT_EnableIntLow(LPC_PININT, PININTCH0);
 
 	/* Configure interrupt channel 0 for the GPIO pin in SysCon block */
-	Chip_SYSCTL_SetPinInterrupt(0, GPIO_PININT);
+	Chip_SYSCTL_SetPinInterrupt(0, 4);
 
 	/* Configure channel 0 as wake up interrupt in SysCon block */
 	Chip_SYSCTL_EnablePINTWakeup(0);
 
 	/* Configure GPIO pin as input pin */
-	Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, 0, GPIO_PININT);
+	Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, 0, 4);
 
 	/* Enable interrupt in the NVIC */
 	NVIC_EnableIRQ(PININT0_IRQn);

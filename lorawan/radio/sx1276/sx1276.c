@@ -20,6 +20,7 @@ Maintainer: Miguel Luis, Gregory Cristian and Wael Guibene
 #include "sx1276-board.h"
 #include "timer.h"
 
+#define BUFFER_SIZE 255
 /*
  * Local types definition
  */
@@ -1295,7 +1296,7 @@ void SX1276WriteBuffer( uint8_t addr, uint8_t *buffer, uint8_t size )
     XfSetup.RxCnt = XfSetup.TxCnt = 0;
     XfSetup.DataSize = 8;
 
-    Chip_SPI_WriteFrames_Blocking(LPC_SPI, &XfSetup);
+    Chip_SPI_WriteFrames_Blocking(LPC_SPI1, &XfSetup);
 #if 0
     //NSS = 0;
     GpioWrite( &SX1276.Spi.Nss, 0 );
@@ -1320,8 +1321,8 @@ void SX1276ReadBuffer( uint8_t addr, uint8_t *buffer, uint8_t size )
     XfSetup.pTx = TxBuf;
     XfSetup.RxCnt = XfSetup.TxCnt = 0;
     XfSetup.DataSize = 8;
-    Chip_SPI_RWFrames_Blocking(LPC_SPI, &XfSetup);
-    memcpy(buffer);
+    Chip_SPI_RWFrames_Blocking(LPC_SPI1, &XfSetup);
+    //memcpy(buffer);
 #if 0
     //NSS = 0;
     GpioWrite( &SX1276.Spi.Nss, 0 );

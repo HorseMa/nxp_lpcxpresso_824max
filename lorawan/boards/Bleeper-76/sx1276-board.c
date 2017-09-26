@@ -135,8 +135,8 @@ void SX1276IoInit( void )
        ConfigStruct.DataOrder = SPI_DATA_MSB_FIRST;
        ConfigStruct.SSELPol = SPI_SSEL_ACTIVE_LO;
      */
-    Chip_SPI_Init(LPC_SPI);
-    Chip_SPI_ConfigureSPI(LPC_SPI, SPI_MODE_MASTER |  /* Enable master/Slave mode */
+    Chip_SPI_Init(LPC_SPI1);
+    Chip_SPI_ConfigureSPI(LPC_SPI1, SPI_MODE_MASTER |  /* Enable master/Slave mode */
                           SPI_CLOCK_CPHA0_CPOL0 |   /* Set Clock polarity to 0 */
                           SPI_CFG_MSB_FIRST_EN |/* Enable MSB first option */
                           SPI_CFG_SPOL_LO); /* Chipselect is active low */
@@ -145,9 +145,9 @@ void SX1276IoInit( void )
     DelayConfigStruct.PostDelay = 0;
     DelayConfigStruct.PreDelay = 0;
     DelayConfigStruct.TransferDelay = 0;
-    Chip_SPI_DelayConfig(LPC_SPI, &DelayConfigStruct);
+    Chip_SPI_DelayConfig(LPC_SPI1, &DelayConfigStruct);
 
-    Chip_SPI_Enable(LPC_SPI);
+    Chip_SPI_Enable(LPC_SPI1);
 }
 
 void SX1276IoIrqInit( DioIrqHandler **irqHandlers )
