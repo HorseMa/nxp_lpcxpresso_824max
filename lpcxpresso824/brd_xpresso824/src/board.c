@@ -197,35 +197,7 @@ void Board_GPIO_Init(void)
 {
 	uint32_t mask;
 
-	Chip_SWM_DisableFixedPin(SWM_FIXED_ACMP_I1);
-	Chip_SWM_DisableFixedPin(SWM_FIXED_ACMP_I2);
-	Chip_SWM_DisableFixedPin(SWM_FIXED_ACMP_I3);
-	Chip_SWM_DisableFixedPin(SWM_FIXED_ACMP_I4);
-	//Chip_SWM_DisableFixedPin(SWM_FIXED_SWCLK);
-	//Chip_SWM_DisableFixedPin(SWM_FIXED_SWDIO);
-	Chip_SWM_EnableFixedPin(SWM_FIXED_XTALIN);
-	Chip_SWM_EnableFixedPin(SWM_FIXED_XTALOUT);
-	//Chip_SWM_DisableFixedPin(SWM_FIXED_RST);
-	Chip_SWM_DisableFixedPin(SWM_FIXED_CLKIN);
-	Chip_SWM_DisableFixedPin(SWM_FIXED_VDDCMP);
-	Chip_SWM_DisableFixedPin(SWM_FIXED_I2C0_SDA);
-	Chip_SWM_DisableFixedPin(SWM_FIXED_I2C0_SCL);
-	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC0);
-	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC1);
-	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC2);
-	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC3);
-	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC4);
-	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC5);
-	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC6);
-	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC7);
-	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC8);
-	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC9);
-	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC10);
-	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC11);
-
-	//Chip_GPIO_SetPortDIRInput(LPC_GPIO_PORT,0,mask);
-
-	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO0,PIN_MODE_INACTIVE);
+        Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO0,PIN_MODE_INACTIVE);
 	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO1,PIN_MODE_INACTIVE);
 	//Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO2,PIN_MODE_INACTIVE);
 	//Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO3,PIN_MODE_INACTIVE);
@@ -250,10 +222,43 @@ void Board_GPIO_Init(void)
 	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO22,PIN_MODE_INACTIVE);
 	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO23,PIN_MODE_INACTIVE);
 	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO24,PIN_MODE_INACTIVE);
-	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO25,PIN_MODE_INACTIVE);
+	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO25,PIN_MODE_REPEATER);
 	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO26,PIN_MODE_INACTIVE);
 	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO27,PIN_MODE_INACTIVE);
 	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO28,PIN_MODE_INACTIVE);
+        
+        //Chip_Clock_EnablePeriphClock(SYSCTL_CLOCK_SWM);
+        Chip_Clock_DisablePeriphClock(SYSCTL_CLOCK_SWM);
+        
+	Chip_SWM_DisableFixedPin(SWM_FIXED_ACMP_I1);
+	Chip_SWM_DisableFixedPin(SWM_FIXED_ACMP_I2);
+	Chip_SWM_DisableFixedPin(SWM_FIXED_ACMP_I3);
+	Chip_SWM_DisableFixedPin(SWM_FIXED_ACMP_I4);
+	Chip_SWM_EnableFixedPin(SWM_FIXED_SWCLK);
+	Chip_SWM_EnableFixedPin(SWM_FIXED_SWDIO);
+	Chip_SWM_EnableFixedPin(SWM_FIXED_XTALIN);
+	Chip_SWM_EnableFixedPin(SWM_FIXED_XTALOUT);
+	//Chip_SWM_DisableFixedPin(SWM_FIXED_RST);
+	Chip_SWM_DisableFixedPin(SWM_FIXED_CLKIN);
+	Chip_SWM_DisableFixedPin(SWM_FIXED_VDDCMP);
+	Chip_SWM_DisableFixedPin(SWM_FIXED_I2C0_SDA);
+	Chip_SWM_DisableFixedPin(SWM_FIXED_I2C0_SCL);
+	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC0);
+	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC1);
+	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC2);
+	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC3);
+	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC4);
+	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC5);
+	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC6);
+	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC7);
+	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC8);
+	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC9);
+	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC10);
+	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC11);
+
+        Chip_GPIO_SetPinDIROutput(LPC_GPIO_PORT, 0, IOCON_PIO25);
+        
+	//Chip_GPIO_SetPortDIRInput(LPC_GPIO_PORT,0,mask);
 
 	Chip_SWM_MovablePinAssign(SWM_SCT_IN1_I, 4);
 
@@ -272,6 +277,7 @@ void Board_GPIO_Init(void)
 
 	/* Enable interrupt in the NVIC */
 	NVIC_EnableIRQ(PININT0_IRQn);
+        //Chip_Clock_DisablePeriphClock(SYSCTL_CLOCK_SWM);
 }
 
 /* Set up and initialize all required blocks and functions related to the

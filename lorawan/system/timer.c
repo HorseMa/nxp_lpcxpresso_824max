@@ -13,19 +13,19 @@ License: Revised BSD License, see LICENSE.TXT file include in the project
 Maintainer: Miguel Luis and Gregory Cristian
 */
 #include "board.h"
-#include "timer.h"
+#include "rtc-board.h"
 
-static bool LowPowerModeEnable = true;
 
 /*!
- * This flag is used to make sure we have looped through the main several time to avoid race issues
+ * This flag is used to loop through the main several times in order to be sure
+ * that all pending events have been processed.
  */
 volatile uint8_t HasLoopedThroughMain = 0;
 
 /*!
  * Timers list head pointer
  */
-static TimerEvent_t *TimerListHead = NULL;
+static TimerHandle_t *TimerListHead = NULL;
 
 /*!
  * \brief Adds or replace the head timer of the list.
@@ -36,7 +36,7 @@ static TimerEvent_t *TimerListHead = NULL;
  * \param [IN]  obj Timer object to be become the new head
  * \param [IN]  remainingTime Remaining time of the previous head to be replaced
  */
-static void TimerInsertNewHeadTimer( TimerEvent_t *obj, uint32_t remainingTime );
+static void TimerInsertNewHeadTimer( TimerHandle_t *obj, uint32_t remainingTime );
 
 /*!
  * \brief Adds a timer to the list.
@@ -47,41 +47,31 @@ static void TimerInsertNewHeadTimer( TimerEvent_t *obj, uint32_t remainingTime )
  * \param [IN]  obj Timer object to be added to the list
  * \param [IN]  remainingTime Remaining time of the running head after which the object may be added
  */
-static void TimerInsertTimer( TimerEvent_t *obj, uint32_t remainingTime );
+static void TimerInsertTimer( TimerHandle_t *obj, uint32_t remainingTime );
 
 /*!
  * \brief Sets a timeout with the duration "timestamp"
- * 
+ *
  * \param [IN] timestamp Delay duration
  */
-static void TimerSetTimeout( TimerEvent_t *obj );
+static void TimerSetTimeout( TimerHandle_t *obj );
 
 /*!
  * \brief Check if the Object to be added is not already in the list
- * 
+ *
  * \param [IN] timestamp Delay duration
- * \retval true (the object is already in the list) or false  
+ * \retval true (the object is already in the list) or false
  */
-static bool TimerExists( TimerEvent_t *obj );
+static bool TimerExists( TimerHandle_t *obj );
 
 /*!
  * \brief Read the timer value of the currently running timer
  *
  * \retval value current timer value
  */
-uint32_t TimerGetValue( void );
+TimerTime_t TimerGetValue( void );
 
-void TimerSetLowPowerEnable( bool enable )
-{
-   LowPowerModeEnable = enable;
-}
-
-bool TimerGetLowPowerEnable( void )
-{
-    return LowPowerModeEnable;
-}
-
-void TimerInit( TimerEvent_t *obj, void ( *callback )( void ) )
+void xTimerCreate( TimerHandle_t *obj, void ( *callback )( void ) )
 {
     obj->Timestamp = 0;
     obj->ReloadValue = 0;
@@ -90,16 +80,16 @@ void TimerInit( TimerEvent_t *obj, void ( *callback )( void ) )
     obj->Next = NULL;
 }
 
-void TimerStart( TimerEvent_t *obj )
+void xTimerStart( TimerHandle_t *obj )
 {
     uint32_t elapsedTime = 0;
     uint32_t remainingTime = 0;
 
-    __disable_irq( );
+    BoardDisableIrq( );
 
     if( ( obj == NULL ) || ( TimerExists( obj ) == true ) )
     {
-        __enable_irq( );
+        BoardEnableIrq( );
         return;
     }
 
@@ -110,7 +100,7 @@ void TimerStart( TimerEvent_t *obj )
     {
         TimerInsertNewHeadTimer( obj, obj->Timestamp );
     }
-    else 
+    else
     {
         if( TimerListHead->IsRunning == true )
         {
@@ -125,7 +115,7 @@ void TimerStart( TimerEvent_t *obj )
         {
             remainingTime = TimerListHead->Timestamp;
         }
-    
+
         if( obj->Timestamp < remainingTime )
         {
             TimerInsertNewHeadTimer( obj, remainingTime );
@@ -135,16 +125,16 @@ void TimerStart( TimerEvent_t *obj )
              TimerInsertTimer( obj, remainingTime );
         }
     }
-    __enable_irq( );
+    BoardEnableIrq( );
 }
 
-static void TimerInsertTimer( TimerEvent_t *obj, uint32_t remainingTime )
+static void TimerInsertTimer( TimerHandle_t *obj, uint32_t remainingTime )
 {
-    uint32_t aggregatedTimestamp = 0;      // hold the sum of timestamps 
+    uint32_t aggregatedTimestamp = 0;      // hold the sum of timestamps
     uint32_t aggregatedTimestampNext = 0;  // hold the sum of timestamps up to the next event
 
-    TimerEvent_t* prev = TimerListHead;
-    TimerEvent_t* cur = TimerListHead->Next;
+    TimerHandle_t* prev = TimerListHead;
+    TimerHandle_t* cur = TimerListHead->Next;
 
     if( cur == NULL )
     { // obj comes just after the head
@@ -192,9 +182,9 @@ static void TimerInsertTimer( TimerEvent_t *obj, uint32_t remainingTime )
     }
 }
 
-static void TimerInsertNewHeadTimer( TimerEvent_t *obj, uint32_t remainingTime )
+static void TimerInsertNewHeadTimer( TimerHandle_t *obj, uint32_t remainingTime )
 {
-    TimerEvent_t* cur = TimerListHead;
+    TimerHandle_t* cur = TimerListHead;
 
     if( cur != NULL )
     {
@@ -211,20 +201,16 @@ static void TimerInsertNewHeadTimer( TimerEvent_t *obj, uint32_t remainingTime )
 void TimerIrqHandler( void )
 {
     uint32_t elapsedTime = 0;
- 
-    if( LowPowerModeEnable == false )
+
+    // Early out when TimerListHead is null to prevent null pointer
+    if ( TimerListHead == NULL )
     {
-        if( TimerListHead == NULL )
-        {
-            return;  // Only necessary when the standard timer is used as a time base
-        }
+        return;
     }
 
     elapsedTime = TimerGetValue( );
 
-    TimerEvent_t* elapsedTimer = NULL;
-
-    if( elapsedTime > TimerListHead->Timestamp )
+    if( elapsedTime >= TimerListHead->Timestamp )
     {
         TimerListHead->Timestamp = 0;
     }
@@ -232,71 +218,60 @@ void TimerIrqHandler( void )
     {
         TimerListHead->Timestamp -= elapsedTime;
     }
-        
-    // save TimerListHead
-    elapsedTimer = TimerListHead;
 
-    // remove all the expired object from the list
+    TimerListHead->IsRunning = false;
+
     while( ( TimerListHead != NULL ) && ( TimerListHead->Timestamp == 0 ) )
-    {         
-        if( TimerListHead->Next != NULL )
-        {
-            TimerListHead = TimerListHead->Next;
-        }
-        else
-        {
-            TimerListHead = NULL;
-        }
-    }
-
-    // execute the callbacks of all the expired objects
-    // this is to avoid potential issues between the callback and the object list
-    while( ( elapsedTimer != NULL ) && ( elapsedTimer->Timestamp == 0 ) )
     {
+        TimerHandle_t* elapsedTimer = TimerListHead;
+        TimerListHead = TimerListHead->Next;
+
         if( elapsedTimer->Callback != NULL )
         {
             elapsedTimer->Callback( );
         }
-        elapsedTimer = elapsedTimer->Next;
     }
 
     // start the next TimerListHead if it exists
     if( TimerListHead != NULL )
-    {    
-        TimerListHead->IsRunning = true;
-        TimerSetTimeout( TimerListHead );
-    } 
+    {
+        if( TimerListHead->IsRunning != true )
+        {
+            TimerListHead->IsRunning = true;
+            TimerSetTimeout( TimerListHead );
+        }
+    }
 }
 
-void TimerStop( TimerEvent_t *obj ) 
+void xTimerStop( TimerHandle_t *obj )
 {
-    __disable_irq( );
+    BoardDisableIrq( );
 
     uint32_t elapsedTime = 0;
     uint32_t remainingTime = 0;
 
-    TimerEvent_t* prev = TimerListHead;
-    TimerEvent_t* cur = TimerListHead;
+    TimerHandle_t* prev = TimerListHead;
+    TimerHandle_t* cur = TimerListHead;
 
-    // List is empty or the Obj to stop does not exist 
+    // List is empty or the Obj to stop does not exist
     if( ( TimerListHead == NULL ) || ( obj == NULL ) )
     {
-        __enable_irq( );
+        BoardEnableIrq( );
         return;
     }
 
-    if( TimerListHead == obj ) // Stop the Head                                    
+    if( TimerListHead == obj ) // Stop the Head
     {
-        if( TimerListHead->IsRunning == true ) // The head is already running 
+        if( TimerListHead->IsRunning == true ) // The head is already running
         {
             elapsedTime = TimerGetValue( );
             if( elapsedTime > obj->Timestamp )
             {
                 elapsedTime = obj->Timestamp;
             }
-        
+
             remainingTime = obj->Timestamp - elapsedTime;
-        
+
             if( TimerListHead->Next != NULL )
             {
                 TimerListHead->IsRunning = false;
@@ -311,8 +286,8 @@ void TimerStop( TimerEvent_t *obj )
             }
         }
         else // Stop the head before it is started
-        {     
-            if( TimerListHead->Next != NULL )     
+        {
+            if( TimerListHead->Next != NULL )
             {
                 remainingTime = obj->Timestamp;
                 TimerListHead = TimerListHead->Next;
@@ -325,9 +300,9 @@ void TimerStop( TimerEvent_t *obj )
         }
     }
     else // Stop an object within the list
-    {    
+    {
         remainingTime = obj->Timestamp;
-        
+
         while( cur != NULL )
         {
             if( cur == obj )
@@ -350,14 +325,14 @@ void TimerStop( TimerEvent_t *obj )
                 prev = cur;
                 cur = cur->Next;
             }
-        }   
+        }
     }
-    __enable_irq( );
-}    
-    
-static bool TimerExists( TimerEvent_t *obj )
+    BoardEnableIrq( );
+}
+
+static bool TimerExists( TimerHandle_t *obj )
 {
-    TimerEvent_t* cur = TimerListHead;
+    TimerHandle_t* cur = TimerListHead;
 
     while( cur != NULL )
     {
@@ -370,97 +345,60 @@ static bool TimerExists( TimerEvent_t *obj )
     return false;
 }
 
-void TimerReset( TimerEvent_t *obj )
+void TimerReset( TimerHandle_t *obj )
 {
-    TimerStop( obj );
-    TimerStart( obj );
+    xTimerStop( obj );
+    xTimerStart( obj );
 }
 
-void TimerSetValue( TimerEvent_t *obj, uint32_t value )
+void xTimerChangePeriod( TimerHandle_t *obj, uint32_t value )
 {
-    uint32_t minValue = 0;
-
-    TimerStop( obj );
-
-    if( LowPowerModeEnable == true )
-    {
-        //minValue = RtcGetMinimumTimeout( );
-    }
-    else
-    {
-        //minValue = TimerHwGetMinimumTimeout( );
-    }
-    
-    if( value < minValue )
-    {
-        value = minValue;
-    }
-
+    xTimerStop( obj );
     obj->Timestamp = value;
     obj->ReloadValue = value;
 }
 
-uint32_t TimerGetValue( void )
+TimerTime_t TimerGetValue( void )
 {
-#if 0
-    if( LowPowerModeEnable == true )
-    {
-        return RtcGetTimerElapsedTime( );
-    }
-    else
-    {
-        return TimerHwGetElapsedTime( );
-    }
-#endif
-    return 0;
+    return RtcGetElapsedAlarmTime( );
 }
 
 TimerTime_t TimerGetCurrentTime( void )
 {
-    if( LowPowerModeEnable == true )
-    {
-        //return RtcGetTimerValue( );
-    }
-    else
-    {
-        //return TimerHwGetTime( );
-    }
-    return 0;
+    return RtcGetTimerValue( );
 }
 
-static void TimerSetTimeout( TimerEvent_t *obj )
+TimerTime_t TimerGetElapsedTime( TimerTime_t savedTime )
+{
+    return RtcComputeElapsedTime( savedTime );
+}
+
+TimerTime_t TimerGetFutureTime( TimerTime_t eventInFuture )
+{
+    return RtcComputeFutureEventTime( eventInFuture );
+}
+
+static void TimerSetTimeout( TimerHandle_t *obj )
 {
     HasLoopedThroughMain = 0;
-
-    if( LowPowerModeEnable == true )
-    {
-        //RtcSetTimeout( obj->Timestamp );
-    }
-    else
-    {
-        //TimerHwStart( obj->Timestamp );
-    }
+    obj->Timestamp = RtcGetAdjustedTimeoutValue( obj->Timestamp );
+    RtcSetTimeout( obj->Timestamp );
 }
 
 void TimerLowPowerHandler( void )
 {
-    if( ( TimerListHead != NULL ) && ( TimerListHead->IsRunning == true ) ) 
-    {    
+    if( ( TimerListHead != NULL ) && ( TimerListHead->IsRunning == true ) )
+    {
         if( HasLoopedThroughMain < 5 )
         {
             HasLoopedThroughMain++;
         }
         else
-        { 
+        {
             HasLoopedThroughMain = 0;
-    
-            if( LowPowerModeEnable == true )
+            if( GetBoardPowerSource( ) == BATTERY_POWER )
             {
-                //RtcEnterLowPowerStopMode( );
-            }
-            else
-            {
-                //TimerHwEnterLowPowerStopMode( );
+                RtcEnterLowPowerStopMode( );
             }
         }
     }

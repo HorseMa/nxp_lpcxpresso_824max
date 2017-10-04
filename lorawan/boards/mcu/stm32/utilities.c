@@ -14,8 +14,9 @@ Maintainer: Miguel Luis and Gregory Cristian
 */
 #include <stdlib.h>
 #include <stdio.h>
-#include "utilities.h"
 #include "board.h"
+#include "utilities.h"
+#include "typedef.h"
 
 /*!
  * Redefinition of rand() and srand() standard C functions.
@@ -51,6 +52,15 @@ void memcpy1( uint8_t *dst, const uint8_t *src, uint16_t size )
     }
 }
 
+void memcpyr( uint8_t *dst, const uint8_t *src, uint16_t size )
+{
+    dst = dst + ( size - 1 );
+    while( size-- )
+    {
+        *dst-- = *src++;
+    }
+}
+
 void memset1( uint8_t *dst, uint8_t value, uint16_t size )
 {
     while( size-- )
@@ -73,4 +83,14 @@ int8_t Nibble2HexChar( uint8_t a )
     {
         return '?';
     }
+}
+
+TimerTime_t TimerGetElapsedTime( TimerTime_t savedTime )
+{
+    return 0;//RtcComputeElapsedTime( savedTime );
+}
+
+TimerTime_t TimerGetCurrentTime( void )
+{
+    return 0;//RtcGetTimerValue( );
 }

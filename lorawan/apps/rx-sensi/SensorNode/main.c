@@ -7,7 +7,7 @@
     (C)2013 Semtech
 
 Description: Radio sensitivity test.
-             When LED1 stops blinking LoRa packets aren't received any more and 
+             When LED1 stops blinking LoRa packets aren't received any more and
              the sensitivity level has been reached.
              By reading the RF generator output power we can estimate the board
              sensitivity.
@@ -20,19 +20,43 @@ Maintainer: Miguel Luis and Gregory Cristian
 #include "board.h"
 #include "radio.h"
 
-#if defined( USE_BAND_433 )
+#if defined( REGION_AS923 )
 
-#define RF_FREQUENCY                                434000000 // Hz
+#define RF_FREQUENCY                                923000000 // Hz
 
-#elif defined( USE_BAND_780 )
+#elif defined( REGION_AU915 )
 
-#define RF_FREQUENCY                                780000000 // Hz
+#define RF_FREQUENCY                                915000000 // Hz
 
-#elif defined( USE_BAND_868 )
+#elif defined( REGION_CN470 )
+
+#define RF_FREQUENCY                                470000000 // Hz
+
+#elif defined( REGION_CN779 )
+
+#define RF_FREQUENCY                                779000000 // Hz
+
+#elif defined( REGION_EU433 )
+
+#define RF_FREQUENCY                                433000000 // Hz
+
+#elif defined( REGION_EU868 )
 
 #define RF_FREQUENCY                                868000000 // Hz
 
-#elif defined( USE_BAND_915 )
+#elif defined( REGION_KR920 )
+
+#define RF_FREQUENCY                                920000000 // Hz
+
+#elif defined( REGION_IN865 )
+
+#define RF_FREQUENCY                                865000000 // Hz
+
+#elif defined( REGION_US915 )
+
+#define RF_FREQUENCY                                915000000 // Hz
+
+#elif defined( REGION_US915_HYBRID )
 
 #define RF_FREQUENCY                                915000000 // Hz
 
@@ -51,16 +75,16 @@ Maintainer: Miguel Luis and Gregory Cristian
                                                               //  2: 4/6,
                                                               //  3: 4/7,
                                                               //  4: 4/8]
-#define LORA_SYMBOL_TIMEOUT                         5         // Symbols                                                              
+#define LORA_SYMBOL_TIMEOUT                         5         // Symbols
 #define LORA_PREAMBLE_LENGTH                        8         // Same for Tx and Rx
 #define LORA_FIX_LENGTH_PAYLOAD_ON                  false
 #define LORA_IQ_INVERSION_ON                        false
 
 #elif defined( USE_MODEM_FSK )
 
-#define FSK_DATARATE                                50e3      // bps
-#define FSK_BANDWIDTH                               50e3      // Hz
-#define FSK_AFC_BANDWIDTH                           83.333e3  // Hz
+#define FSK_DATARATE                                50000     // bps
+#define FSK_BANDWIDTH                               50000     // Hz
+#define FSK_AFC_BANDWIDTH                           83333     // Hz
 #define FSK_PREAMBLE_LENGTH                         5         // Same for Tx and Rx
 #define FSK_FIX_LENGTH_PAYLOAD_ON                   false
 
@@ -83,7 +107,7 @@ void OnRxDone( uint8_t *payload, uint16_t size, int16_t rssi, int8_t snr );
  */
 int main( void )
 {
-    // Target board initialisation
+    // Target board initialization
     BoardInitMcu( );
     BoardInitPeriph( );
 
@@ -111,7 +135,7 @@ int main( void )
 #else
     #error "Please define a frequency band in the compiler options."
 #endif
-    
+
     Radio.Rx( 0 ); // Continuous Rx
 
     while( 1 )

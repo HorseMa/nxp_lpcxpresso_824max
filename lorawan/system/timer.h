@@ -25,39 +25,25 @@ typedef struct TimerEvent_s
     bool IsRunning;             //! Is the timer currently running
     void ( *Callback )( void ); //! Timer IRQ callback function
     struct TimerEvent_s *Next;  //! Pointer to the next Timer object.
-}TimerEvent_t;
+}TimerHandle_t;
 
 /*!
  * \brief Timer time variable definition
  */
 #ifndef TimerTime_t
-typedef uint64_t TimerTime_t;
+typedef uint32_t TimerTime_t;
 #endif
 
 /*!
- * \brief Enables/Disables low power timers usage
- *
- * \param [IN] enable [true]RTC timer used, [false]Normal timer used
- */
-void TimerSetLowPowerEnable( bool enable );
-
-/*!
  * \brief Initializes the timer object
  *
- * \retval enable [true]RTC timer used, [false]Normal timer used
- */
-bool TimerGetLowPowerEnable( void );
-
-/*!
- * \brief Initializes the timer object
- *
- * \remark TimerSetValue function must be called before starting the timer.
+ * \remark xTimerChangePeriod function must be called before starting the timer.
  *         this function initializes timestamp and reload value at 0.
  *
  * \param [IN] obj          Structure containing the timer object parameters
  * \param [IN] callback     Function callback called at the end of the timeout
  */
-void TimerInit( TimerEvent_t *obj, void ( *callback )( void ) );
+void xTimerCreate( TimerHandle_t *obj, void ( *callback )( void ) );
 
 /*!
  * Timer IRQ event handler
@@ -69,21 +55,21 @@ void TimerIrqHandler( void );
  *
  * \param [IN] obj Structure containing the timer object parameters
  */
-void TimerStart( TimerEvent_t *obj );
+void xTimerStart( TimerHandle_t *obj );
 
 /*!
  * \brief Stops and removes the timer object from the list of timer events
  *
  * \param [IN] obj Structure containing the timer object parameters
  */
-void TimerStop( TimerEvent_t *obj );
+void xTimerStop( TimerHandle_t *obj );
 
 /*!
  * \brief Resets the timer object
  *
  * \param [IN] obj Structure containing the timer object parameters
  */
-void TimerReset( TimerEvent_t *obj );
+void TimerReset( TimerHandle_t *obj );
 
 /*!
  * \brief Set timer new timeout value
@@ -91,7 +77,7 @@ void TimerReset( TimerEvent_t *obj );
  * \param [IN] obj   Structure containing the timer object parameters
  * \param [IN] value New timer timeout value
  */
-void TimerSetValue( TimerEvent_t *obj, uint32_t value );
+void xTimerChangePeriod( TimerHandle_t *obj, uint32_t value );
 
 /*!
  * \brief Read the current time
@@ -99,6 +85,22 @@ void TimerSetValue( TimerEvent_t *obj, uint32_t value );
  * \retval time returns current time
  */
 TimerTime_t TimerGetCurrentTime( void );
+
+/*!
+ * \brief Return the Time elapsed since a fix moment in Time
+ *
+ * \param [IN] savedTime    fix moment in Time
+ * \retval time             returns elapsed time
+ */
+TimerTime_t TimerGetElapsedTime( TimerTime_t savedTime );
+
+/*!
+ * \brief Return the Time elapsed since a fix moment in Time
+ *
+ * \param [IN] eventInFuture    fix moment in the future
+ * \retval time             returns difference between now and future event
+ */
+TimerTime_t TimerGetFutureTime( TimerTime_t eventInFuture );
 
 /*!
  * \brief Manages the entry into ARM cortex deep-sleep mode

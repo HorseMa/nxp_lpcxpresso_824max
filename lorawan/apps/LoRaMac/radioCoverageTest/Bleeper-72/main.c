@@ -159,14 +159,14 @@ static uint8_t AppDataSize = LORAWAN_APP_DATA_SIZE;
  */
 static uint8_t AppData[LORAWAN_APP_DATA_MAX_SIZE];
 
-static TimerEvent_t TxNextPacketTimer;
+static TimerHandle_t TxNextPacketTimer;
 
 #if( OVER_THE_AIR_ACTIVATION != 0 )
 
 /*!
  * Defines the join request timer
  */
-static TimerEvent_t JoinReqTimer;
+static TimerHandle_t JoinReqTimer;
 
 #endif
 
@@ -182,14 +182,14 @@ static bool AppLedStateOn = false;
 static LoRaMacCallbacks_t LoRaMacCallbacks;
 static LoRaMacEventInfo_t LoRaMacLastRxEvent;
 
-static TimerEvent_t Led1Timer;
+static TimerHandle_t Led1Timer;
 volatile bool Led1StateChanged = false;
-static TimerEvent_t Led2Timer;
+static TimerHandle_t Led2Timer;
 volatile bool Led2StateChanged = false;
 
 volatile bool Led3StateChanged = false;
 
-static TimerEvent_t StopTimer;
+static TimerHandle_t StopTimer;
 
 static uint8_t ChannelNb;
 static uint16_t DownLinkCounter = 0;
@@ -201,7 +201,7 @@ static uint16_t DownLinkCounter = 0;
  */
 static void OnJoinReqTimerEvent( void )
 {
-    TimerStop( &JoinReqTimer );
+    xTimerStop( &JoinReqTimer );
     TxNextPacket = true;
 }
 
@@ -212,7 +212,7 @@ static void OnJoinReqTimerEvent( void )
  */
 static void OnTxNextPacketTimerEvent( void )
 {
-    TimerStop( &TxNextPacketTimer );
+    xTimerStop( &TxNextPacketTimer );
     TxNextPacket = true;
 }
 
@@ -221,7 +221,7 @@ static void OnTxNextPacketTimerEvent( void )
  */
 static void OnLed1TimerEvent( void )
 {
-    TimerStop( &Led1Timer );
+    xTimerStop( &Led1Timer );
     Led1StateChanged = true;
 }
 
@@ -230,7 +230,7 @@ static void OnLed1TimerEvent( void )
  */
 static void OnLed2TimerEvent( void )
 {
-    TimerStop( &Led2Timer );
+    xTimerStop( &Led2Timer );
     Led2StateChanged = true;
 }
 
@@ -239,7 +239,7 @@ static void OnLed2TimerEvent( void )
  */
 static void OnStopTimerEvent( void )
 {
-    TimerStart( &StopTimer );
+    xTimerStart( &StopTimer );
 }
 
 /*!
@@ -258,7 +258,7 @@ static void OnMacEvent( LoRaMacEventFlags_t *flags, LoRaMacEventInfo_t *info )
         // Once joined disable reception windows opening
         LoRaMacTestRxWindowsOn( false );
     #endif
-        TimerStop( &JoinReqTimer );
+        xTimerStop( &JoinReqTimer );
 #endif
         IsNetworkJoined = true;
     }
@@ -290,7 +290,7 @@ static void OnMacEvent( LoRaMacEventFlags_t *flags, LoRaMacEventInfo_t *info )
             DownLinkCounter++;
 
             DownlinkStatusUpdate = true;
-            TimerStart( &Led2Timer );
+            xTimerStart( &Led2Timer );
         }
     }
     // Schedule a new transmission
@@ -351,22 +351,22 @@ int main( void )
 
     // Sends a JoinReq Command every OVER_THE_AIR_ACTIVATION_DUTYCYCLE
     // seconds until the network is joined
-    TimerInit( &JoinReqTimer, OnJoinReqTimerEvent ); 
-    TimerSetValue( &JoinReqTimer, OVER_THE_AIR_ACTIVATION_DUTYCYCLE );
+    xTimerCreate( &JoinReqTimer, OnJoinReqTimerEvent ); 
+    xTimerChangePeriod( &JoinReqTimer, OVER_THE_AIR_ACTIVATION_DUTYCYCLE );
 #endif
 
     TxNextPacket = true;
-    TimerInit( &TxNextPacketTimer, OnTxNextPacketTimerEvent );
+    xTimerCreate( &TxNextPacketTimer, OnTxNextPacketTimerEvent );
     
-    TimerInit( &Led1Timer, OnLed1TimerEvent );
-    TimerSetValue( &Led1Timer, 25000 );
+    xTimerCreate( &Led1Timer, OnLed1TimerEvent );
+    xTimerChangePeriod( &Led1Timer, 25000 );
 
-    TimerInit( &Led2Timer, OnLed2TimerEvent );
-    TimerSetValue( &Led2Timer, 25000 );
+    xTimerCreate( &Led2Timer, OnLed2TimerEvent );
+    xTimerChangePeriod( &Led2Timer, 25000 );
     
     // Low power timer to be run when tests are finished.
-    TimerInit( &StopTimer, OnStopTimerEvent );
-    TimerSetValue( &StopTimer, 3.6e9 ); // wakes up the microcontroller every hour
+    xTimerCreate( &StopTimer, OnStopTimerEvent );
+    xTimerChangePeriod( &StopTimer, 3.6e9 ); // wakes up the microcontroller every hour
 
     DownLinkCounter = 0;
 
@@ -411,7 +411,7 @@ int main( void )
                 case 6: // DEVICE_OFF
                 default:
                     // Relaunch timer for next trial
-                    TimerStart( &JoinReqTimer );
+                    xTimerStart( &JoinReqTimer );
                     break;
                 }
             }
@@ -461,7 +461,7 @@ int main( void )
                         
                         // Switch LED 1 ON
                         GpioWrite( &Led1, 0 );
-                        TimerStart( &Led1Timer );
+                        xTimerStart( &Led1Timer );
 
                         channelsIndex = ( channelsIndex + 1 ) % ChannelNb;
 
@@ -473,8 +473,8 @@ int main( void )
                             ScheduleNextTx = false;
                             pktCnt--;
                             // Schedule next packet transmission after 100 ms
-                            TimerSetValue( &TxNextPacketTimer, 100000 );
-                            TimerStart( &TxNextPacketTimer );
+                            xTimerChangePeriod( &TxNextPacketTimer, 100000 );
+                            xTimerStart( &TxNextPacketTimer );
                             tstState = 2;
                         }
                         break;
@@ -496,7 +496,7 @@ int main( void )
         GpioWrite( &Led2, 1 );
         GpioWrite( &Led3, 1 );
     
-        TimerStart( &StopTimer );
+        xTimerStart( &StopTimer );
         while( 1 ) // Reset device to restart
         {
             TimerLowPowerHandler( );

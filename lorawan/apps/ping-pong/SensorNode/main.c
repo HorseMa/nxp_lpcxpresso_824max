@@ -16,19 +16,43 @@ Maintainer: Miguel Luis and Gregory Cristian
 #include "board.h"
 #include "radio.h"
 
-#if defined( USE_BAND_433 )
+#if defined( REGION_AS923 )
 
-#define RF_FREQUENCY                                434000000 // Hz
+#define RF_FREQUENCY                                923000000 // Hz
 
-#elif defined( USE_BAND_780 )
+#elif defined( REGION_AU915 )
 
-#define RF_FREQUENCY                                780000000 // Hz
+#define RF_FREQUENCY                                915000000 // Hz
 
-#elif defined( USE_BAND_868 )
+#elif defined( REGION_CN470 )
+
+#define RF_FREQUENCY                                470000000 // Hz
+
+#elif defined( REGION_CN779 )
+
+#define RF_FREQUENCY                                779000000 // Hz
+
+#elif defined( REGION_EU433 )
+
+#define RF_FREQUENCY                                433000000 // Hz
+
+#elif defined( REGION_EU868 )
 
 #define RF_FREQUENCY                                868000000 // Hz
 
-#elif defined( USE_BAND_915 )
+#elif defined( REGION_KR920 )
+
+#define RF_FREQUENCY                                920000000 // Hz
+
+#elif defined( REGION_IN865 )
+
+#define RF_FREQUENCY                                865000000 // Hz
+
+#elif defined( REGION_US915 )
+
+#define RF_FREQUENCY                                915000000 // Hz
+
+#elif defined( REGION_US915_HYBRID )
 
 #define RF_FREQUENCY                                915000000 // Hz
 
@@ -56,10 +80,10 @@ Maintainer: Miguel Luis and Gregory Cristian
 
 #elif defined( USE_MODEM_FSK )
 
-#define FSK_FDEV                                    25e3      // Hz
-#define FSK_DATARATE                                50e3      // bps
-#define FSK_BANDWIDTH                               50e3      // Hz
-#define FSK_AFC_BANDWIDTH                           83.333e3  // Hz
+#define FSK_FDEV                                    25000     // Hz
+#define FSK_DATARATE                                50000     // bps
+#define FSK_BANDWIDTH                               50000     // Hz
+#define FSK_AFC_BANDWIDTH                           83333     // Hz
 #define FSK_PREAMBLE_LENGTH                         5         // Same for Tx and Rx
 #define FSK_FIX_LENGTH_PAYLOAD_ON                   false
 
@@ -77,7 +101,7 @@ typedef enum
     TX_TIMEOUT,
 }States_t;
 
-#define RX_TIMEOUT_VALUE                            1000000
+#define RX_TIMEOUT_VALUE                            1000
 #define BUFFER_SIZE                                 64 // Define the payload size here
 
 const uint8_t PingMsg[] = "PING";
@@ -129,7 +153,7 @@ int main( void )
     bool isMaster = true;
     uint8_t i;
 
-    // Target board initialisation
+    // Target board initialization
     BoardInitMcu( );
     BoardInitPeriph( );
 
@@ -149,8 +173,8 @@ int main( void )
     Radio.SetTxConfig( MODEM_LORA, TX_OUTPUT_POWER, 0, LORA_BANDWIDTH,
                                    LORA_SPREADING_FACTOR, LORA_CODINGRATE,
                                    LORA_PREAMBLE_LENGTH, LORA_FIX_LENGTH_PAYLOAD_ON,
-                                   true, 0, 0, LORA_IQ_INVERSION_ON, 3000000 );
-    
+                                   true, 0, 0, LORA_IQ_INVERSION_ON, 3000 );
+
     Radio.SetRxConfig( MODEM_LORA, LORA_BANDWIDTH, LORA_SPREADING_FACTOR,
                                    LORA_CODINGRATE, 0, LORA_PREAMBLE_LENGTH,
                                    LORA_SYMBOL_TIMEOUT, LORA_FIX_LENGTH_PAYLOAD_ON,
@@ -161,8 +185,8 @@ int main( void )
     Radio.SetTxConfig( MODEM_FSK, TX_OUTPUT_POWER, FSK_FDEV, 0,
                                   FSK_DATARATE, 0,
                                   FSK_PREAMBLE_LENGTH, FSK_FIX_LENGTH_PAYLOAD_ON,
-                                  true, 0, 0, 0, 3000000 );
-    
+                                  true, 0, 0, 0, 3000 );
+
     Radio.SetRxConfig( MODEM_FSK, FSK_BANDWIDTH, FSK_DATARATE,
                                   0, FSK_AFC_BANDWIDTH, FSK_PREAMBLE_LENGTH,
                                   0, FSK_FIX_LENGTH_PAYLOAD_ON, 0, true,
@@ -171,7 +195,7 @@ int main( void )
 #else
     #error "Please define a frequency band in the compiler options."
 #endif
-    
+
     Radio.Rx( RX_TIMEOUT_VALUE );
 
     while( 1 )
@@ -188,17 +212,17 @@ int main( void )
                         // Indicates on a LED that the received frame is a PONG
                         GpioWrite( &Led1, GpioRead( &Led1 ) ^ 1 );
 
-                        // Send the next PING frame            
+                        // Send the next PING frame
                         Buffer[0] = 'P';
                         Buffer[1] = 'I';
                         Buffer[2] = 'N';
                         Buffer[3] = 'G';
-                        // We fill the buffer with numbers for the payload 
+                        // We fill the buffer with numbers for the payload
                         for( i = 4; i < BufferSize; i++ )
                         {
                             Buffer[i] = i - 4;
                         }
-                        DelayMs( 1 ); 
+                        DelayMs( 1 );
                         Radio.Send( Buffer, BufferSize );
                     }
                     else if( strncmp( ( const char* )Buffer, ( const char* )PingMsg, 4 ) == 0 )
@@ -228,7 +252,7 @@ int main( void )
                         Buffer[1] = 'O';
                         Buffer[2] = 'N';
                         Buffer[3] = 'G';
-                        // We fill the buffer with numbers for the payload 
+                        // We fill the buffer with numbers for the payload
                         for( i = 4; i < BufferSize; i++ )
                         {
                             Buffer[i] = i - 4;
@@ -240,7 +264,7 @@ int main( void )
                     {    // Set device as master and start again
                         isMaster = true;
                         Radio.Rx( RX_TIMEOUT_VALUE );
-                    }   
+                    }
                 }
             }
             State = LOWPOWER;
@@ -265,7 +289,7 @@ int main( void )
                 {
                     Buffer[i] = i - 4;
                 }
-                DelayMs( 1 ); 
+                DelayMs( 1 );
                 Radio.Send( Buffer, BufferSize );
             }
             else
@@ -283,9 +307,9 @@ int main( void )
             // Set low power
             break;
         }
-    
+
         TimerLowPowerHandler( );
-    
+
     }
 }
 

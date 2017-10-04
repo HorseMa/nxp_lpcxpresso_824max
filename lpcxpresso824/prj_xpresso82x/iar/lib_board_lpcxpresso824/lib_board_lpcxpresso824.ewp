@@ -173,6 +173,7 @@
         <option>
           <name>CCDefines</name>
           <state>CORE_M0PLUS</state>
+          <state>DEBUG_UART=LPC_USART1</state>
         </option>
         <option>
           <name>CCPreprocFile</name>

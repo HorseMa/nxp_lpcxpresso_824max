@@ -177,14 +177,14 @@ static uint8_t IsTxConfirmed = LORAWAN_CONFIRMED_MSG_ON;
  */
 static uint32_t TxDutyCycleTime;
 
-static TimerEvent_t TxNextPacketTimer;
+static TimerHandle_t TxNextPacketTimer;
 
 #if( OVER_THE_AIR_ACTIVATION != 0 )
 
 /*!
  * Defines the join request timer
  */
-static TimerEvent_t JoinReqTimer;
+static TimerHandle_t JoinReqTimer;
 
 #endif
 
@@ -199,9 +199,9 @@ static bool AppLedStateOn = false;
 
 static LoRaMacCallbacks_t LoRaMacCallbacks;
 
-static TimerEvent_t Led1Timer;
+static TimerHandle_t Led1Timer;
 volatile bool Led1StateChanged = false;
-static TimerEvent_t Led2Timer;
+static TimerHandle_t Led2Timer;
 volatile bool Led2StateChanged = false;
 
 volatile bool Led3StateChanged = false;
@@ -287,7 +287,7 @@ static bool SendFrame( void )
  */
 static void OnJoinReqTimerEvent( void )
 {
-    TimerStop( &JoinReqTimer );
+    xTimerStop( &JoinReqTimer );
     TxNextPacket = true;
 }
 
@@ -298,7 +298,7 @@ static void OnJoinReqTimerEvent( void )
  */
 static void OnTxNextPacketTimerEvent( void )
 {
-    TimerStop( &TxNextPacketTimer );
+    xTimerStop( &TxNextPacketTimer );
     TxNextPacket = true;
 }
 
@@ -307,7 +307,7 @@ static void OnTxNextPacketTimerEvent( void )
  */
 static void OnLed1TimerEvent( void )
 {
-    TimerStop( &Led1Timer );
+    xTimerStop( &Led1Timer );
     Led1StateChanged = true;
 }
 
@@ -316,7 +316,7 @@ static void OnLed1TimerEvent( void )
  */
 static void OnLed2TimerEvent( void )
 {
-    TimerStop( &Led2Timer );
+    xTimerStop( &Led2Timer );
     Led2StateChanged = true;
 }
 
@@ -328,7 +328,7 @@ static void OnMacEvent( LoRaMacEventFlags_t *flags, LoRaMacEventInfo_t *info )
     if( flags->Bits.JoinAccept == 1 )
     {
 #if( OVER_THE_AIR_ACTIVATION != 0 )
-        TimerStop( &JoinReqTimer );
+        xTimerStop( &JoinReqTimer );
 #endif
         IsNetworkJoined = true;
     }
@@ -346,7 +346,7 @@ static void OnMacEvent( LoRaMacEventFlags_t *flags, LoRaMacEventInfo_t *info )
             }
             
             DownlinkStatusUpdate = true;
-            TimerStart( &Led2Timer );
+            xTimerStart( &Led2Timer );
         }
     }
     // Schedule a new transmission
@@ -387,18 +387,18 @@ int main( void )
 
     // Sends a JoinReq Command every OVER_THE_AIR_ACTIVATION_DUTYCYCLE
     // seconds until the network is joined
-    TimerInit( &JoinReqTimer, OnJoinReqTimerEvent ); 
-    TimerSetValue( &JoinReqTimer, OVER_THE_AIR_ACTIVATION_DUTYCYCLE );
+    xTimerCreate( &JoinReqTimer, OnJoinReqTimerEvent ); 
+    xTimerChangePeriod( &JoinReqTimer, OVER_THE_AIR_ACTIVATION_DUTYCYCLE );
 #endif
 
     TxNextPacket = true;
-    TimerInit( &TxNextPacketTimer, OnTxNextPacketTimerEvent );
+    xTimerCreate( &TxNextPacketTimer, OnTxNextPacketTimerEvent );
     
-    TimerInit( &Led1Timer, OnLed1TimerEvent );
-    TimerSetValue( &Led1Timer, 25000 );
+    xTimerCreate( &Led1Timer, OnLed1TimerEvent );
+    xTimerChangePeriod( &Led1Timer, 25000 );
 
-    TimerInit( &Led2Timer, OnLed2TimerEvent );
-    TimerSetValue( &Led2Timer, 25000 );
+    xTimerCreate( &Led2Timer, OnLed2TimerEvent );
+    xTimerChangePeriod( &Led2Timer, 25000 );
 
     LoRaMacSetAdrOn( LORAWAN_ADR_ON );
     LoRaMacTestSetDutyCycleOn( LORAWAN_DUTYCYCLE_ON );
@@ -426,7 +426,7 @@ int main( void )
                 case 6: // DEVICE_OFF
                 default:
                     // Relaunch timer for next trial
-                    TimerStart( &JoinReqTimer );
+                    xTimerStart( &JoinReqTimer );
                     break;
                 }
             }
@@ -464,8 +464,8 @@ int main( void )
 
             // Schedule next packet transmission
             TxDutyCycleTime = APP_TX_DUTYCYCLE + randr( -APP_TX_DUTYCYCLE_RND, APP_TX_DUTYCYCLE_RND );
-            TimerSetValue( &TxNextPacketTimer, TxDutyCycleTime );
-            TimerStart( &TxNextPacketTimer );
+            xTimerChangePeriod( &TxNextPacketTimer, TxDutyCycleTime );
+            xTimerStart( &TxNextPacketTimer );
         }
 
         if( trySendingFrameAgain == true )
@@ -480,7 +480,7 @@ int main( void )
             
             // Switch LED 1 ON
             //GpioWrite( &Led1, 0 );
-            TimerStart( &Led1Timer );
+            xTimerStart( &Led1Timer );
             
             trySendingFrameAgain = SendFrame( );
         }

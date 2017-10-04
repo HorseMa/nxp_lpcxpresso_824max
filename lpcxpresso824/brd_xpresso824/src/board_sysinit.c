@@ -65,9 +65,9 @@ void Board_SetupClocking(void)
 	/* Crystal is available on the board
 	 * but not connected by default.
 	 */
-	//Chip_SetupIrcClocking();
+	Chip_SetupIrcClocking();
 	Chip_SetupXtalClocking();
-	SystemCoreClockUpdate();
+	//SystemCoreClockUpdate();
 }
 
 /* Set up and initialize hardware prior to call to main */

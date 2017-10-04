@@ -14,25 +14,25 @@ Maintainer: Miguel Luis and Gregory Cristian
 */
 #ifndef __UTILITIES_H__
 #define __UTILITIES_H__
-#include "board.h"
+#include "typedef.h"
 /*!
- * \brief Returns the minimum value betwen a and b
+ * \brief Returns the minimum value between a and b
  *
  * \param [IN] a 1st value
  * \param [IN] b 2nd value
  * \retval minValue Minimum value
  */
-#if !defined(MIN)
+#ifndef MIN
 #define MIN( a, b ) ( ( ( a ) < ( b ) ) ? ( a ) : ( b ) )
 #endif
 /*!
- * \brief Returns the maximum value betwen a and b
+ * \brief Returns the maximum value between a and b
  *
  * \param [IN] a 1st value
  * \param [IN] b 2nd value
  * \retval maxValue Maximum value
  */
-#if !defined(MAX)
+#ifndef MAX
 #define MAX( a, b ) ( ( ( a ) > ( b ) ) ? ( a ) : ( b ) )
 #endif
 /*!
@@ -44,9 +44,9 @@ Maintainer: Miguel Luis and Gregory Cristian
 #define POW2( n ) ( 1 << n )
 
 /*!
- * \brief Initializes the pseudo ramdom generator initial value
+ * \brief Initializes the pseudo random generator initial value
  *
- * \param [IN] seed Pseudo ramdom generator initial value
+ * \param [IN] seed Pseudo random generator initial value
  */
 void srand1( uint32_t seed );
 
@@ -61,7 +61,7 @@ int32_t randr( int32_t min, int32_t max );
 
 /*!
  * \brief Copies size elements of src array to dst array
- * 
+ *
  * \remark STM32 Standard memcpy function only works on pointers that are aligned
  *
  * \param [OUT] dst  Destination array
@@ -71,8 +71,17 @@ int32_t randr( int32_t min, int32_t max );
 void memcpy1( uint8_t *dst, const uint8_t *src, uint16_t size );
 
 /*!
- * \brief Set size elements of dst array with value 
- * 
+ * \brief Copies size elements of src array to dst array reversing the byte order
+ *
+ * \param [OUT] dst  Destination array
+ * \param [IN]  src  Source array
+ * \param [IN]  size Number of bytes to be copied
+ */
+void memcpyr( uint8_t *dst, const uint8_t *src, uint16_t size );
+
+/*!
+ * \brief Set size elements of dst array with value
+ *
  * \remark STM32 Standard memset function only works on pointers that are aligned
  *
  * \param [OUT] dst   Destination array
@@ -83,10 +92,11 @@ void memset1( uint8_t *dst, uint8_t value, uint16_t size );
 
 /*!
  * \brief Converts a nibble to an hexadecimal character
- * 
+ *
  * \param [IN] a   Nibble to be converted
  * \retval hexChar Converted hexadecimal character
  */
 int8_t Nibble2HexChar( uint8_t a );
-
+TimerTime_t TimerGetElapsedTime( TimerTime_t savedTime );
+TimerTime_t TimerGetCurrentTime( void );
 #endif // __UTILITIES_H__

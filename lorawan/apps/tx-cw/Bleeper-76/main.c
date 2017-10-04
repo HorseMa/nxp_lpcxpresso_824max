@@ -54,13 +54,13 @@ Maintainer: Miguel Luis and Gregory Cristian
 #define LORA_FIX_LENGTH_PAYLOAD_ON                  false
 #define LORA_IQ_INVERSION_ON                        false
 
-static TimerEvent_t Led1Timer;
+static TimerHandle_t Led1Timer;
 volatile bool Led1TimerEvent = false;
 
-static TimerEvent_t Led2Timer;
+static TimerHandle_t Led2Timer;
 volatile bool Led2TimerEvent = false;
 
-static TimerEvent_t Led3Timer;
+static TimerHandle_t Led3Timer;
 volatile bool Led3TimerEvent = false;
 
 /*!
@@ -132,18 +132,18 @@ int main( void )
                                    LORA_PREAMBLE_LENGTH, LORA_FIX_LENGTH_PAYLOAD_ON,
                                    true, 0, 0, LORA_IQ_INVERSION_ON, 3000000 );
 
-    TimerInit( &Led1Timer, OnLed1TimerEvent ); 
-    TimerSetValue( &Led1Timer, 90000 );
+    xTimerCreate( &Led1Timer, OnLed1TimerEvent ); 
+    xTimerChangePeriod( &Led1Timer, 90000 );
 
-    TimerInit( &Led2Timer, OnLed2TimerEvent ); 
-    TimerSetValue( &Led2Timer, 90000 );
+    xTimerCreate( &Led2Timer, OnLed2TimerEvent ); 
+    xTimerChangePeriod( &Led2Timer, 90000 );
 
-    TimerInit( &Led3Timer, OnLed3TimerEvent ); 
-    TimerSetValue( &Led3Timer, 90000 );
+    xTimerCreate( &Led3Timer, OnLed3TimerEvent ); 
+    xTimerChangePeriod( &Led3Timer, 90000 );
                
     // Switch LED 1 ON
     GpioWrite( &Led1, 0 );
-    TimerStart( &Led1Timer );
+    xTimerStart( &Led1Timer );
     
     // Sets the radio in Tx mode
     Radio.Send( NULL, 0 );
@@ -159,7 +159,7 @@ int main( void )
             GpioWrite( &Led1, 1 );
             // Switch LED 2 ON
             GpioWrite( &Led2, 0 );
-            TimerStart( &Led2Timer );
+            xTimerStart( &Led2Timer );
         }
 
         if( Led2TimerEvent == true )
@@ -170,7 +170,7 @@ int main( void )
             GpioWrite( &Led2, 1 );
             // Switch LED 3 ON
             GpioWrite( &Led3, 0 );
-            TimerStart( &Led3Timer );
+            xTimerStart( &Led3Timer );
         }
     
         if( Led3TimerEvent == true )
@@ -181,7 +181,7 @@ int main( void )
             GpioWrite( &Led3, 1 );
             // Switch LED 1 ON
             GpioWrite( &Led1, 0 );
-            TimerStart( &Led1Timer );
+            xTimerStart( &Led1Timer );
         }    
     }
 }

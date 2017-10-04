@@ -1137,6 +1137,7 @@
           <name>CCDefines</name>
           <state>CORE_M0PLUS</state>
           <state>USE_BAND_433</state>
+          <state>DEBUG_UART=LPC_USART1</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -1197,7 +1198,7 @@
         <option>
           <name>CCAllowList</name>
           <version>1</version>
-          <state>11111110</state>
+          <state>10010100</state>
         </option>
         <option>
           <name>CCDebugInfo</name>
@@ -1275,11 +1276,13 @@
           <state>$PROJ_DIR$\..\..\..\..\lorawan</state>
           <state>$PROJ_DIR$\..\..\..\..\lorawan\radio</state>
           <state>$PROJ_DIR$\..\..\..\..\lorawan\radio\sx1276</state>
-          <state>$PROJ_DIR$\..\..\..\..\lorawan\boards\Bleeper-76</state>
           <state>$PROJ_DIR$\..\..\..\..\lorawan\boards\mcu\stm32</state>
           <state>$PROJ_DIR$\..\..\..\..\lorawan\system\crypto</state>
-          <state>$PROJ_DIR$\..\..\..\..\lorawan\system\</state>
           <state>$PROJ_DIR$\..\..\..\..\lorawan\mac</state>
+          <state>$PROJ_DIR$\..\..\..\..\lorawan\mac\region</state>
+          <state>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classA\SensorNode</state>
+          <state>$PROJ_DIR$\..\..\..\..\lorawan\boards\SensorNode</state>
+          <state>$PROJ_DIR$\..\..\..\..\lorawan\atcmd</state>
         </option>
         <option>
           <name>CCStdIncCheck</name>
@@ -1299,7 +1302,7 @@
         </option>
         <option>
           <name>CCOptLevel</name>
-          <state>3</state>
+          <state>2</state>
         </option>
         <option>
           <name>CCOptStrategy</name>
@@ -1308,7 +1311,7 @@
         </option>
         <option>
           <name>CCOptLevelSlave</name>
-          <state>3</state>
+          <state>2</state>
         </option>
         <option>
           <name>CompilerMisraRules98</name>
@@ -3860,7 +3863,6 @@
       <name>$PROJ_DIR$\..\..\..\examples_82x\freertos_blinky\src\freertos_blinky.c</name>
       <excluded>
         <configuration>iflash_nxp_lpcxpresso_812</configuration>
-        <configuration>ClassA</configuration>
         <configuration>ClassB</configuration>
         <configuration>ClassC</configuration>
       </excluded>
@@ -3869,8 +3871,15 @@
       <name>$PROJ_DIR$\..\..\..\chip_82x\startup\iar_startup_lpc82x.s</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classA\SensorNode\main.c</name>
+      <excluded>
+        <configuration>ClassA</configuration>
+      </excluded>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classA\Bleeper-76\mainA.c</name>
       <excluded>
+        <configuration>ClassA</configuration>
         <configuration>ClassB</configuration>
         <configuration>ClassC</configuration>
       </excluded>
@@ -3938,6 +3947,27 @@
   <group>
     <name>lorawan</name>
     <group>
+      <name>atcmd</name>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\lorawan\atcmd\buffer.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\lorawan\atcmd\frame.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\lorawan\atcmd\hex.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\lorawan\atcmd\modem.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\lorawan\atcmd\modem.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\lorawan\atcmd\usart.c</name>
+      </file>
+    </group>
+    <group>
       <name>hal</name>
       <file>
         <name>$PROJ_DIR$\..\..\..\..\lorawan\system\crypto\aes.c</name>
@@ -3952,10 +3982,13 @@
         <name>$PROJ_DIR$\..\..\..\..\lorawan\system\crypto\cmac.h</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\..\..\..\..\lorawan\boards\Bleeper-76\sx1276-board.c</name>
+        <name>$PROJ_DIR$\..\..\..\..\lorawan\boards\SensorNode\sx1276-board.c</name>
       </file>
       <file>
         <name>$PROJ_DIR$\..\..\..\..\lorawan\system\timer.c</name>
+        <excluded>
+          <configuration>ClassA</configuration>
+        </excluded>
       </file>
       <file>
         <name>$PROJ_DIR$\..\..\..\..\lorawan\boards\mcu\stm32\utilities.c</name>
@@ -3974,6 +4007,15 @@
       </file>
       <file>
         <name>$PROJ_DIR$\..\..\..\..\lorawan\mac\LoRaMacCrypto.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\lorawan\mac\region\Region.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\lorawan\mac\region\RegionCN470.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\lorawan\mac\region\RegionCommon.c</name>
       </file>
     </group>
     <group>
