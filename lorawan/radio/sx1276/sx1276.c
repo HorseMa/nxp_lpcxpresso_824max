@@ -94,35 +94,6 @@ void SX1276SetOpMode( uint8_t opMode );
  * SX1276 DIO IRQ callback functions prototype
  */
 
-/*!
- * \brief DIO 0 IRQ callback
- */
-void SX1276OnDio0Irq( void );
-
-/*!
- * \brief DIO 1 IRQ callback
- */
-void SX1276OnDio1Irq( void );
-
-/*!
- * \brief DIO 2 IRQ callback
- */
-void SX1276OnDio2Irq( void );
-
-/*!
- * \brief DIO 3 IRQ callback
- */
-void SX1276OnDio3Irq( void );
-
-/*!
- * \brief DIO 4 IRQ callback
- */
-void SX1276OnDio4Irq( void );
-
-/*!
- * \brief DIO 5 IRQ callback
- */
-void SX1276OnDio5Irq( void );
 
 /*!
  * \brief Tx & Rx timeout timer callback
@@ -198,12 +169,6 @@ static uint8_t RxTxBuffer[RX_BUFFER_SIZE];
  */
 SX1276_t SX1276;
 
-/*!
- * Hardware DIO IRQ callback initialization
- */
-DioIrqHandler *DioIrq[] = { SX1276OnDio0Irq, SX1276OnDio1Irq,
-                            SX1276OnDio2Irq, SX1276OnDio3Irq,
-                            SX1276OnDio4Irq, NULL };
 
 /*!
  * Tx and Rx timers
@@ -212,6 +177,16 @@ TimerHandle_t TxTimeoutTimer;
 TimerHandle_t RxTimeoutTimer;
 TimerHandle_t RxTimeoutSyncWord;
 
+#define BUFFER_SIZE 255
+static uint8_t TxBuf[BUFFER_SIZE];
+
+/* Rx buffer */
+//static uint16_t RxBuf[BUFFER_SIZE];
+
+static SPI_DATA_SETUP_T XfSetup;
+
+static volatile uint8_t  isXferCompleted = 0;
+ 
 /*
  * Radio driver functions implementation
  */
@@ -223,9 +198,9 @@ void SX1276Init( RadioEvents_t *events )
     RadioEvents = events;
 
     // Initialize driver timeout timers
-    TxTimeoutTimer = xTimerCreate( "TxTimeoutTimer", 0, pdFALSE, 0, SX1276OnTimeoutIrq );
-    RxTimeoutTimer = xTimerCreate( "RxTimeoutTimer", 0, pdFALSE, 0, SX1276OnTimeoutIrq );
-    RxTimeoutSyncWord = xTimerCreate( "RxTimeoutSyncWord", 0, pdFALSE, 0, SX1276OnTimeoutIrq );
+    TxTimeoutTimer = xTimerCreate( "TxTimeoutTimer", 1000, pdFALSE, 0, SX1276OnTimeoutIrq );
+    RxTimeoutTimer = xTimerCreate( "RxTimeoutTimer", 1000, pdFALSE, 0, SX1276OnTimeoutIrq );
+    RxTimeoutSyncWord = xTimerCreate( "RxTimeoutSyncWord", 1000, pdFALSE, 0, SX1276OnTimeoutIrq );
 
     SX1276Reset( );
 
@@ -233,7 +208,7 @@ void SX1276Init( RadioEvents_t *events )
 
     SX1276SetOpMode( RF_OPMODE_SLEEP );
 
-    SX1276IoIrqInit( DioIrq );
+    SX1276IoIrqInit(  );
 
     for( i = 0; i < sizeof( RadioRegsInit ) / sizeof( RadioRegisters_t ); i++ )
     {
@@ -1171,19 +1146,10 @@ int16_t SX1276ReadRssi( RadioModems_t modem )
 
 void SX1276Reset( void )
 {
-#if 0
-    // Set RESET pin to 0
-    GpioInit( &SX1276.Reset, RADIO_RESET, PIN_OUTPUT, PIN_PUSH_PULL, PIN_NO_PULL, 0 );
-
-    // Wait 1 ms
-    DelayMs( 1 );
-
-    // Configure RESET as input
-    GpioInit( &SX1276.Reset, RADIO_RESET, PIN_INPUT, PIN_PUSH_PULL, PIN_NO_PULL, 1 );
-
-    // Wait 6 ms
-    DelayMs( 6 );
-#endif
+    Chip_GPIO_SetPinOutLow(LPC_GPIO_PORT,0,15);
+    vTaskDelay(1);
+    Chip_GPIO_SetPinOutHigh(LPC_GPIO_PORT,0,15);
+    vTaskDelay(6);
 }
 
 void SX1276SetOpMode( uint8_t opMode )
@@ -1251,6 +1217,15 @@ uint8_t SX1276Read( uint8_t addr )
 
 void SX1276WriteBuffer( uint8_t addr, uint8_t *buffer, uint8_t size )
 {
+  memset(TxBuf,0,size + 1);
+  TxBuf[0] = addr | 0x80;
+  memcpy(TxBuf + 1,buffer,size);
+  XfSetup.Length = size + 1;
+  XfSetup.pTx = (uint16_t*)TxBuf;
+  XfSetup.RxCnt = XfSetup.TxCnt = 0;
+  XfSetup.DataSize = 8;
+
+  Chip_SPI_RWFrames_Blocking(LPC_SPI1, &XfSetup);
 #if 0
     uint8_t i;
 
@@ -1270,6 +1245,15 @@ void SX1276WriteBuffer( uint8_t addr, uint8_t *buffer, uint8_t size )
 
 void SX1276ReadBuffer( uint8_t addr, uint8_t *buffer, uint8_t size )
 {
+  memset(TxBuf,0,size + 1);
+  TxBuf[0] = addr & 0x7F;
+  XfSetup.Length = 1 + size;
+  XfSetup.pTx = (uint16_t*)TxBuf;
+  XfSetup.pRx = (uint16_t*)TxBuf;
+  XfSetup.RxCnt = XfSetup.TxCnt = 0;
+  XfSetup.DataSize = 8;
+  Chip_SPI_RWFrames_Blocking(LPC_SPI1, &XfSetup);
+  memcpy(buffer,TxBuf + 1,size);
 #if 0
     uint8_t i;
 
@@ -1407,10 +1391,10 @@ void SX1276OnTimeoutIrq( TimerHandle_t xTimer )
     }
 }
 
-void SX1276OnDio0Irq( void )
+void PININT0_IRQHandler( void )
 {
     volatile uint8_t irqFlags = 0;
-
+    Chip_PININT_ClearIntStatus(LPC_PININT, PININTCH0);
     switch( SX1276.Settings.State )
     {
         case RF_RX_RUNNING:
@@ -1608,8 +1592,9 @@ void SX1276OnDio0Irq( void )
     }
 }
 
-void SX1276OnDio1Irq( void )
+void PININT1_IRQHandler( void )
 {
+    Chip_PININT_ClearIntStatus(LPC_PININT, PININTCH1);
     switch( SX1276.Settings.State )
     {
         case RF_RX_RUNNING:
@@ -1685,8 +1670,9 @@ void SX1276OnDio1Irq( void )
     }
 }
 
-void SX1276OnDio2Irq( void )
+void PININT2_IRQHandler( void )
 {
+    Chip_PININT_ClearIntStatus(LPC_PININT, PININTCH2);
     switch( SX1276.Settings.State )
     {
         case RF_RX_RUNNING:
@@ -1755,8 +1741,9 @@ void SX1276OnDio2Irq( void )
     }
 }
 
-void SX1276OnDio3Irq( void )
+void PININT3_IRQHandler( void )
 {
+    Chip_PININT_ClearIntStatus(LPC_PININT, PININTCH3);
     switch( SX1276.Settings.Modem )
     {
     case MODEM_FSK:
@@ -1786,8 +1773,9 @@ void SX1276OnDio3Irq( void )
     }
 }
 
-void SX1276OnDio4Irq( void )
+void PININT4_IRQHandler( void )
 {
+    Chip_PININT_ClearIntStatus(LPC_PININT, PININTCH4);
     switch( SX1276.Settings.Modem )
     {
     case MODEM_FSK:
@@ -1805,8 +1793,9 @@ void SX1276OnDio4Irq( void )
     }
 }
 
-void SX1276OnDio5Irq( void )
+void PININT5_IRQHandler( void )
 {
+    Chip_PININT_ClearIntStatus(LPC_PININT, PININTCH5);
     switch( SX1276.Settings.Modem )
     {
     case MODEM_FSK:

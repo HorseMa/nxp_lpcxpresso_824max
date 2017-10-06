@@ -27,6 +27,8 @@
 
 
 #include "modem.h"
+#include "FreeRTOS.h"
+#include "task.h"
 
 // ring buffer - append at end, free from beg
 
@@ -41,7 +43,8 @@ void buffer_init () {
 
 uint8_t* buffer_alloc (uint16_t len) {
     uint8_t* buf = NULL;
-    hal_disableIRQs();
+    
+    taskENTER_CRITICAL();
     if(beg <= end) { // .......******...
 	if(end + len < buffer + sizeof(buffer)) { // append
 	    buf = end;
@@ -59,13 +62,14 @@ uint8_t* buffer_alloc (uint16_t len) {
 	    end += len;
 	}
     }
-    hal_enableIRQs();
+    taskEXIT_CRITICAL();
     return buf;
 }
 
 void buffer_free (uint8_t* buf, uint16_t len) {
     if(buf >= buffer && buf+len < buffer+sizeof(buffer)) {
-	hal_disableIRQs();
+	
+        taskENTER_CRITICAL();
 	while(buf != beg); // halt if trying to free not from beginning
 	if(beg <= end) { // .......******...
 	    beg += len;
@@ -79,6 +83,6 @@ void buffer_free (uint8_t* buf, uint16_t len) {
 		max = end;
 	    }
 	}
-	hal_enableIRQs();
+	taskEXIT_CRITICAL();
     }
 }

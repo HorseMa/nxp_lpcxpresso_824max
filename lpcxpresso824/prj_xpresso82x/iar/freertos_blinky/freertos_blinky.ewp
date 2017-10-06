@@ -1137,7 +1137,7 @@
           <name>CCDefines</name>
           <state>CORE_M0PLUS</state>
           <state>USE_BAND_433</state>
-          <state>DEBUG_UART=LPC_USART1</state>
+          <state>DEBUG_UART=LPC_USART0</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -1198,7 +1198,7 @@
         <option>
           <name>CCAllowList</name>
           <version>1</version>
-          <state>10010100</state>
+          <state>11111110</state>
         </option>
         <option>
           <name>CCDebugInfo</name>
@@ -1302,7 +1302,7 @@
         </option>
         <option>
           <name>CCOptLevel</name>
-          <state>2</state>
+          <state>3</state>
         </option>
         <option>
           <name>CCOptStrategy</name>
@@ -1311,7 +1311,7 @@
         </option>
         <option>
           <name>CCOptLevelSlave</name>
-          <state>2</state>
+          <state>3</state>
         </option>
         <option>
           <name>CompilerMisraRules98</name>
@@ -3962,6 +3962,9 @@
       </file>
       <file>
         <name>$PROJ_DIR$\..\..\..\..\lorawan\atcmd\modem.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\lorawan\atcmd\queue_IBM.c</name>
       </file>
       <file>
         <name>$PROJ_DIR$\..\..\..\..\lorawan\atcmd\usart.c</name>

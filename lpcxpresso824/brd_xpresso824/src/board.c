@@ -36,9 +36,9 @@
 /*****************************************************************************
  * Private types/enumerations/variables
  ****************************************************************************/
-
+#define	UART_CLOCK_DIV	1
 #define LEDSAVAIL 2
-static const uint8_t ledBits[LEDSAVAIL] = {22, 23};
+static const uint8_t ledBits[LEDSAVAIL] = {6, 7};
 
 /*****************************************************************************
  * Public types/enumerations/variables
@@ -69,25 +69,17 @@ STATIC void Board_UART_Init(void)
 	/* Enable the clock to the Switch Matrix */
 	Chip_Clock_EnablePeriphClock(SYSCTL_CLOCK_SWM);
 
-	/* Connect the U0_TXD_O and U0_RXD_I signals to port pins(P0.17, P0.18) */
-	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC8);
-	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC9);
+	Chip_Clock_SetUARTClockDiv(UART_CLOCK_DIV);
 
-	/* Enable UART Divider clock, divided by 1 */
-	Chip_Clock_SetUARTClockDiv(1);
-
-	/* Divided by 1 */
-	if (DEBUG_UART == LPC_USART0) {
-
-		Chip_SWM_MovablePinAssign(SWM_U0_TXD_O, 17);
-		Chip_SWM_MovablePinAssign(SWM_U0_RXD_I, 18);
-	} else if (DEBUG_UART == LPC_USART1) {
-		Chip_SWM_MovablePinAssign(SWM_U1_TXD_O, 17);
-		Chip_SWM_MovablePinAssign(SWM_U1_RXD_I, 18);
-	} else {
-		Chip_SWM_MovablePinAssign(SWM_U2_TXD_O, 17);
-		Chip_SWM_MovablePinAssign(SWM_U2_RXD_I, 18);
-	}
+#if (defined(BOARD_NXP_LPCXPRESSO_812) || defined(BOARD_LPC812MAX) || defined(BOARD_NXP_LPCXPRESSO_824))
+	/* Connect the U0_TXD_O and U0_RXD_I signals to port pins(P0.4, P0.0) */
+	Chip_SWM_DisableFixedPin(SWM_FIXED_ACMP_I1);
+	Chip_SWM_MovablePinAssign(SWM_U0_TXD_O, 4);
+	Chip_SWM_MovablePinAssign(SWM_U0_RXD_I, 0);
+#else
+	/* Configure your own UART pin muxing here if needed */
+#warning "No UART pin muxing defined"
+#endif
 
 	/* Disable the clock to the Switch Matrix to save power */
 	Chip_Clock_DisablePeriphClock(SYSCTL_CLOCK_SWM);
@@ -190,6 +182,10 @@ void Board_Debug_Init(void)
 	Chip_UART_SetBaud(DEBUG_UART, 115200);
 	Chip_UART_Enable(DEBUG_UART);
 	Chip_UART_TXEnable(DEBUG_UART);
+        /* Enable receive data and line status interrupt */
+	Chip_UART_IntEnable(DEBUG_UART, UART_INTEN_RXRDY);
+	//Chip_UART_IntEnable(DEBUG_UART, UART_INTEN_TXRDY);	/* May not be needed */
+
 #endif
 }
 
@@ -201,7 +197,7 @@ void Board_GPIO_Init(void)
 	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO1,PIN_MODE_INACTIVE);
 	//Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO2,PIN_MODE_INACTIVE);
 	//Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO3,PIN_MODE_INACTIVE);
-	//Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO4,PIN_MODE_INACTIVE);
+	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO4,PIN_MODE_PULLUP);
 	//Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO5,PIN_MODE_INACTIVE);
 	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO6,PIN_MODE_INACTIVE);
 	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO7,PIN_MODE_INACTIVE);
@@ -227,8 +223,8 @@ void Board_GPIO_Init(void)
 	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO27,PIN_MODE_INACTIVE);
 	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO28,PIN_MODE_INACTIVE);
         
-        //Chip_Clock_EnablePeriphClock(SYSCTL_CLOCK_SWM);
-        Chip_Clock_DisablePeriphClock(SYSCTL_CLOCK_SWM);
+        Chip_Clock_EnablePeriphClock(SYSCTL_CLOCK_SWM);
+        //Chip_Clock_DisablePeriphClock(SYSCTL_CLOCK_SWM);
         
 	Chip_SWM_DisableFixedPin(SWM_FIXED_ACMP_I1);
 	Chip_SWM_DisableFixedPin(SWM_FIXED_ACMP_I2);
@@ -256,40 +252,37 @@ void Board_GPIO_Init(void)
 	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC10);
 	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC11);
 
-        Chip_GPIO_SetPinDIROutput(LPC_GPIO_PORT, 0, IOCON_PIO25);
-        
-	//Chip_GPIO_SetPortDIRInput(LPC_GPIO_PORT,0,mask);
 
-	Chip_SWM_MovablePinAssign(SWM_SCT_IN1_I, 4);
+	//Chip_SWM_MovablePinAssign(SWM_SCT_IN1_I, 4);
 
 	/* Configure channel 0 interrupt as edge sensitive and falling edge interrupt */
-	Chip_PININT_SetPinModeEdge(LPC_PININT, PININTCH0);
-	Chip_PININT_EnableIntLow(LPC_PININT, PININTCH0);
+	Chip_PININT_SetPinModeEdge(LPC_PININT, PININTCH6);
+	Chip_PININT_EnableIntLow(LPC_PININT, PININTCH6);
 
 	/* Configure interrupt channel 0 for the GPIO pin in SysCon block */
-	Chip_SYSCTL_SetPinInterrupt(0, 4);
+	Chip_SYSCTL_SetPinInterrupt(6, 4);
 
 	/* Configure channel 0 as wake up interrupt in SysCon block */
-	Chip_SYSCTL_EnablePINTWakeup(0);
+	Chip_SYSCTL_EnablePINTWakeup(6);
 
 	/* Configure GPIO pin as input pin */
 	Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, 0, 4);
 
 	/* Enable interrupt in the NVIC */
-	NVIC_EnableIRQ(PININT0_IRQn);
-        //Chip_Clock_DisablePeriphClock(SYSCTL_CLOCK_SWM);
+	NVIC_EnableIRQ(PININT6_IRQn);
+        Chip_Clock_DisablePeriphClock(SYSCTL_CLOCK_SWM);
 }
 
 /* Set up and initialize all required blocks and functions related to the
    board hardware */
 void Board_Init(void)
 {
-	/* Sets up DEBUG UART */
-	DEBUGINIT();
-
 	/* Initialize GPIO */
 	Chip_GPIO_Init(LPC_GPIO_PORT);
 	Board_GPIO_Init();
 	/* Initialize the LEDs */
 	Board_LED_Init();
+        /* Sets up DEBUG UART */
+	DEBUGINIT();
+
 }

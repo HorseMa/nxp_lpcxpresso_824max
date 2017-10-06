@@ -14,7 +14,7 @@ Maintainer: Miguel Luis and Gregory Cristian
 */
 #include "board.h"
 #include "radio.h"
-#include "sx1276/sx1276.h"
+#include "sx1276.h"
 #include "sx1276-board.h"
 
 /*!
@@ -60,28 +60,145 @@ const struct Radio_s Radio =
 
 void SX1276IoInit( void )
 {
-#if 0
-    GpioInit( &SX1276.Spi.Nss, RADIO_NSS, PIN_OUTPUT, PIN_PUSH_PULL, PIN_PULL_UP, 1 );
+  SPI_DELAY_CONFIG_T DelayConfigStruct;
 
-    GpioInit( &SX1276.DIO0, RADIO_DIO_0, PIN_INPUT, PIN_PUSH_PULL, PIN_PULL_UP, 0 );
-    GpioInit( &SX1276.DIO1, RADIO_DIO_1, PIN_INPUT, PIN_PUSH_PULL, PIN_PULL_UP, 0 );
-    GpioInit( &SX1276.DIO2, RADIO_DIO_2, PIN_INPUT, PIN_PUSH_PULL, PIN_PULL_UP, 0 );
-    GpioInit( &SX1276.DIO3, RADIO_DIO_3, PIN_INPUT, PIN_PUSH_PULL, PIN_PULL_UP, 0 );
-    GpioInit( &SX1276.DIO4, RADIO_DIO_4, PIN_INPUT, PIN_PUSH_PULL, PIN_PULL_UP, 0 );
-    GpioInit( &SX1276.DIO5, RADIO_DIO_5, PIN_INPUT, PIN_PUSH_PULL, PIN_PULL_UP, 0 );
-#endif
+  /* Configure interrupt channel 0 for the GPIO pin in SysCon block */
+  Chip_SYSCTL_SetPinInterrupt(0, 17);   // DIO0
+
+  /* Configure channel 0 as wake up interrupt in SysCon block */
+  Chip_SYSCTL_EnablePINTWakeup(17);
+
+  /* Configure GPIO pin as input pin */
+  Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, 0, 17);
+
+  /* Configure interrupt channel 0 for the GPIO pin in SysCon block */
+  Chip_SYSCTL_SetPinInterrupt(1, 18);   // DIO1
+
+  /* Configure channel 0 as wake up interrupt in SysCon block */
+  Chip_SYSCTL_EnablePINTWakeup(18);
+
+  /* Configure GPIO pin as input pin */
+  Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, 0, 18);
+
+  /* Configure interrupt channel 0 for the GPIO pin in SysCon block */
+  Chip_SYSCTL_SetPinInterrupt(2, 19);   // DIO2
+
+  /* Configure channel 0 as wake up interrupt in SysCon block */
+  Chip_SYSCTL_EnablePINTWakeup(19);
+
+  /* Configure GPIO pin as input pin */
+  Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, 0, 19);
+
+  /* Configure interrupt channel 0 for the GPIO pin in SysCon block */
+  Chip_SYSCTL_SetPinInterrupt(5, 20);   // DIO5
+
+  /* Configure channel 0 as wake up interrupt in SysCon block */
+  Chip_SYSCTL_EnablePINTWakeup(20);
+
+  /* Configure GPIO pin as input pin */
+  Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, 0, 20);
+
+  /* Configure interrupt channel 0 for the GPIO pin in SysCon block */
+  Chip_SYSCTL_SetPinInterrupt(3, 21);   // DIO3
+
+  /* Configure channel 0 as wake up interrupt in SysCon block */
+  Chip_SYSCTL_EnablePINTWakeup(21);
+
+  /* Configure GPIO pin as input pin */
+  Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, 0, 21);
+
+  /* Configure interrupt channel 0 for the GPIO pin in SysCon block */
+  Chip_SYSCTL_SetPinInterrupt(4, 22);   // DIO4
+
+  /* Configure channel 0 as wake up interrupt in SysCon block */
+  Chip_SYSCTL_EnablePINTWakeup(22);
+
+  /* Configure GPIO pin as input pin */
+  Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, 0, 22);
+  
+  Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,15,TRUE); // NRESET
+  Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO15,PIN_MODE_REPEATER);
+  
+  Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,24,TRUE); // SSEL
+  Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO24,PIN_MODE_REPEATER);
+  Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,25,TRUE); // SCK
+  Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO25,PIN_MODE_REPEATER);
+  Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,27,FALSE); // MISO
+  Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO27,PIN_MODE_INACTIVE);
+  Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,26,TRUE); // MOSI
+  Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO26,PIN_MODE_REPEATER);
+  
+  Chip_Clock_EnablePeriphClock(SYSCTL_CLOCK_SWM);
+  Chip_SWM_MovablePinAssign(SWM_SPI1_SSEL0_IO, 24);
+  Chip_SWM_MovablePinAssign(SWM_SPI1_SCK_IO, 25);
+  Chip_SWM_MovablePinAssign(SWM_SPI1_MISO_IO, 27);
+  Chip_SWM_MovablePinAssign(SWM_SPI1_MOSI_IO, 26);
+  Chip_Clock_DisablePeriphClock(SYSCTL_CLOCK_SWM);
+  /*
+    ConfigStruct.Mode = SPI_MODE_MASTER;
+    ConfigStruct.ClkDiv = Chip_SPI_CalClkRateDivider(LPC_SPI, 100000);
+    ConfigStruct.ClockMode = SPI_CLOCK_CPHA0_CPOL0;
+    ConfigStruct.DataOrder = SPI_DATA_MSB_FIRST;
+    ConfigStruct.SSELPol = SPI_SSEL_ACTIVE_LO;
+  */
+  Chip_SPI_Init(LPC_SPI1);
+  Chip_SPI_ConfigureSPI(LPC_SPI1, SPI_MODE_MASTER |  /* Enable master/Slave mode */
+                          SPI_CLOCK_CPHA0_CPOL0 |   /* Set Clock polarity to 0 */
+                          SPI_CFG_MSB_FIRST_EN |/* Enable MSB first option */
+                          SPI_CFG_SPOL_LO); /* Chipselect is active low */
+
+  DelayConfigStruct.FrameDelay = 0;
+  DelayConfigStruct.PostDelay = 0;
+  DelayConfigStruct.PreDelay = 0;
+  DelayConfigStruct.TransferDelay = 0;
+  Chip_SPI_DelayConfig(LPC_SPI1, &DelayConfigStruct);
+
+  Chip_SPI_Enable(LPC_SPI1);
 }
 
-void SX1276IoIrqInit( DioIrqHandler **irqHandlers )
+void SX1276IoIrqInit( void )
 {
-#if 0
-    GpioSetInterrupt( &SX1276.DIO0, IRQ_RISING_EDGE, IRQ_HIGH_PRIORITY, irqHandlers[0] );
-    GpioSetInterrupt( &SX1276.DIO1, IRQ_RISING_EDGE, IRQ_HIGH_PRIORITY, irqHandlers[1] );
-    GpioSetInterrupt( &SX1276.DIO2, IRQ_RISING_EDGE, IRQ_HIGH_PRIORITY, irqHandlers[2] );
-    GpioSetInterrupt( &SX1276.DIO3, IRQ_RISING_EDGE, IRQ_HIGH_PRIORITY, irqHandlers[3] );
-    GpioSetInterrupt( &SX1276.DIO4, IRQ_RISING_EDGE, IRQ_HIGH_PRIORITY, irqHandlers[4] );
-    GpioSetInterrupt( &SX1276.DIO5, IRQ_RISING_EDGE, IRQ_HIGH_PRIORITY, irqHandlers[5] );
-#endif
+  /* Configure channel 0 interrupt as edge sensitive and falling edge interrupt */
+  Chip_PININT_SetPinModeEdge(LPC_PININT, PININTCH0);
+  Chip_PININT_EnableIntLow(LPC_PININT, PININTCH0);
+
+  /* Enable interrupt in the NVIC */
+  NVIC_EnableIRQ(PININT0_IRQn);
+
+  /* Configure channel 0 interrupt as edge sensitive and falling edge interrupt */
+  Chip_PININT_SetPinModeEdge(LPC_PININT, PININTCH1);
+  Chip_PININT_EnableIntLow(LPC_PININT, PININTCH1);
+
+  /* Enable interrupt in the NVIC */
+  NVIC_EnableIRQ(PININT1_IRQn);
+
+  /* Configure channel 0 interrupt as edge sensitive and falling edge interrupt */
+  Chip_PININT_SetPinModeEdge(LPC_PININT, PININTCH2);
+  Chip_PININT_EnableIntLow(LPC_PININT, PININTCH2);
+
+  /* Enable interrupt in the NVIC */
+  NVIC_EnableIRQ(PININT2_IRQn);
+
+  /* Configure channel 0 interrupt as edge sensitive and falling edge interrupt */
+  Chip_PININT_SetPinModeEdge(LPC_PININT, PININTCH3);
+  Chip_PININT_EnableIntLow(LPC_PININT, PININTCH3);
+
+  /* Enable interrupt in the NVIC */
+  NVIC_EnableIRQ(PININT3_IRQn);
+
+  /* Configure channel 0 interrupt as edge sensitive and falling edge interrupt */
+  Chip_PININT_SetPinModeEdge(LPC_PININT, PININTCH4);
+  Chip_PININT_EnableIntLow(LPC_PININT, PININTCH4);
+
+  /* Enable interrupt in the NVIC */
+  NVIC_EnableIRQ(PININT4_IRQn);
+
+  /* Configure channel 0 interrupt as edge sensitive and falling edge interrupt */
+  Chip_PININT_SetPinModeEdge(LPC_PININT, PININTCH5);
+  Chip_PININT_EnableIntLow(LPC_PININT, PININTCH5);
+
+  /* Enable interrupt in the NVIC */
+  NVIC_EnableIRQ(PININT5_IRQn);
 }
 
 void SX1276IoDeInit( void )

@@ -131,9 +131,9 @@
 
 #endif
 
-static uint8_t DevEui[] = LORAWAN_DEVICE_EUI;
-static uint8_t AppEui[] = LORAWAN_APPLICATION_EUI;
-static uint8_t AppKey[] = LORAWAN_APPLICATION_KEY;
+uint8_t DevEui[] = LORAWAN_DEVICE_EUI;
+uint8_t AppEui[] = LORAWAN_APPLICATION_EUI;
+uint8_t AppKey[] = LORAWAN_APPLICATION_KEY;
 
 #if( OVER_THE_AIR_ACTIVATION == 0 )
 
@@ -779,11 +779,11 @@ static void vLEDTask0 (void *pvParameters) {
 #else
     #error "Please define a region in the compiler options."
 #endif
-                TxNextPacketTimer = xTimerCreate( "TxNextPacketTimer", 0, pdFALSE, 0, OnTxNextPacketTimerEvent );
-                Led1Timer = xTimerCreate( "Led1Timer", 0, pdFALSE, 0, OnLed1TimerEvent );
+                TxNextPacketTimer = xTimerCreate( "TxNextPacketTimer", 1000, pdFALSE, 0, OnTxNextPacketTimerEvent );
+                Led1Timer = xTimerCreate( "Led1Timer", 1000, pdFALSE, 0, OnLed1TimerEvent );
                 xTimerChangePeriod( Led1Timer, 25,0 );
 
-                Led2Timer = xTimerCreate( "Led2Timer", 0, pdFALSE, 0, OnLed2TimerEvent );
+                Led2Timer = xTimerCreate( "Led2Timer", 1000, pdFALSE, 0, OnLed2TimerEvent );
                 xTimerChangePeriod( Led2Timer, 25,0 );
 
                 mibReq.Type = MIB_ADR;
@@ -825,7 +825,7 @@ static void vLEDTask0 (void *pvParameters) {
                 MlmeReq_t mlmeReq;
 
                 // Initialize LoRaMac device unique ID
-                BoardGetUniqueId( DevEui );
+                //BoardGetUniqueId( DevEui );
 
                 mlmeReq.Type = MLME_JOIN;
 
@@ -924,27 +924,21 @@ static void vLEDTask0 (void *pvParameters) {
         }
     }
 }
-
+TaskHandle_t vLEDTask1Handle = NULL;
 /* LED1 toggle thread */
 static void vLEDTask1 (void *pvParameters) {
 	modem_init();
 	while (1) {
+                vTaskSuspend(vLEDTask1Handle);
                 modem_rxdone();
-		//Board_LED_Set(1, LedState);
-		//LedState = (bool) !LedState;
-
-		vTaskDelay(configTICK_RATE_HZ*2);
 	}
 }
-
+TaskHandle_t vLEDTask2Handle = NULL;
 /* LED2 toggle thread */
 static void vLEDTask2 (void *pvParameters) {
-	bool LedState = false;
 	while (1) {
-		Board_LED_Set(2, LedState);
-		LedState = (bool) !LedState;
-
-		vTaskDelay(configTICK_RATE_HZ);
+                vTaskSuspend(vLEDTask2Handle);
+                modem_txdone();
 	}
 }
 
@@ -963,13 +957,13 @@ int main(void)
 	/* LED1 toggle thread */
 	xTaskCreate(vLEDTask1, "vTaskLed1",
 				configMINIMAL_STACK_SIZE, NULL, (tskIDLE_PRIORITY + 1UL),
-				(TaskHandle_t *) NULL);
-#if 0
+				(TaskHandle_t *) &vLEDTask1Handle);
+
 	/* LED2 toggle thread */
 	xTaskCreate(vLEDTask2, "vTaskLed2",
 				configMINIMAL_STACK_SIZE, NULL, (tskIDLE_PRIORITY + 1UL),
-				(TaskHandle_t *) NULL);
-#endif
+				(TaskHandle_t *) &vLEDTask2Handle);
+
 	/* LED0 toggle thread */
 	xTaskCreate(vLEDTask0, "vTaskLed0",
 				configMINIMAL_STACK_SIZE, NULL, (tskIDLE_PRIORITY + 1UL),

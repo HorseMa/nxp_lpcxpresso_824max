@@ -2406,13 +2406,13 @@ LoRaMacStatus_t LoRaMacInitialization( LoRaMacPrimitives_t *primitives, LoRaMacC
     ResetMacParameters( );
 
     // Initialize timers
-    MacStateCheckTimer = xTimerCreate( "MacStateCheckTimer", 0, pdFALSE, 0, OnMacStateCheckTimerEvent );
+    MacStateCheckTimer = xTimerCreate( "MacStateCheckTimer", 1000, pdFALSE, 0, OnMacStateCheckTimerEvent );
     xTimerChangePeriod( MacStateCheckTimer, MAC_STATE_CHECK_TIMEOUT,0 );
     
-    TxDelayedTimer = xTimerCreate( "TxDelayedTimer", 0, pdFALSE, 0, OnTxDelayedTimerEvent );
-    RxWindowTimer1 = xTimerCreate( "RxWindowTimer1", 0, pdFALSE, 0, OnRxWindow1TimerEvent );
-    RxWindowTimer2 = xTimerCreate( "RxWindowTimer2", 0, pdFALSE, 0, OnRxWindow2TimerEvent );
-    AckTimeoutTimer = xTimerCreate( "AckTimeoutTimer", 0, pdFALSE, 0, OnAckTimeoutTimerEvent );
+    TxDelayedTimer = xTimerCreate( "TxDelayedTimer", 1000, pdFALSE, 0, OnTxDelayedTimerEvent );
+    RxWindowTimer1 = xTimerCreate( "RxWindowTimer1", 1000, pdFALSE, 0, OnRxWindow1TimerEvent );
+    RxWindowTimer2 = xTimerCreate( "RxWindowTimer2", 1000, pdFALSE, 0, OnRxWindow2TimerEvent );
+    AckTimeoutTimer = xTimerCreate( "AckTimeoutTimer", 1000, pdFALSE, 0, OnAckTimeoutTimerEvent );
     
 
     // Store the current initialization time

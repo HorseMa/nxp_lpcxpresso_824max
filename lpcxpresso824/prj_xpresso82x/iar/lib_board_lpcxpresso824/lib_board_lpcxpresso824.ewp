@@ -79,7 +79,7 @@
         </option>
         <option>
           <name>RTDescription</name>
-          <state>Use the normal configuration of the C/C++ runtime library. No locale interface, C locale, no file descriptor support, no multibytes in printf and scanf, and no hex floats in strtod.</state>
+          <state>To be used with the normal configuration of the C/C++ runtime library. No locale interface, C locale, no file descriptor support, no multibytes in printf and scanf, and no hex floats in strtod.</state>
         </option>
         <option>
           <name>OGProductVersion</name>
@@ -173,7 +173,7 @@
         <option>
           <name>CCDefines</name>
           <state>CORE_M0PLUS</state>
-          <state>DEBUG_UART=LPC_USART1</state>
+          <state>DEBUG_UART=LPC_USART0</state>
         </option>
         <option>
           <name>CCPreprocFile</name>

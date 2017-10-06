@@ -26,6 +26,10 @@
  */
 
 #include "modem.h"
+#include "board.h"
+#include "FreeRTOS.h"
+#include "timers.h"
+#include "task.h"
 
 //////////////////////////////////////////////////
 // CONFIGURATION (WILL BE PATCHED)
@@ -75,6 +79,10 @@ static const char* evnames[] = {
     [EV_LINK_ALIVE]     = "LINK_ALIVE",
 };
 
+extern uint8_t DevEui[];
+extern uint8_t AppEui[];
+extern uint8_t AppKey[];
+
 // return mask of all events matching given string prefix
 static uint32_t evmatch (uint8_t* name, uint8_t len) {
     uint32_t mask = 0;
@@ -101,17 +109,17 @@ static struct {
 
 // provide device EUI (LSBF)
 void os_getDevEui (uint8_t* buf) {
-    //memcpy(buf, PERSIST->joinpar.deveui, 8);
+    memcpy(buf, DevEui, 8);
 }
 
 // provide device key
 void os_getDevKey (uint8_t* buf) {
-    //memcpy(buf, PERSIST->joinpar.devkey, 16);
+    memcpy(buf, AppKey, 16);
 }
 
 // provide application EUI (LSBF)
 void os_getArtEui (uint8_t* buf) {
-    //memcpy(buf, PERSIST->joinpar.appeui, 8);
+    memcpy(buf, AppEui, 8);
 }
 
 extern FRAME rxframe;
@@ -119,10 +127,11 @@ extern FRAME txframe;
 
 // start transmission of prepared response or queued event message
 static void modem_starttx () {
-    //hal_disableIRQs();
+    
+    taskENTER_CRITICAL();
     if( !MODEM.txpending ) {
 	// check if we have something to send
-	/*if(queue_shift(&txframe)) { // send next queued event
+	if(queue_shift(&txframe)) { // send next queued event
 	    usart_starttx();
 	    MODEM.txpending = 1;
 	} else if(MODEM.rsplen) { // send response
@@ -130,9 +139,9 @@ static void modem_starttx () {
 	    MODEM.rsplen = 0;
 	    usart_starttx();
 	    MODEM.txpending = 1;
-	}*/
+	}
     }
-    //hal_enableIRQs();
+    taskEXIT_CRITICAL();
 }
 
 // LRSC MAC event handler
