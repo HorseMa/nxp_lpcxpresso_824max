@@ -99,7 +99,7 @@ static uint32_t evmatch (uint8_t* name, uint8_t len) {
 
 // transient state
 static struct {
-    uint8_t cmdbuf[300];
+    uint8_t cmdbuf[255];
     uint16_t rsplen;
     uint8_t txpending;
     //osjob_t alarmjob;    
@@ -261,7 +261,7 @@ void modem_init () {
     //modem_reset();
 
     buffer_init();
-    //queue_init();
+    queue_init();
 
     // initialize USART
     usart_init();

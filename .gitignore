@@ -25,6 +25,7 @@
 *.uvmpw
 *.wsdt
 *.wspos
+*.jlink
 !lpcxpresso824/prj_xpresso82x/iar/freertos_blinky/freertos_blinky.dep
 !lpcxpresso824/prj_xpresso82x/iar/freertos_blinky/freertos_blinky.ewp
 !lpcxpresso824/prj_xpresso82x/iar/freertos_blinky/freertos_blinky.ewt

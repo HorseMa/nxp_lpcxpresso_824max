@@ -32,7 +32,7 @@
 
 // ring buffer - append at end, free from beg
 
-static uint8_t buffer[1024];
+static uint8_t buffer[256];
 static uint8_t* beg;
 static uint8_t* end;
 static uint8_t* max;

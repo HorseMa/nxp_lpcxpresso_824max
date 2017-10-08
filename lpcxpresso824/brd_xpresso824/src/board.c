@@ -201,8 +201,8 @@ void Board_GPIO_Init(void)
 	//Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO5,PIN_MODE_INACTIVE);
 	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO6,PIN_MODE_INACTIVE);
 	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO7,PIN_MODE_INACTIVE);
-	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO8,PIN_MODE_INACTIVE);
-	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO9,PIN_MODE_INACTIVE);
+	//Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO8,PIN_MODE_INACTIVE);
+	//Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO9,PIN_MODE_INACTIVE);
 	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO10,PIN_MODE_INACTIVE);
 	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO11,PIN_MODE_INACTIVE);
 	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO12,PIN_MODE_INACTIVE);
@@ -232,8 +232,8 @@ void Board_GPIO_Init(void)
 	Chip_SWM_DisableFixedPin(SWM_FIXED_ACMP_I4);
 	Chip_SWM_EnableFixedPin(SWM_FIXED_SWCLK);
 	Chip_SWM_EnableFixedPin(SWM_FIXED_SWDIO);
-	Chip_SWM_EnableFixedPin(SWM_FIXED_XTALIN);
-	Chip_SWM_EnableFixedPin(SWM_FIXED_XTALOUT);
+	//Chip_SWM_EnableFixedPin(SWM_FIXED_XTALIN);
+	//Chip_SWM_EnableFixedPin(SWM_FIXED_XTALOUT);
 	//Chip_SWM_DisableFixedPin(SWM_FIXED_RST);
 	Chip_SWM_DisableFixedPin(SWM_FIXED_CLKIN);
 	Chip_SWM_DisableFixedPin(SWM_FIXED_VDDCMP);
@@ -251,8 +251,19 @@ void Board_GPIO_Init(void)
 	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC9);
 	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC10);
 	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC11);
+#if 0   // move xtal setup to lib board
+	/* Enable power to the system osc */
+	Chip_SYSCTL_PowerUp(SYSCTL_SLPWAKE_SYSOSC_PD);
 
+	/* Set the P0.8 and P0.9 pin modes to no pull-up or pull-down */
+	Chip_IOCON_PinSetMode(LPC_IOCON, IOCON_PIO8, PIN_MODE_INACTIVE);
+	Chip_IOCON_PinSetMode(LPC_IOCON, IOCON_PIO9, PIN_MODE_INACTIVE);
 
+	/* Enable SYSOSC function on the pins */
+	Chip_SWM_FixedPinEnable(SWM_FIXED_XTALIN, true);
+	Chip_SWM_FixedPinEnable(SWM_FIXED_XTALOUT, true);
+#endif
+#if 0
 	//Chip_SWM_MovablePinAssign(SWM_SCT_IN1_I, 4);
 
 	/* Configure channel 0 interrupt as edge sensitive and falling edge interrupt */
@@ -270,6 +281,7 @@ void Board_GPIO_Init(void)
 
 	/* Enable interrupt in the NVIC */
 	NVIC_EnableIRQ(PININT6_IRQn);
+#endif
         Chip_Clock_DisablePeriphClock(SYSCTL_CLOCK_SWM);
 }
 

@@ -66,7 +66,7 @@ void SX1276IoInit( void )
   Chip_SYSCTL_SetPinInterrupt(0, 17);   // DIO0
 
   /* Configure channel 0 as wake up interrupt in SysCon block */
-  Chip_SYSCTL_EnablePINTWakeup(17);
+  Chip_SYSCTL_EnablePINTWakeup(0);
 
   /* Configure GPIO pin as input pin */
   Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, 0, 17);
@@ -75,7 +75,7 @@ void SX1276IoInit( void )
   Chip_SYSCTL_SetPinInterrupt(1, 18);   // DIO1
 
   /* Configure channel 0 as wake up interrupt in SysCon block */
-  Chip_SYSCTL_EnablePINTWakeup(18);
+  Chip_SYSCTL_EnablePINTWakeup(1);
 
   /* Configure GPIO pin as input pin */
   Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, 0, 18);
@@ -84,25 +84,25 @@ void SX1276IoInit( void )
   Chip_SYSCTL_SetPinInterrupt(2, 19);   // DIO2
 
   /* Configure channel 0 as wake up interrupt in SysCon block */
-  Chip_SYSCTL_EnablePINTWakeup(19);
+  Chip_SYSCTL_EnablePINTWakeup(2);
 
   /* Configure GPIO pin as input pin */
   Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, 0, 19);
-
+#if 0   // dio5 is not used, interrupt too often
   /* Configure interrupt channel 0 for the GPIO pin in SysCon block */
   Chip_SYSCTL_SetPinInterrupt(5, 20);   // DIO5
 
   /* Configure channel 0 as wake up interrupt in SysCon block */
-  Chip_SYSCTL_EnablePINTWakeup(20);
+  Chip_SYSCTL_EnablePINTWakeup(5);
 
   /* Configure GPIO pin as input pin */
   Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, 0, 20);
-
+#endif
   /* Configure interrupt channel 0 for the GPIO pin in SysCon block */
   Chip_SYSCTL_SetPinInterrupt(3, 21);   // DIO3
 
   /* Configure channel 0 as wake up interrupt in SysCon block */
-  Chip_SYSCTL_EnablePINTWakeup(21);
+  Chip_SYSCTL_EnablePINTWakeup(3);
 
   /* Configure GPIO pin as input pin */
   Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, 0, 21);
@@ -111,7 +111,7 @@ void SX1276IoInit( void )
   Chip_SYSCTL_SetPinInterrupt(4, 22);   // DIO4
 
   /* Configure channel 0 as wake up interrupt in SysCon block */
-  Chip_SYSCTL_EnablePINTWakeup(22);
+  Chip_SYSCTL_EnablePINTWakeup(4);
 
   /* Configure GPIO pin as input pin */
   Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, 0, 22);
@@ -152,7 +152,6 @@ void SX1276IoInit( void )
   DelayConfigStruct.PreDelay = 0;
   DelayConfigStruct.TransferDelay = 0;
   Chip_SPI_DelayConfig(LPC_SPI1, &DelayConfigStruct);
-
   Chip_SPI_Enable(LPC_SPI1);
 }
 

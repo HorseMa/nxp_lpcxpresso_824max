@@ -79,7 +79,7 @@
 #define configTICK_RATE_HZ				( ( TickType_t ) 1000 )
 #define configMAX_PRIORITIES			( ( UBaseType_t ) 8 )
 #define configMINIMAL_STACK_SIZE		( ( uint16_t ) 64 )
-#define configTOTAL_HEAP_SIZE			( ( size_t ) ( 1024 + 512) )
+#define configTOTAL_HEAP_SIZE			( ( size_t ) ( 1024 + 512 * 4 - 200) )
 #define configMAX_TASK_NAME_LEN			( 10 )
 #define configUSE_TRACE_FACILITY		1
 #define configUSE_16_BIT_TICKS			0
@@ -153,7 +153,7 @@ standard names - or at least those used in the unmodified vector table. */
 #define xPortPendSVHandler PendSV_Handler
 #define xPortSysTickHandler SysTick_Handler
 
-#define EXTRA_HEAP_SZ 0x1000
+#define EXTRA_HEAP_SZ 0x10
 
 #endif /* FREERTOS_CONFIG_H */
 

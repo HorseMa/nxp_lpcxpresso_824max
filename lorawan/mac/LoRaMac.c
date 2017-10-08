@@ -608,7 +608,7 @@ static void OnRadioTxDone( void )
     GetPhyParams_t getPhy;
     PhyParam_t phyParam;
     SetBandTxDoneParams_t txDone;
-    TimerTime_t curTime = TimerGetCurrentTime( );
+    TimerTime_t curTime = xTaskGetTickCountFromISR();//TimerGetCurrentTime( );
 
     if( LoRaMacDeviceClass != CLASS_C )
     {
@@ -1544,6 +1544,7 @@ static bool ValidatePayloadLength( uint8_t lenN, int8_t datarate, uint8_t fOptsL
 static LoRaMacStatus_t AddMacCommand( uint8_t cmd, uint8_t p1, uint8_t p2 )
 {
     LoRaMacStatus_t status = LORAMAC_STATUS_BUSY;
+#if 0
     // The maximum buffer length must take MAC commands to re-send into account.
     uint8_t bufLen = LORA_MAC_COMMAND_MAX_LENGTH - MacCommandsBufferToRepeatIndex;
 
@@ -1635,6 +1636,7 @@ static LoRaMacStatus_t AddMacCommand( uint8_t cmd, uint8_t p1, uint8_t p2 )
     {
         MacCommandsInNextTx = true;
     }
+#endif
     return status;
 }
 
@@ -1693,6 +1695,7 @@ static uint8_t ParseMacCommandsToRepeat( uint8_t* cmdBufIn, uint8_t length, uint
 
 static void ProcessMacCommands( uint8_t *payload, uint8_t macIndex, uint8_t commandsSize, uint8_t snr )
 {
+#if 0
     uint8_t status = 0;
 
     while( macIndex < commandsSize )
@@ -1868,6 +1871,7 @@ static void ProcessMacCommands( uint8_t *payload, uint8_t macIndex, uint8_t comm
                 return;
         }
     }
+#endif
 }
 
 LoRaMacStatus_t Send( LoRaMacHeader_t *macHdr, uint8_t fPort, void *fBuffer, uint16_t fBufferSize )
@@ -2416,7 +2420,7 @@ LoRaMacStatus_t LoRaMacInitialization( LoRaMacPrimitives_t *primitives, LoRaMacC
     
 
     // Store the current initialization time
-    LoRaMacInitializationTime = TimerGetCurrentTime( );
+    LoRaMacInitializationTime = xTaskGetTickCount();//TimerGetCurrentTime( );
 
     // Initialize Radio driver
     RadioEvents.TxDone = OnRadioTxDone;

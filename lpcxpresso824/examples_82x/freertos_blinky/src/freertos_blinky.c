@@ -53,7 +53,6 @@
 #include "Commissioning.h"
 #include "utilities.h"
 
-#define REGION_CN470
 /*!
  * Defines the application data transmission duty cycle. 5s, value in [ms].
  */
@@ -735,7 +734,7 @@ static void prvSetupHardware(void)
 	SystemCoreClockUpdate();
 	Board_Init();
 }
-
+TaskHandle_t vLEDTask0Handle = NULL;
 /* LED0 toggle thread */
 static void vLEDTask0 (void *pvParameters) {
     LoRaMacPrimitives_t LoRaMacPrimitives;
@@ -747,6 +746,7 @@ static void vLEDTask0 (void *pvParameters) {
 
     DeviceState = DEVICE_STATE_INIT;
 	while (1) {
+        //vTaskSuspend(vLEDTask0Handle);
         vTaskDelay(10);
         switch( DeviceState )
         {
@@ -908,6 +908,7 @@ static void vLEDTask0 (void *pvParameters) {
             {
                 // Wake up through events
                 //TimerLowPowerHandler( );
+                //Chip_PMU_SleepState(LPC_PMU);
                 break;
             }
             default:
@@ -953,7 +954,7 @@ static void vLEDTask2 (void *pvParameters) {
 int main(void)
 {
 	prvSetupHardware();
-
+#if 0
 	/* LED1 toggle thread */
 	xTaskCreate(vLEDTask1, "vTaskLed1",
 				configMINIMAL_STACK_SIZE, NULL, (tskIDLE_PRIORITY + 1UL),
@@ -963,11 +964,11 @@ int main(void)
 	xTaskCreate(vLEDTask2, "vTaskLed2",
 				configMINIMAL_STACK_SIZE, NULL, (tskIDLE_PRIORITY + 1UL),
 				(TaskHandle_t *) &vLEDTask2Handle);
-
+#endif
 	/* LED0 toggle thread */
 	xTaskCreate(vLEDTask0, "vTaskLed0",
-				configMINIMAL_STACK_SIZE, NULL, (tskIDLE_PRIORITY + 1UL),
-				(TaskHandle_t *) NULL);
+				configMINIMAL_STACK_SIZE * 3, NULL, (tskIDLE_PRIORITY + 1UL),
+				(TaskHandle_t *) &vLEDTask0Handle);
 
 	/* Start the scheduler */
 	vTaskStartScheduler();

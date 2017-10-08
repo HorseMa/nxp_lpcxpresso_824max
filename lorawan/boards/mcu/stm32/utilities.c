@@ -17,6 +17,8 @@ Maintainer: Miguel Luis and Gregory Cristian
 #include "board.h"
 #include "utilities.h"
 #include "typedef.h"
+#include "FreeRTOS.h"
+#include "timers.h"
 
 /*!
  * Redefinition of rand() and srand() standard C functions.
@@ -87,10 +89,27 @@ int8_t Nibble2HexChar( uint8_t a )
 
 TimerTime_t TimerGetElapsedTime( TimerTime_t savedTime )
 {
-    return 0;//RtcComputeElapsedTime( savedTime );
+    TimerTime_t elapsedTime = 0;
+
+    // Needed at boot, cannot compute with 0 or elapsed time will be equal to current time
+    if( savedTime == 0 )
+    {
+        return 0;
+    }
+
+    elapsedTime = xTaskGetTickCount();
+
+    if( elapsedTime < savedTime )
+    { // roll over of the counter
+        return( elapsedTime + ( 0xFFFFFFFF - savedTime ) );
+    }
+    else
+    {
+        return( elapsedTime - savedTime );
+    }
 }
 
 TimerTime_t TimerGetCurrentTime( void )
 {
-    return 0;//RtcGetTimerValue( );
+    return xTaskGetTickCount();//RtcGetTimerValue( );
 }

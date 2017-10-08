@@ -1136,8 +1136,8 @@
         <option>
           <name>CCDefines</name>
           <state>CORE_M0PLUS</state>
-          <state>USE_BAND_433</state>
           <state>DEBUG_UART=LPC_USART0</state>
+          <state>REGION_CN470</state>
         </option>
         <option>
           <name>CCPreprocFile</name>

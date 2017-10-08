@@ -176,25 +176,23 @@ SX1276_t SX1276;
 TimerHandle_t TxTimeoutTimer;
 TimerHandle_t RxTimeoutTimer;
 TimerHandle_t RxTimeoutSyncWord;
-
-#define BUFFER_SIZE 255
-static uint8_t TxBuf[BUFFER_SIZE];
+#if 0
+static uint8_t TxBuf[RX_BUFFER_SIZE + 1];
 
 /* Rx buffer */
 //static uint16_t RxBuf[BUFFER_SIZE];
 
 static SPI_DATA_SETUP_T XfSetup;
-
+#endif
 static volatile uint8_t  isXferCompleted = 0;
  
 /*
  * Radio driver functions implementation
  */
-
+uint8_t chip_version[3] = {0};
 void SX1276Init( RadioEvents_t *events )
 {
     uint8_t i;
-
     RadioEvents = events;
 
     // Initialize driver timeout timers
@@ -202,8 +200,19 @@ void SX1276Init( RadioEvents_t *events )
     RxTimeoutTimer = xTimerCreate( "RxTimeoutTimer", 1000, pdFALSE, 0, SX1276OnTimeoutIrq );
     RxTimeoutSyncWord = xTimerCreate( "RxTimeoutSyncWord", 1000, pdFALSE, 0, SX1276OnTimeoutIrq );
 
+    SX1276IoInit();
     SX1276Reset( );
-
+    // test spi ok?
+    SX1276ReadBuffer(0x61,chip_version,3);
+    chip_version[0] = 1;
+    chip_version[1] = 2;
+    chip_version[2] = 3;
+    SX1276WriteBuffer(0x61,chip_version,3);
+    chip_version[0] = 0;
+    chip_version[1] = 0;
+    chip_version[2] = 0;
+    SX1276ReadBuffer(0x61,chip_version,3);
+    //chip_version = SX1276Read(0x42);
     RxChainCalibration( );
 
     SX1276SetOpMode( RF_OPMODE_SLEEP );
@@ -249,10 +258,10 @@ bool SX1276IsChannelFree( RadioModems_t modem, uint32_t freq, int16_t rssiThresh
 
     vTaskDelay( 1 );
 
-    //carrierSenseTime = TimerGetCurrentTime( );
+    carrierSenseTime = xTaskGetTickCount();//TimerGetCurrentTime( );
 
     // Perform carrier sense for maxCarrierSenseTime
-    /*while( TimerGetElapsedTime( carrierSenseTime ) < maxCarrierSenseTime )
+    while( TimerGetElapsedTime( carrierSenseTime ) < maxCarrierSenseTime )
     {
         rssi = SX1276ReadRssi( modem );
 
@@ -261,7 +270,7 @@ bool SX1276IsChannelFree( RadioModems_t modem, uint32_t freq, int16_t rssiThresh
             status = false;
             break;
         }
-    }*/
+    }
     SX1276SetSleep( );
     return status;
 }
@@ -1217,6 +1226,29 @@ uint8_t SX1276Read( uint8_t addr )
 
 void SX1276WriteBuffer( uint8_t addr, uint8_t *buffer, uint8_t size )
 {
+  uint16_t loop = 0,temp = 0;
+  Chip_SPI_ClearStatus(LPC_SPI1, SPI_STAT_CLR_RXOV | SPI_STAT_CLR_TXUR | SPI_STAT_CLR_SSA | SPI_STAT_CLR_SSD);
+  Chip_SPI_SetControlInfo(LPC_SPI1, 8, SPI_TXCTL_ASSERT_SSEL | SPI_TXCTL_EOF);
+  while(!(Chip_SPI_GetStatus(LPC_SPI1) & SPI_STAT_TXRDY));
+  Chip_SPI_SendMidFrame(LPC_SPI1, addr | 0x80);
+  while (!(Chip_SPI_GetStatus(LPC_SPI1) & SPI_STAT_RXRDY)) {};
+  temp = Chip_SPI_ReceiveFrame(LPC_SPI1);
+  while(loop < size)
+  {
+    while(!(Chip_SPI_GetStatus(LPC_SPI1) & SPI_STAT_TXRDY));
+    if(loop != (size - 1))
+    {
+      Chip_SPI_SendMidFrame(LPC_SPI1, buffer[loop]);
+    }
+    else
+    {
+      Chip_SPI_SendLastFrame(LPC_SPI1,buffer[loop],8);
+    }
+    while (!(Chip_SPI_GetStatus(LPC_SPI1) & SPI_STAT_RXRDY)) {};
+    temp = Chip_SPI_ReceiveFrame(LPC_SPI1);
+    loop ++;
+  }
+#if 0
   memset(TxBuf,0,size + 1);
   TxBuf[0] = addr | 0x80;
   memcpy(TxBuf + 1,buffer,size);
@@ -1226,6 +1258,7 @@ void SX1276WriteBuffer( uint8_t addr, uint8_t *buffer, uint8_t size )
   XfSetup.DataSize = 8;
 
   Chip_SPI_RWFrames_Blocking(LPC_SPI1, &XfSetup);
+#endif
 #if 0
     uint8_t i;
 
@@ -1245,6 +1278,31 @@ void SX1276WriteBuffer( uint8_t addr, uint8_t *buffer, uint8_t size )
 
 void SX1276ReadBuffer( uint8_t addr, uint8_t *buffer, uint8_t size )
 {
+  uint16_t loop = 0;
+  Chip_SPI_ClearStatus(LPC_SPI1, SPI_STAT_CLR_RXOV | SPI_STAT_CLR_TXUR | SPI_STAT_CLR_SSA | SPI_STAT_CLR_SSD);
+  Chip_SPI_SetControlInfo(LPC_SPI1, 8, SPI_TXCTL_ASSERT_SSEL | SPI_TXCTL_EOF);
+  while(!(Chip_SPI_GetStatus(LPC_SPI1) & SPI_STAT_TXRDY));
+  Chip_SPI_SendMidFrame(LPC_SPI1, addr & 0x7F);
+  while (!(Chip_SPI_GetStatus(LPC_SPI1) & SPI_STAT_RXRDY)) {};
+  buffer[0] = Chip_SPI_ReceiveFrame(LPC_SPI1);
+  while(loop < size)
+  {
+    while (!(Chip_SPI_GetStatus(LPC_SPI1) & SPI_STAT_TXRDY)) {};
+    if(loop != (size - 1))
+    {
+      Chip_SPI_SendMidFrame(LPC_SPI1, 0x55);
+    }
+    else
+    {
+      Chip_SPI_SendLastFrame(LPC_SPI1,0x55,8);
+    }
+    /* Make sure the last frame sent completely*/
+    //while (!(Chip_SPI_GetStatus(LPC_SPI1) & SPI_STAT_SSD)) {}
+    //Chip_SPI_ClearStatus(LPC_SPI1, SPI_STAT_CLR_SSD);
+    while (!(Chip_SPI_GetStatus(LPC_SPI1) & SPI_STAT_RXRDY)) {};
+    buffer[loop++] = Chip_SPI_ReceiveFrame(LPC_SPI1);
+  }
+#if 0
   memset(TxBuf,0,size + 1);
   TxBuf[0] = addr & 0x7F;
   XfSetup.Length = 1 + size;
@@ -1253,7 +1311,8 @@ void SX1276ReadBuffer( uint8_t addr, uint8_t *buffer, uint8_t size )
   XfSetup.RxCnt = XfSetup.TxCnt = 0;
   XfSetup.DataSize = 8;
   Chip_SPI_RWFrames_Blocking(LPC_SPI1, &XfSetup);
-  memcpy(buffer,TxBuf + 1,size);
+  memcpy(buffer,TxBuf + 2,size);
+#endif
 #if 0
     uint8_t i;
 
