@@ -1278,6 +1278,7 @@
           <state>$PROJ_DIR$\..\..\..\..\lorawan\radio\sx1276</state>
           <state>$PROJ_DIR$\..\..\..\..\lorawan\boards\mcu\stm32</state>
           <state>$PROJ_DIR$\..\..\..\..\lorawan\system\crypto</state>
+          <state>$PROJ_DIR$\..\..\..\..\lorawan\system\</state>
           <state>$PROJ_DIR$\..\..\..\..\lorawan\mac</state>
           <state>$PROJ_DIR$\..\..\..\..\lorawan\mac\region</state>
           <state>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classA\SensorNode</state>
@@ -3863,6 +3864,7 @@
       <name>$PROJ_DIR$\..\..\..\examples_82x\freertos_blinky\src\freertos_blinky.c</name>
       <excluded>
         <configuration>iflash_nxp_lpcxpresso_812</configuration>
+        <configuration>ClassA</configuration>
         <configuration>ClassB</configuration>
         <configuration>ClassC</configuration>
       </excluded>
@@ -3872,9 +3874,6 @@
     </file>
     <file>
       <name>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classA\SensorNode\main.c</name>
-      <excluded>
-        <configuration>ClassA</configuration>
-      </excluded>
     </file>
     <file>
       <name>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classA\Bleeper-76\mainA.c</name>
@@ -3907,6 +3906,9 @@
   </group>
   <group>
     <name>FreeRTOS</name>
+    <excluded>
+      <configuration>ClassA</configuration>
+    </excluded>
     <file>
       <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\croutine.c</name>
     </file>
@@ -3948,6 +3950,9 @@
     <name>lorawan</name>
     <group>
       <name>atcmd</name>
+      <excluded>
+        <configuration>ClassA</configuration>
+      </excluded>
       <file>
         <name>$PROJ_DIR$\..\..\..\..\lorawan\atcmd\buffer.c</name>
       </file>
@@ -3985,13 +3990,16 @@
         <name>$PROJ_DIR$\..\..\..\..\lorawan\system\crypto\cmac.h</name>
       </file>
       <file>
+        <name>$PROJ_DIR$\..\..\..\..\lorawan\boards\SensorNode\rtc-board.c</name>
+        <excluded>
+          <configuration>ClassA</configuration>
+        </excluded>
+      </file>
+      <file>
         <name>$PROJ_DIR$\..\..\..\..\lorawan\boards\SensorNode\sx1276-board.c</name>
       </file>
       <file>
         <name>$PROJ_DIR$\..\..\..\..\lorawan\system\timer.c</name>
-        <excluded>
-          <configuration>ClassA</configuration>
-        </excluded>
       </file>
       <file>
         <name>$PROJ_DIR$\..\..\..\..\lorawan\boards\mcu\stm32\utilities.c</name>

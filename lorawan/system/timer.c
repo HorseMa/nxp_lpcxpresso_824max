@@ -13,9 +13,10 @@ License: Revised BSD License, see LICENSE.TXT file include in the project
 Maintainer: Miguel Luis and Gregory Cristian
 */
 #include "board.h"
+#include "timer.h"
 #include "rtc-board.h"
-
-
+#include "utilities.h"
+uint32_t systicks = 0;
 /*!
  * This flag is used to loop through the main several times in order to be sure
  * that all pending events have been processed.
@@ -25,7 +26,7 @@ volatile uint8_t HasLoopedThroughMain = 0;
 /*!
  * Timers list head pointer
  */
-static TimerHandle_t *TimerListHead = NULL;
+static TimerEvent_t *TimerListHead = NULL;
 
 /*!
  * \brief Adds or replace the head timer of the list.
@@ -36,7 +37,7 @@ static TimerHandle_t *TimerListHead = NULL;
  * \param [IN]  obj Timer object to be become the new head
  * \param [IN]  remainingTime Remaining time of the previous head to be replaced
  */
-static void TimerInsertNewHeadTimer( TimerHandle_t *obj, uint32_t remainingTime );
+static void TimerInsertNewHeadTimer( TimerEvent_t *obj, uint32_t remainingTime );
 
 /*!
  * \brief Adds a timer to the list.
@@ -47,14 +48,14 @@ static void TimerInsertNewHeadTimer( TimerHandle_t *obj, uint32_t remainingTime 
  * \param [IN]  obj Timer object to be added to the list
  * \param [IN]  remainingTime Remaining time of the running head after which the object may be added
  */
-static void TimerInsertTimer( TimerHandle_t *obj, uint32_t remainingTime );
+static void TimerInsertTimer( TimerEvent_t *obj, uint32_t remainingTime );
 
 /*!
  * \brief Sets a timeout with the duration "timestamp"
  *
  * \param [IN] timestamp Delay duration
  */
-static void TimerSetTimeout( TimerHandle_t *obj );
+static void TimerSetTimeout( TimerEvent_t *obj );
 
 /*!
  * \brief Check if the Object to be added is not already in the list
@@ -62,7 +63,7 @@ static void TimerSetTimeout( TimerHandle_t *obj );
  * \param [IN] timestamp Delay duration
  * \retval true (the object is already in the list) or false
  */
-static bool TimerExists( TimerHandle_t *obj );
+static bool TimerExists( TimerEvent_t *obj );
 
 /*!
  * \brief Read the timer value of the currently running timer
@@ -71,7 +72,7 @@ static bool TimerExists( TimerHandle_t *obj );
  */
 TimerTime_t TimerGetValue( void );
 
-void xTimerCreate( TimerHandle_t *obj, void ( *callback )( void ) )
+void TimerInit( TimerEvent_t *obj, void ( *callback )( void ) )
 {
     obj->Timestamp = 0;
     obj->ReloadValue = 0;
@@ -80,7 +81,7 @@ void xTimerCreate( TimerHandle_t *obj, void ( *callback )( void ) )
     obj->Next = NULL;
 }
 
-void xTimerStart( TimerHandle_t *obj )
+void TimerStart( TimerEvent_t *obj )
 {
     uint32_t elapsedTime = 0;
     uint32_t remainingTime = 0;
@@ -128,13 +129,13 @@ void xTimerStart( TimerHandle_t *obj )
     BoardEnableIrq( );
 }
 
-static void TimerInsertTimer( TimerHandle_t *obj, uint32_t remainingTime )
+static void TimerInsertTimer( TimerEvent_t *obj, uint32_t remainingTime )
 {
     uint32_t aggregatedTimestamp = 0;      // hold the sum of timestamps
     uint32_t aggregatedTimestampNext = 0;  // hold the sum of timestamps up to the next event
 
-    TimerHandle_t* prev = TimerListHead;
-    TimerHandle_t* cur = TimerListHead->Next;
+    TimerEvent_t* prev = TimerListHead;
+    TimerEvent_t* cur = TimerListHead->Next;
 
     if( cur == NULL )
     { // obj comes just after the head
@@ -182,9 +183,9 @@ static void TimerInsertTimer( TimerHandle_t *obj, uint32_t remainingTime )
     }
 }
 
-static void TimerInsertNewHeadTimer( TimerHandle_t *obj, uint32_t remainingTime )
+static void TimerInsertNewHeadTimer( TimerEvent_t *obj, uint32_t remainingTime )
 {
-    TimerHandle_t* cur = TimerListHead;
+    TimerEvent_t* cur = TimerListHead;
 
     if( cur != NULL )
     {
@@ -198,10 +199,12 @@ static void TimerInsertNewHeadTimer( TimerHandle_t *obj, uint32_t remainingTime 
     TimerSetTimeout( TimerListHead );
 }
 
-void TimerIrqHandler( void )
+void SysTick_Handler( void )
 {
     uint32_t elapsedTime = 0;
-
+    BoardDisableIrq( );
+    systicks ++;
+    BoardEnableIrq( );
     // Early out when TimerListHead is null to prevent null pointer
     if ( TimerListHead == NULL )
     {
@@ -223,7 +226,7 @@ void TimerIrqHandler( void )
 
     while( ( TimerListHead != NULL ) && ( TimerListHead->Timestamp == 0 ) )
     {
-        TimerHandle_t* elapsedTimer = TimerListHead;
+        TimerEvent_t* elapsedTimer = TimerListHead;
         TimerListHead = TimerListHead->Next;
 
         if( elapsedTimer->Callback != NULL )
@@ -243,15 +246,15 @@ void TimerIrqHandler( void )
     }
 }
 
-void xTimerStop( TimerHandle_t *obj )
+void TimerStop( TimerEvent_t *obj )
 {
     BoardDisableIrq( );
 
     uint32_t elapsedTime = 0;
     uint32_t remainingTime = 0;
 
-    TimerHandle_t* prev = TimerListHead;
-    TimerHandle_t* cur = TimerListHead;
+    TimerEvent_t* prev = TimerListHead;
+    TimerEvent_t* cur = TimerListHead;
 
     // List is empty or the Obj to stop does not exist
     if( ( TimerListHead == NULL ) || ( obj == NULL ) )
@@ -330,9 +333,9 @@ void xTimerStop( TimerHandle_t *obj )
     BoardEnableIrq( );
 }
 
-static bool TimerExists( TimerHandle_t *obj )
+static bool TimerExists( TimerEvent_t *obj )
 {
-    TimerHandle_t* cur = TimerListHead;
+    TimerEvent_t* cur = TimerListHead;
 
     while( cur != NULL )
     {
@@ -345,44 +348,44 @@ static bool TimerExists( TimerHandle_t *obj )
     return false;
 }
 
-void TimerReset( TimerHandle_t *obj )
+void TimerReset( TimerEvent_t *obj )
 {
-    xTimerStop( obj );
-    xTimerStart( obj );
+    TimerStop( obj );
+    TimerStart( obj );
 }
 
-void xTimerChangePeriod( TimerHandle_t *obj, uint32_t value )
+void TimerSetValue( TimerEvent_t *obj, uint32_t value )
 {
-    xTimerStop( obj );
+    TimerStop( obj );
     obj->Timestamp = value;
     obj->ReloadValue = value;
 }
 
 TimerTime_t TimerGetValue( void )
 {
-    return RtcGetElapsedAlarmTime( );
+    return 0;//RtcGetElapsedAlarmTime( );
 }
 
 TimerTime_t TimerGetCurrentTime( void )
 {
-    return RtcGetTimerValue( );
+    return systicks;//RtcGetTimerValue( );
 }
 
 TimerTime_t TimerGetElapsedTime( TimerTime_t savedTime )
 {
-    return RtcComputeElapsedTime( savedTime );
+    return 0;//RtcComputeElapsedTime( savedTime );
 }
 
 TimerTime_t TimerGetFutureTime( TimerTime_t eventInFuture )
 {
-    return RtcComputeFutureEventTime( eventInFuture );
+    return 0;// RtcComputeFutureEventTime( eventInFuture );
 }
 
-static void TimerSetTimeout( TimerHandle_t *obj )
+static void TimerSetTimeout( TimerEvent_t *obj )
 {
     HasLoopedThroughMain = 0;
-    obj->Timestamp = RtcGetAdjustedTimeoutValue( obj->Timestamp );
-    RtcSetTimeout( obj->Timestamp );
+    obj->Timestamp = 0;//RtcGetAdjustedTimeoutValue( obj->Timestamp );
+    //RtcSetTimeout( obj->Timestamp );
 }
 
 void TimerLowPowerHandler( void )
@@ -396,10 +399,11 @@ void TimerLowPowerHandler( void )
         else
         {
             HasLoopedThroughMain = 0;
+            /*
             if( GetBoardPowerSource( ) == BATTERY_POWER )
             {
                 RtcEnterLowPowerStopMode( );
-            }
+            }*/
         }
     }
 }

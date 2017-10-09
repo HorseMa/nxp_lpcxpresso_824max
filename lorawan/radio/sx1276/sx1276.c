@@ -18,9 +18,9 @@ Maintainer: Miguel Luis, Gregory Cristian and Wael Guibene
 #include "radio.h"
 #include "sx1276.h"
 #include "sx1276-board.h"
-#include "FreeRTOS.h"
-#include "timers.h"
+#include "timer.h"
 #include "utilities.h"
+
 /*
  * Local types definition
  */
@@ -94,11 +94,40 @@ void SX1276SetOpMode( uint8_t opMode );
  * SX1276 DIO IRQ callback functions prototype
  */
 
+/*!
+ * \brief DIO 0 IRQ callback
+ */
+void SX1276OnDio0Irq( void );
+
+/*!
+ * \brief DIO 1 IRQ callback
+ */
+void SX1276OnDio1Irq( void );
+
+/*!
+ * \brief DIO 2 IRQ callback
+ */
+void SX1276OnDio2Irq( void );
+
+/*!
+ * \brief DIO 3 IRQ callback
+ */
+void SX1276OnDio3Irq( void );
+
+/*!
+ * \brief DIO 4 IRQ callback
+ */
+void SX1276OnDio4Irq( void );
+
+/*!
+ * \brief DIO 5 IRQ callback
+ */
+void SX1276OnDio5Irq( void );
 
 /*!
  * \brief Tx & Rx timeout timer callback
  */
-void SX1276OnTimeoutIrq( TimerHandle_t xTimer );
+void SX1276OnTimeoutIrq( void );
 
 /*
  * Private global constants
@@ -169,23 +198,20 @@ static uint8_t RxTxBuffer[RX_BUFFER_SIZE];
  */
 SX1276_t SX1276;
 
+/*!
+ * Hardware DIO IRQ callback initialization
+ */
+DioIrqHandler *DioIrq[] = { SX1276OnDio0Irq, SX1276OnDio1Irq,
+                            SX1276OnDio2Irq, SX1276OnDio3Irq,
+                            SX1276OnDio4Irq, NULL };
 
 /*!
  * Tx and Rx timers
  */
-TimerHandle_t TxTimeoutTimer;
-TimerHandle_t RxTimeoutTimer;
-TimerHandle_t RxTimeoutSyncWord;
-#if 0
-static uint8_t TxBuf[RX_BUFFER_SIZE + 1];
+TimerEvent_t TxTimeoutTimer;
+TimerEvent_t RxTimeoutTimer;
+TimerEvent_t RxTimeoutSyncWord;
 
-/* Rx buffer */
-//static uint16_t RxBuf[BUFFER_SIZE];
-
-static SPI_DATA_SETUP_T XfSetup;
-#endif
-static volatile uint8_t  isXferCompleted = 0;
- 
 /*
  * Radio driver functions implementation
  */
@@ -193,13 +219,13 @@ uint8_t chip_version[3] = {0};
 void SX1276Init( RadioEvents_t *events )
 {
     uint8_t i;
+
     RadioEvents = events;
 
     // Initialize driver timeout timers
-    TxTimeoutTimer = xTimerCreate( "TxTimeoutTimer", 1000, pdFALSE, 0, SX1276OnTimeoutIrq );
-    RxTimeoutTimer = xTimerCreate( "RxTimeoutTimer", 1000, pdFALSE, 0, SX1276OnTimeoutIrq );
-    RxTimeoutSyncWord = xTimerCreate( "RxTimeoutSyncWord", 1000, pdFALSE, 0, SX1276OnTimeoutIrq );
-
+    TimerInit( &TxTimeoutTimer, SX1276OnTimeoutIrq );
+    TimerInit( &RxTimeoutTimer, SX1276OnTimeoutIrq );
+    TimerInit( &RxTimeoutSyncWord, SX1276OnTimeoutIrq );
     SX1276IoInit();
     SX1276Reset( );
     // test spi ok?
@@ -212,7 +238,8 @@ void SX1276Init( RadioEvents_t *events )
     chip_version[1] = 0;
     chip_version[2] = 0;
     SX1276ReadBuffer(0x61,chip_version,3);
-    //chip_version = SX1276Read(0x42);
+    chip_version[0] = SX1276Read(0x42);
+    
     RxChainCalibration( );
 
     SX1276SetOpMode( RF_OPMODE_SLEEP );
@@ -256,9 +283,9 @@ bool SX1276IsChannelFree( RadioModems_t modem, uint32_t freq, int16_t rssiThresh
 
     SX1276SetOpMode( RF_OPMODE_RECEIVER );
 
-    vTaskDelay( 1 );
+    DelayMs( 1 );
 
-    carrierSenseTime = xTaskGetTickCount();//TimerGetCurrentTime( );
+    carrierSenseTime = TimerGetCurrentTime( );
 
     // Perform carrier sense for maxCarrierSenseTime
     while( TimerGetElapsedTime( carrierSenseTime ) < maxCarrierSenseTime )
@@ -301,7 +328,7 @@ uint32_t SX1276Random( void )
 
     for( i = 0; i < 32; i++ )
     {
-        vTaskDelay( 1 );
+        DelayMs( 1 );
         // Unfiltered RSSI value reading. Only takes the LSB value
         rnd |= ( ( uint32_t )SX1276Read( REG_LR_RSSIWIDEBAND ) & 0x01 ) << i;
     }
@@ -815,7 +842,7 @@ void SX1276Send( uint8_t *buffer, uint8_t size )
             if( ( SX1276Read( REG_OPMODE ) & ~RF_OPMODE_MASK ) == RF_OPMODE_SLEEP )
             {
                 SX1276SetStby( );
-                vTaskDelay( 1 );
+                DelayMs( 1 );
             }
             // Write payload buffer
             SX1276WriteFifo( buffer, size );
@@ -829,8 +856,8 @@ void SX1276Send( uint8_t *buffer, uint8_t size )
 
 void SX1276SetSleep( void )
 {
-    xTimerStop( RxTimeoutTimer,0 );
-    xTimerStop( TxTimeoutTimer,0 );
+    TimerStop( &RxTimeoutTimer );
+    TimerStop( &TxTimeoutTimer );
 
     SX1276SetOpMode( RF_OPMODE_SLEEP );
     SX1276.Settings.State = RF_IDLE;
@@ -838,8 +865,8 @@ void SX1276SetSleep( void )
 
 void SX1276SetStby( void )
 {
-    xTimerStop( RxTimeoutTimer,0 );
-    xTimerStop( TxTimeoutTimer,0 );
+    TimerStop( &RxTimeoutTimer );
+    TimerStop( &TxTimeoutTimer );
 
     SX1276SetOpMode( RF_OPMODE_STANDBY );
     SX1276.Settings.State = RF_IDLE;
@@ -984,8 +1011,8 @@ void SX1276SetRx( uint32_t timeout )
     SX1276.Settings.State = RF_RX_RUNNING;
     if( timeout != 0 )
     {
-        xTimerChangePeriod( RxTimeoutTimer, timeout,0 );
-        xTimerStart( RxTimeoutTimer,0 );
+        TimerSetValue( &RxTimeoutTimer, timeout );
+        TimerStart( &RxTimeoutTimer );
     }
 
     if( SX1276.Settings.Modem == MODEM_FSK )
@@ -994,8 +1021,8 @@ void SX1276SetRx( uint32_t timeout )
 
         if( rxContinuous == false )
         {
-            xTimerChangePeriod( RxTimeoutSyncWord, SX1276.Settings.Fsk.RxSingleTimeout,0 );
-            xTimerStart( RxTimeoutSyncWord,0 );
+            TimerSetValue( &RxTimeoutSyncWord, SX1276.Settings.Fsk.RxSingleTimeout );
+            TimerStart( &RxTimeoutSyncWord );
         }
     }
     else
@@ -1013,8 +1040,8 @@ void SX1276SetRx( uint32_t timeout )
 
 void SX1276SetTx( uint32_t timeout )
 {
-    xTimerChangePeriod( TxTimeoutTimer, timeout,0 );
-    xTimerStop( TxTimeoutTimer,0 );
+    TimerSetValue( &TxTimeoutTimer, timeout );
+
     switch( SX1276.Settings.Modem )
     {
     case MODEM_FSK:
@@ -1070,7 +1097,7 @@ void SX1276SetTx( uint32_t timeout )
     }
 
     SX1276.Settings.State = RF_TX_RUNNING;
-    xTimerStart( TxTimeoutTimer,0 );
+    TimerStart( &TxTimeoutTimer );
     SX1276SetOpMode( RF_OPMODE_TRANSMITTER );
 }
 
@@ -1120,10 +1147,10 @@ void SX1276SetTxContinuousWave( uint32_t freq, int8_t power, uint16_t time )
     SX1276Write( REG_DIOMAPPING1, RF_DIOMAPPING1_DIO0_11 | RF_DIOMAPPING1_DIO1_11 );
     SX1276Write( REG_DIOMAPPING2, RF_DIOMAPPING2_DIO4_10 | RF_DIOMAPPING2_DIO5_10 );
 
-    xTimerChangePeriod( TxTimeoutTimer, timeout,0 );
-    xTimerStop( TxTimeoutTimer,0 );
+    TimerSetValue( &TxTimeoutTimer, timeout );
+
     SX1276.Settings.State = RF_TX_RUNNING;
-    xTimerStart( TxTimeoutTimer,0 );
+    TimerStart( &TxTimeoutTimer );
     SX1276SetOpMode( RF_OPMODE_TRANSMITTER );
 }
 
@@ -1156,9 +1183,9 @@ int16_t SX1276ReadRssi( RadioModems_t modem )
 void SX1276Reset( void )
 {
     Chip_GPIO_SetPinOutLow(LPC_GPIO_PORT,0,15);
-    vTaskDelay(1);
+    DelayMs(1);
     Chip_GPIO_SetPinOutHigh(LPC_GPIO_PORT,0,15);
-    vTaskDelay(6);
+    DelayMs(6);
 }
 
 void SX1276SetOpMode( uint8_t opMode )
@@ -1226,109 +1253,56 @@ uint8_t SX1276Read( uint8_t addr )
 
 void SX1276WriteBuffer( uint8_t addr, uint8_t *buffer, uint8_t size )
 {
-  uint16_t loop = 0,temp = 0;
-  Chip_SPI_ClearStatus(LPC_SPI1, SPI_STAT_CLR_RXOV | SPI_STAT_CLR_TXUR | SPI_STAT_CLR_SSA | SPI_STAT_CLR_SSD);
-  Chip_SPI_SetControlInfo(LPC_SPI1, 8, SPI_TXCTL_ASSERT_SSEL | SPI_TXCTL_EOF);
-  while(!(Chip_SPI_GetStatus(LPC_SPI1) & SPI_STAT_TXRDY));
-  Chip_SPI_SendMidFrame(LPC_SPI1, addr | 0x80);
-  while (!(Chip_SPI_GetStatus(LPC_SPI1) & SPI_STAT_RXRDY)) {};
-  temp = Chip_SPI_ReceiveFrame(LPC_SPI1);
-  while(loop < size)
-  {
+    uint16_t loop = 0,temp = 0;
+    Chip_SPI_ClearStatus(LPC_SPI1, SPI_STAT_CLR_RXOV | SPI_STAT_CLR_TXUR | SPI_STAT_CLR_SSA | SPI_STAT_CLR_SSD);
+    Chip_SPI_SetControlInfo(LPC_SPI1, 8, SPI_TXCTL_ASSERT_SSEL | SPI_TXCTL_EOF);
     while(!(Chip_SPI_GetStatus(LPC_SPI1) & SPI_STAT_TXRDY));
-    if(loop != (size - 1))
-    {
-      Chip_SPI_SendMidFrame(LPC_SPI1, buffer[loop]);
-    }
-    else
-    {
-      Chip_SPI_SendLastFrame(LPC_SPI1,buffer[loop],8);
-    }
+    Chip_SPI_SendMidFrame(LPC_SPI1, addr | 0x80);
     while (!(Chip_SPI_GetStatus(LPC_SPI1) & SPI_STAT_RXRDY)) {};
     temp = Chip_SPI_ReceiveFrame(LPC_SPI1);
-    loop ++;
-  }
-#if 0
-  memset(TxBuf,0,size + 1);
-  TxBuf[0] = addr | 0x80;
-  memcpy(TxBuf + 1,buffer,size);
-  XfSetup.Length = size + 1;
-  XfSetup.pTx = (uint16_t*)TxBuf;
-  XfSetup.RxCnt = XfSetup.TxCnt = 0;
-  XfSetup.DataSize = 8;
-
-  Chip_SPI_RWFrames_Blocking(LPC_SPI1, &XfSetup);
-#endif
-#if 0
-    uint8_t i;
-
-    //NSS = 0;
-    GpioWrite( &SX1276.Spi.Nss, 0 );
-
-    SpiInOut( &SX1276.Spi, addr | 0x80 );
-    for( i = 0; i < size; i++ )
+    while(loop < size)
     {
-        SpiInOut( &SX1276.Spi, buffer[i] );
+        while(!(Chip_SPI_GetStatus(LPC_SPI1) & SPI_STAT_TXRDY));
+        if(loop != (size - 1))
+        {
+            Chip_SPI_SendMidFrame(LPC_SPI1, buffer[loop]);
+        }
+        else
+        {
+            Chip_SPI_SendLastFrame(LPC_SPI1,buffer[loop],8);
+        }
+        while (!(Chip_SPI_GetStatus(LPC_SPI1) & SPI_STAT_RXRDY)) {};
+        temp = Chip_SPI_ReceiveFrame(LPC_SPI1);
+        loop ++;
     }
-
-    //NSS = 1;
-    GpioWrite( &SX1276.Spi.Nss, 1 );
-#endif
 }
 
 void SX1276ReadBuffer( uint8_t addr, uint8_t *buffer, uint8_t size )
 {
-  uint16_t loop = 0;
-  Chip_SPI_ClearStatus(LPC_SPI1, SPI_STAT_CLR_RXOV | SPI_STAT_CLR_TXUR | SPI_STAT_CLR_SSA | SPI_STAT_CLR_SSD);
-  Chip_SPI_SetControlInfo(LPC_SPI1, 8, SPI_TXCTL_ASSERT_SSEL | SPI_TXCTL_EOF);
-  while(!(Chip_SPI_GetStatus(LPC_SPI1) & SPI_STAT_TXRDY));
-  Chip_SPI_SendMidFrame(LPC_SPI1, addr & 0x7F);
-  while (!(Chip_SPI_GetStatus(LPC_SPI1) & SPI_STAT_RXRDY)) {};
-  buffer[0] = Chip_SPI_ReceiveFrame(LPC_SPI1);
-  while(loop < size)
-  {
-    while (!(Chip_SPI_GetStatus(LPC_SPI1) & SPI_STAT_TXRDY)) {};
-    if(loop != (size - 1))
-    {
-      Chip_SPI_SendMidFrame(LPC_SPI1, 0x55);
-    }
-    else
-    {
-      Chip_SPI_SendLastFrame(LPC_SPI1,0x55,8);
-    }
-    /* Make sure the last frame sent completely*/
-    //while (!(Chip_SPI_GetStatus(LPC_SPI1) & SPI_STAT_SSD)) {}
-    //Chip_SPI_ClearStatus(LPC_SPI1, SPI_STAT_CLR_SSD);
+    uint16_t loop = 0;
+    Chip_SPI_ClearStatus(LPC_SPI1, SPI_STAT_CLR_RXOV | SPI_STAT_CLR_TXUR | SPI_STAT_CLR_SSA | SPI_STAT_CLR_SSD);
+    Chip_SPI_SetControlInfo(LPC_SPI1, 8, SPI_TXCTL_ASSERT_SSEL | SPI_TXCTL_EOF);
+    while(!(Chip_SPI_GetStatus(LPC_SPI1) & SPI_STAT_TXRDY));
+    Chip_SPI_SendMidFrame(LPC_SPI1, addr & 0x7F);
     while (!(Chip_SPI_GetStatus(LPC_SPI1) & SPI_STAT_RXRDY)) {};
-    buffer[loop++] = Chip_SPI_ReceiveFrame(LPC_SPI1);
-  }
-#if 0
-  memset(TxBuf,0,size + 1);
-  TxBuf[0] = addr & 0x7F;
-  XfSetup.Length = 1 + size;
-  XfSetup.pTx = (uint16_t*)TxBuf;
-  XfSetup.pRx = (uint16_t*)TxBuf;
-  XfSetup.RxCnt = XfSetup.TxCnt = 0;
-  XfSetup.DataSize = 8;
-  Chip_SPI_RWFrames_Blocking(LPC_SPI1, &XfSetup);
-  memcpy(buffer,TxBuf + 2,size);
-#endif
-#if 0
-    uint8_t i;
-
-    //NSS = 0;
-    GpioWrite( &SX1276.Spi.Nss, 0 );
-
-    SpiInOut( &SX1276.Spi, addr & 0x7F );
-
-    for( i = 0; i < size; i++ )
+    buffer[0] = Chip_SPI_ReceiveFrame(LPC_SPI1);
+    while(loop < size)
     {
-        buffer[i] = SpiInOut( &SX1276.Spi, 0 );
-    }
-
-    //NSS = 1;
-    GpioWrite( &SX1276.Spi.Nss, 1 );
-#endif
+      while (!(Chip_SPI_GetStatus(LPC_SPI1) & SPI_STAT_TXRDY)) {};
+      if(loop != (size - 1))
+      {
+          Chip_SPI_SendMidFrame(LPC_SPI1, 0x55);
+      }
+      else
+      {
+          Chip_SPI_SendLastFrame(LPC_SPI1,0x55,8);
+      }
+      /* Make sure the last frame sent completely*/
+      //while (!(Chip_SPI_GetStatus(LPC_SPI1) & SPI_STAT_SSD)) {}
+      //Chip_SPI_ClearStatus(LPC_SPI1, SPI_STAT_CLR_SSD);
+      while (!(Chip_SPI_GetStatus(LPC_SPI1) & SPI_STAT_RXRDY)) {};
+      buffer[loop++] = Chip_SPI_ReceiveFrame(LPC_SPI1);
+  }
 }
 
 void SX1276WriteFifo( uint8_t *buffer, uint8_t size )
@@ -1375,7 +1349,7 @@ void SX1276SetPublicNetwork( bool enable )
     }
 }
 
-void SX1276OnTimeoutIrq( TimerHandle_t xTimer )
+void SX1276OnTimeoutIrq( void )
 {
     switch( SX1276.Settings.State )
     {
@@ -1397,12 +1371,12 @@ void SX1276OnTimeoutIrq( TimerHandle_t xTimer )
             {
                 // Continuous mode restart Rx chain
                 SX1276Write( REG_RXCONFIG, SX1276Read( REG_RXCONFIG ) | RF_RXCONFIG_RESTARTRXWITHOUTPLLLOCK );
-                xTimerStart( RxTimeoutSyncWord,0 );
+                TimerStart( &RxTimeoutSyncWord );
             }
             else
             {
                 SX1276.Settings.State = RF_IDLE;
-                xTimerStop( RxTimeoutSyncWord,0 );
+                TimerStop( &RxTimeoutSyncWord );
             }
         }
         if( ( RadioEvents != NULL ) && ( RadioEvents->RxTimeout != NULL ) )
@@ -1457,7 +1431,7 @@ void PININT0_IRQHandler( void )
     switch( SX1276.Settings.State )
     {
         case RF_RX_RUNNING:
-            //xTimerStop( &RxTimeoutTimer );
+            //TimerStop( &RxTimeoutTimer );
             // RxDone interrupt
             switch( SX1276.Settings.Modem )
             {
@@ -1473,18 +1447,18 @@ void PININT0_IRQHandler( void )
                                                     RF_IRQFLAGS1_SYNCADDRESSMATCH );
                         SX1276Write( REG_IRQFLAGS2, RF_IRQFLAGS2_FIFOOVERRUN );
 
-                        xTimerStopFromISR( RxTimeoutTimer,0 );
+                        TimerStop( &RxTimeoutTimer );
 
                         if( SX1276.Settings.Fsk.RxContinuous == false )
                         {
-                            xTimerStopFromISR( RxTimeoutSyncWord,0 );
+                            TimerStop( &RxTimeoutSyncWord );
                             SX1276.Settings.State = RF_IDLE;
                         }
                         else
                         {
                             // Continuous mode restart Rx chain
                             SX1276Write( REG_RXCONFIG, SX1276Read( REG_RXCONFIG ) | RF_RXCONFIG_RESTARTRXWITHOUTPLLLOCK );
-                            xTimerStartFromISR( RxTimeoutSyncWord,0 );
+                            TimerStart( &RxTimeoutSyncWord );
                         }
 
                         if( ( RadioEvents != NULL ) && ( RadioEvents->RxError != NULL ) )
@@ -1519,18 +1493,18 @@ void PININT0_IRQHandler( void )
                     SX1276.Settings.FskPacketHandler.NbBytes += ( SX1276.Settings.FskPacketHandler.Size - SX1276.Settings.FskPacketHandler.NbBytes );
                 }
 
-                xTimerStopFromISR( RxTimeoutTimer,0 );
+                TimerStop( &RxTimeoutTimer );
 
                 if( SX1276.Settings.Fsk.RxContinuous == false )
                 {
                     SX1276.Settings.State = RF_IDLE;
-                    xTimerStopFromISR( RxTimeoutSyncWord,0 );
+                    TimerStop( &RxTimeoutSyncWord );
                 }
                 else
                 {
                     // Continuous mode restart Rx chain
                     SX1276Write( REG_RXCONFIG, SX1276Read( REG_RXCONFIG ) | RF_RXCONFIG_RESTARTRXWITHOUTPLLLOCK );
-                    xTimerStartFromISR( RxTimeoutSyncWord,0 );
+                    TimerStart( &RxTimeoutSyncWord );
                 }
 
                 if( ( RadioEvents != NULL ) && ( RadioEvents->RxDone != NULL ) )
@@ -1559,7 +1533,7 @@ void PININT0_IRQHandler( void )
                         {
                             SX1276.Settings.State = RF_IDLE;
                         }
-                        xTimerStopFromISR( RxTimeoutTimer,0 );
+                        TimerStop( &RxTimeoutTimer );
 
                         if( ( RadioEvents != NULL ) && ( RadioEvents->RxError != NULL ) )
                         {
@@ -1615,7 +1589,7 @@ void PININT0_IRQHandler( void )
                     {
                         SX1276.Settings.State = RF_IDLE;
                     }
-                    xTimerStopFromISR( RxTimeoutTimer,0 );
+                    TimerStop( &RxTimeoutTimer );
 
                     if( ( RadioEvents != NULL ) && ( RadioEvents->RxDone != NULL ) )
                     {
@@ -1628,7 +1602,7 @@ void PININT0_IRQHandler( void )
             }
             break;
         case RF_TX_RUNNING:
-            xTimerStopFromISR( TxTimeoutTimer,0 );
+            TimerStop( &TxTimeoutTimer );
             // TxDone interrupt
             switch( SX1276.Settings.Modem )
             {
@@ -1687,7 +1661,7 @@ void PININT1_IRQHandler( void )
                 break;
             case MODEM_LORA:
                 // Sync time out
-                xTimerStopFromISR( RxTimeoutTimer,0 );
+                TimerStop( &RxTimeoutTimer );
                 // Clear Irq
                 SX1276Write( REG_LR_IRQFLAGS, RFLR_IRQFLAGS_RXTIMEOUT );
 
@@ -1739,14 +1713,14 @@ void PININT2_IRQHandler( void )
             {
             case MODEM_FSK:
                 // Checks if DIO4 is connected. If it is not PreambleDetected is set to true.
-                //if( SX1276.DIO4.port == NULL )
+                if( SX1276.DIO4 == NULL )
                 {
                     SX1276.Settings.FskPacketHandler.PreambleDetected = true;
                 }
 
                 if( ( SX1276.Settings.FskPacketHandler.PreambleDetected == true ) && ( SX1276.Settings.FskPacketHandler.SyncWordDetected == false ) )
                 {
-                    xTimerStopFromISR( RxTimeoutSyncWord,0 );
+                    TimerStop( &RxTimeoutSyncWord );
 
                     SX1276.Settings.FskPacketHandler.SyncWordDetected = true;
 

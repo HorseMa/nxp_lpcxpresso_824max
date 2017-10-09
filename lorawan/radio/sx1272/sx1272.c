@@ -199,9 +199,9 @@ DioIrqHandler *DioIrq[] = { SX1272OnDio0Irq, SX1272OnDio1Irq,
 /*!
  * Tx and Rx timers
  */
-TimerHandle_t TxTimeoutTimer;
-TimerHandle_t RxTimeoutTimer;
-TimerHandle_t RxTimeoutSyncWord;
+TimerEvent_t TxTimeoutTimer;
+TimerEvent_t RxTimeoutTimer;
+TimerEvent_t RxTimeoutSyncWord;
 
 /*
  * Radio driver functions implementation
@@ -214,9 +214,9 @@ void SX1272Init( RadioEvents_t *events )
     RadioEvents = events;
 
     // Initialize driver timeout timers
-    xTimerCreate( &TxTimeoutTimer, SX1272OnTimeoutIrq );
-    xTimerCreate( &RxTimeoutTimer, SX1272OnTimeoutIrq );
-    xTimerCreate( &RxTimeoutSyncWord, SX1272OnTimeoutIrq );
+    TimerInit( &TxTimeoutTimer, SX1272OnTimeoutIrq );
+    TimerInit( &RxTimeoutTimer, SX1272OnTimeoutIrq );
+    TimerInit( &RxTimeoutSyncWord, SX1272OnTimeoutIrq );
 
     SX1272Reset( );
 
@@ -738,8 +738,8 @@ void SX1272Send( uint8_t *buffer, uint8_t size )
 
 void SX1272SetSleep( void )
 {
-    xTimerStop( &RxTimeoutTimer );
-    xTimerStop( &TxTimeoutTimer );
+    TimerStop( &RxTimeoutTimer );
+    TimerStop( &TxTimeoutTimer );
 
     SX1272SetOpMode( RF_OPMODE_SLEEP );
     SX1272.Settings.State = RF_IDLE;
@@ -747,8 +747,8 @@ void SX1272SetSleep( void )
 
 void SX1272SetStby( void )
 {
-    xTimerStop( &RxTimeoutTimer );
-    xTimerStop( &TxTimeoutTimer );
+    TimerStop( &RxTimeoutTimer );
+    TimerStop( &TxTimeoutTimer );
 
     SX1272SetOpMode( RF_OPMODE_STANDBY );
     SX1272.Settings.State = RF_IDLE;
@@ -846,8 +846,8 @@ void SX1272SetRx( uint32_t timeout )
     SX1272.Settings.State = RF_RX_RUNNING;
     if( timeout != 0 )
     {
-        xTimerChangePeriod( &RxTimeoutTimer, timeout );
-        xTimerStart( &RxTimeoutTimer );
+        TimerSetValue( &RxTimeoutTimer, timeout );
+        TimerStart( &RxTimeoutTimer );
     }
 
     if( SX1272.Settings.Modem == MODEM_FSK )
@@ -856,8 +856,8 @@ void SX1272SetRx( uint32_t timeout )
 
         if( rxContinuous == false )
         {
-            xTimerChangePeriod( &RxTimeoutSyncWord, SX1272.Settings.Fsk.RxSingleTimeout );
-            xTimerStart( &RxTimeoutSyncWord );
+            TimerSetValue( &RxTimeoutSyncWord, SX1272.Settings.Fsk.RxSingleTimeout );
+            TimerStart( &RxTimeoutSyncWord );
         }
     }
     else
@@ -875,7 +875,7 @@ void SX1272SetRx( uint32_t timeout )
 
 void SX1272SetTx( uint32_t timeout )
 {
-    xTimerChangePeriod( &TxTimeoutTimer, timeout );
+    TimerSetValue( &TxTimeoutTimer, timeout );
 
     switch( SX1272.Settings.Modem )
     {
@@ -932,7 +932,7 @@ void SX1272SetTx( uint32_t timeout )
     }
 
     SX1272.Settings.State = RF_TX_RUNNING;
-    xTimerStart( &TxTimeoutTimer );
+    TimerStart( &TxTimeoutTimer );
     SX1272SetOpMode( RF_OPMODE_TRANSMITTER );
 }
 
@@ -982,10 +982,10 @@ void SX1272SetTxContinuousWave( uint32_t freq, int8_t power, uint16_t time )
     SX1272Write( REG_DIOMAPPING1, RF_DIOMAPPING1_DIO0_11 | RF_DIOMAPPING1_DIO1_11 );
     SX1272Write( REG_DIOMAPPING2, RF_DIOMAPPING2_DIO4_10 | RF_DIOMAPPING2_DIO5_10 );
 
-    xTimerChangePeriod( &TxTimeoutTimer, timeout );
+    TimerSetValue( &TxTimeoutTimer, timeout );
 
     SX1272.Settings.State = RF_TX_RUNNING;
-    xTimerStart( &TxTimeoutTimer );
+    TimerStart( &TxTimeoutTimer );
     SX1272SetOpMode( RF_OPMODE_TRANSMITTER );
 }
 
@@ -1187,12 +1187,12 @@ void SX1272OnTimeoutIrq( void )
             {
                 // Continuous mode restart Rx chain
                 SX1272Write( REG_RXCONFIG, SX1272Read( REG_RXCONFIG ) | RF_RXCONFIG_RESTARTRXWITHOUTPLLLOCK );
-                xTimerStart( &RxTimeoutSyncWord );
+                TimerStart( &RxTimeoutSyncWord );
             }
             else
             {
                 SX1272.Settings.State = RF_IDLE;
-                xTimerStop( &RxTimeoutSyncWord );
+                TimerStop( &RxTimeoutSyncWord );
             }
         }
         if( ( RadioEvents != NULL ) && ( RadioEvents->RxTimeout != NULL ) )
@@ -1244,7 +1244,7 @@ void SX1272OnDio0Irq( void )
     switch( SX1272.Settings.State )
     {
         case RF_RX_RUNNING:
-            //xTimerStop( &RxTimeoutTimer );
+            //TimerStop( &RxTimeoutTimer );
             // RxDone interrupt
             switch( SX1272.Settings.Modem )
             {
@@ -1260,18 +1260,18 @@ void SX1272OnDio0Irq( void )
                                                     RF_IRQFLAGS1_SYNCADDRESSMATCH );
                         SX1272Write( REG_IRQFLAGS2, RF_IRQFLAGS2_FIFOOVERRUN );
 
-                        xTimerStop( &RxTimeoutTimer );
+                        TimerStop( &RxTimeoutTimer );
 
                         if( SX1272.Settings.Fsk.RxContinuous == false )
                         {
-                            xTimerStop( &RxTimeoutSyncWord );
+                            TimerStop( &RxTimeoutSyncWord );
                             SX1272.Settings.State = RF_IDLE;
                         }
                         else
                         {
                             // Continuous mode restart Rx chain
                             SX1272Write( REG_RXCONFIG, SX1272Read( REG_RXCONFIG ) | RF_RXCONFIG_RESTARTRXWITHOUTPLLLOCK );
-                            xTimerStart( &RxTimeoutSyncWord );
+                            TimerStart( &RxTimeoutSyncWord );
                         }
 
                         if( ( RadioEvents != NULL ) && ( RadioEvents->RxError != NULL ) )
@@ -1306,18 +1306,18 @@ void SX1272OnDio0Irq( void )
                     SX1272.Settings.FskPacketHandler.NbBytes += ( SX1272.Settings.FskPacketHandler.Size - SX1272.Settings.FskPacketHandler.NbBytes );
                 }
 
-                xTimerStop( &RxTimeoutTimer );
+                TimerStop( &RxTimeoutTimer );
 
                 if( SX1272.Settings.Fsk.RxContinuous == false )
                 {
                     SX1272.Settings.State = RF_IDLE;
-                    xTimerStop( &RxTimeoutSyncWord );
+                    TimerStop( &RxTimeoutSyncWord );
                 }
                 else
                 {
                     // Continuous mode restart Rx chain
                     SX1272Write( REG_RXCONFIG, SX1272Read( REG_RXCONFIG ) | RF_RXCONFIG_RESTARTRXWITHOUTPLLLOCK );
-                    xTimerStart( &RxTimeoutSyncWord );
+                    TimerStart( &RxTimeoutSyncWord );
                 }
 
                 if( ( RadioEvents != NULL ) && ( RadioEvents->RxDone != NULL ) )
@@ -1346,7 +1346,7 @@ void SX1272OnDio0Irq( void )
                         {
                             SX1272.Settings.State = RF_IDLE;
                         }
-                        xTimerStop( &RxTimeoutTimer );
+                        TimerStop( &RxTimeoutTimer );
 
                         if( ( RadioEvents != NULL ) && ( RadioEvents->RxError != NULL ) )
                         {
@@ -1387,7 +1387,7 @@ void SX1272OnDio0Irq( void )
                     {
                         SX1272.Settings.State = RF_IDLE;
                     }
-                    xTimerStop( &RxTimeoutTimer );
+                    TimerStop( &RxTimeoutTimer );
 
                     if( ( RadioEvents != NULL ) && ( RadioEvents->RxDone != NULL ) )
                     {
@@ -1400,7 +1400,7 @@ void SX1272OnDio0Irq( void )
             }
             break;
         case RF_TX_RUNNING:
-            xTimerStop( &TxTimeoutTimer );
+            TimerStop( &TxTimeoutTimer );
             // TxDone interrupt
             switch( SX1272.Settings.Modem )
             {
@@ -1458,7 +1458,7 @@ void SX1272OnDio1Irq( void )
                 break;
             case MODEM_LORA:
                 // Sync time out
-                xTimerStop( &RxTimeoutTimer );
+                TimerStop( &RxTimeoutTimer );
                 // Clear Irq
                 SX1272Write( REG_LR_IRQFLAGS, RFLR_IRQFLAGS_RXTIMEOUT );
 
@@ -1516,7 +1516,7 @@ void SX1272OnDio2Irq( void )
 
                 if( ( SX1272.Settings.FskPacketHandler.PreambleDetected == true ) && ( SX1272.Settings.FskPacketHandler.SyncWordDetected == false ) )
                 {
-                    xTimerStop( &RxTimeoutSyncWord );
+                    TimerStop( &RxTimeoutSyncWord );
 
                     SX1272.Settings.FskPacketHandler.SyncWordDetected = true;
 

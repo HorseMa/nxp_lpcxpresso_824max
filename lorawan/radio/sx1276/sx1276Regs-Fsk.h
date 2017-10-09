@@ -995,13 +995,13 @@ Maintainer: Miguel Luis and Gregory Cristian
 
 #define RF_IRQFLAGS1_RXREADY                        0x40
 
-#define RF_IRQFLAGint8_tXREADY                        0x20
+#define RF_IRQFLAGS1_TXREADY                        0x20
 
 #define RF_IRQFLAGS1_PLLLOCK                        0x10
 
 #define RF_IRQFLAGS1_RSSI                           0x08
 
-#define RF_IRQFLAGint8_tIMEOUT                        0x04
+#define RF_IRQFLAGS1_TIMEOUT                        0x04
 
 #define RF_IRQFLAGS1_PREAMBLEDETECT                 0x02
 

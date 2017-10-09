@@ -30,7 +30,7 @@ Maintainer: Miguel Luis ( Semtech ), Gregory Cristian ( Semtech ) and Daniel Jae
 #include "Region.h"
 #include "RegionCommon.h"
 #include "RegionCN470.h"
-
+#include "radio.h"
 // Definitions
 #define CHANNELS_MASK_SIZE              6
 

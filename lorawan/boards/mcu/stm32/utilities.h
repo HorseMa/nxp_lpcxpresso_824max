@@ -97,6 +97,11 @@ void memset1( uint8_t *dst, uint8_t value, uint16_t size );
  * \retval hexChar Converted hexadecimal character
  */
 int8_t Nibble2HexChar( uint8_t a );
+/*
 TimerTime_t TimerGetElapsedTime( TimerTime_t savedTime );
-TimerTime_t TimerGetCurrentTime( void );
+TimerTime_t TimerGetCurrentTime( void );*/
+void Delay( float s );
+void DelayMs( uint32_t ms );
+void BoardDisableIrq( void );
+void BoardEnableIrq( void );
 #endif // __UTILITIES_H__

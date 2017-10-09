@@ -17,8 +17,6 @@ Maintainer: Miguel Luis and Gregory Cristian
 #include "board.h"
 #include "utilities.h"
 #include "typedef.h"
-#include "FreeRTOS.h"
-#include "timers.h"
 
 /*!
  * Redefinition of rand() and srand() standard C functions.
@@ -86,7 +84,7 @@ int8_t Nibble2HexChar( uint8_t a )
         return '?';
     }
 }
-
+/*
 TimerTime_t TimerGetElapsedTime( TimerTime_t savedTime )
 {
     TimerTime_t elapsedTime = 0;
@@ -97,7 +95,7 @@ TimerTime_t TimerGetElapsedTime( TimerTime_t savedTime )
         return 0;
     }
 
-    elapsedTime = xTaskGetTickCount();
+    //elapsedTime = xTaskGetTickCount();
 
     if( elapsedTime < savedTime )
     { // roll over of the counter
@@ -111,5 +109,32 @@ TimerTime_t TimerGetElapsedTime( TimerTime_t savedTime )
 
 TimerTime_t TimerGetCurrentTime( void )
 {
-    return xTaskGetTickCount();//RtcGetTimerValue( );
+    return 0;//xTaskGetTickCount();//RtcGetTimerValue( );
+}
+*/
+void Delay( float s )
+{
+    DelayMs( s * 1000.0f );
+}
+
+void DelayMs( uint32_t ms )
+{
+    //HAL_Delay( ms );
+}
+
+static uint8_t IrqNestLevel = 0;
+
+void BoardDisableIrq( void )
+{
+    __disable_irq( );
+    IrqNestLevel++;
+}
+
+void BoardEnableIrq( void )
+{
+    IrqNestLevel--;
+    if( IrqNestLevel == 0 )
+    {
+        __enable_irq( );
+    }
 }

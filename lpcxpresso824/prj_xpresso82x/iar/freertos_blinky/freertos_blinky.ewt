@@ -445,6 +445,9 @@
         <name>$PROJ_DIR$\..\..\..\..\lorawan\system\crypto\cmac.h</name>
       </file>
       <file>
+        <name>$PROJ_DIR$\..\..\..\..\lorawan\boards\SensorNode\rtc-board.c</name>
+      </file>
+      <file>
         <name>$PROJ_DIR$\..\..\..\..\lorawan\boards\SensorNode\sx1276-board.c</name>
       </file>
       <file>

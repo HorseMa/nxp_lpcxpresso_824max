@@ -25,7 +25,7 @@ typedef struct TimerEvent_s
     bool IsRunning;             //! Is the timer currently running
     void ( *Callback )( void ); //! Timer IRQ callback function
     struct TimerEvent_s *Next;  //! Pointer to the next Timer object.
-}TimerHandle_t;
+}TimerEvent_t;
 
 /*!
  * \brief Timer time variable definition
@@ -37,13 +37,13 @@ typedef uint32_t TimerTime_t;
 /*!
  * \brief Initializes the timer object
  *
- * \remark xTimerChangePeriod function must be called before starting the timer.
+ * \remark TimerSetValue function must be called before starting the timer.
  *         this function initializes timestamp and reload value at 0.
  *
  * \param [IN] obj          Structure containing the timer object parameters
  * \param [IN] callback     Function callback called at the end of the timeout
  */
-void xTimerCreate( TimerHandle_t *obj, void ( *callback )( void ) );
+void TimerInit( TimerEvent_t *obj, void ( *callback )( void ) );
 
 /*!
  * Timer IRQ event handler
@@ -55,21 +55,21 @@ void TimerIrqHandler( void );
  *
  * \param [IN] obj Structure containing the timer object parameters
  */
-void xTimerStart( TimerHandle_t *obj );
+void TimerStart( TimerEvent_t *obj );
 
 /*!
  * \brief Stops and removes the timer object from the list of timer events
  *
  * \param [IN] obj Structure containing the timer object parameters
  */
-void xTimerStop( TimerHandle_t *obj );
+void TimerStop( TimerEvent_t *obj );
 
 /*!
  * \brief Resets the timer object
  *
  * \param [IN] obj Structure containing the timer object parameters
  */
-void TimerReset( TimerHandle_t *obj );
+void TimerReset( TimerEvent_t *obj );
 
 /*!
  * \brief Set timer new timeout value
@@ -77,7 +77,7 @@ void TimerReset( TimerHandle_t *obj );
  * \param [IN] obj   Structure containing the timer object parameters
  * \param [IN] value New timer timeout value
  */
-void xTimerChangePeriod( TimerHandle_t *obj, uint32_t value );
+void TimerSetValue( TimerEvent_t *obj, uint32_t value );
 
 /*!
  * \brief Read the current time

@@ -320,7 +320,7 @@ void BlockLowPowerDuringTask ( bool status )
     }
     LowPowerDisableDuringTask = status;
 }
-
+/*
 void RtcEnterLowPowerStopMode( void )
 {
     if( ( LowPowerDisableDuringTask == false ) && ( RtcTimerEventAllowsLowPower == true ) )
@@ -342,8 +342,8 @@ void RtcEnterLowPowerStopMode( void )
         HAL_PWR_EnterSTOPMode( PWR_LOWPOWERREGULATOR_ON, PWR_STOPENTRY_WFI );
     }
 }
-
-void RtcRecoverMcuStatus( void )
+*/
+/*void RtcRecoverMcuStatus( void )
 {
     // PWR_FLAG_WU indicates the Alarm has waken-up the MCU
     if( __HAL_PWR_GET_FLAG( PWR_FLAG_WU ) != RESET )
@@ -360,8 +360,8 @@ void RtcRecoverMcuStatus( void )
     {
         BoardInitMcu( );
     }
-}
-
+}*/
+/*
 static void RtcComputeWakeUpTime( void )
 {
     uint32_t start = 0;
@@ -382,8 +382,8 @@ static void RtcComputeWakeUpTime( void )
         WakeUpTimeInitialized = true;
     }
 }
-
-static void RtcStartWakeUpAlarm( uint32_t timeoutValue )
+*/
+/*static void RtcStartWakeUpAlarm( uint32_t timeoutValue )
 {
     RtcCalendar_t now;
     RtcCalendar_t alarmTimer;
@@ -415,7 +415,7 @@ static void RtcStartWakeUpAlarm( uint32_t timeoutValue )
     {
         assert_param( FAIL );
     }
-}
+}*/
 
 static RtcCalendar_t RtcComputeTimerTimeToAlarmTick( TimerTime_t timeCounter, RtcCalendar_t now )
 {
@@ -526,7 +526,7 @@ static RtcCalendar_t RtcComputeTimerTimeToAlarmTick( TimerTime_t timeCounter, Rt
 //         "#177-D function was declared but never referenced" warning.
 // static RtcCalendar_t RtcConvertTimerTimeToCalendarTick( TimerTime_t timeCounter )
 //
-RtcCalendar_t RtcConvertTimerTimeToCalendarTick( TimerTime_t timeCounter )
+/*RtcCalendar_t RtcConvertTimerTimeToCalendarTick( TimerTime_t timeCounter )
 {
     RtcCalendar_t calendar = { 0 };
 
@@ -623,7 +623,7 @@ RtcCalendar_t RtcConvertTimerTimeToCalendarTick( TimerTime_t timeCounter )
     calendar.CalendarCentury = century;
 
     return calendar;
-}
+}*/
 
 static TimerTime_t RtcConvertCalendarTickToTimerTime( RtcCalendar_t *calendar )
 {
@@ -682,7 +682,7 @@ static TimerTime_t RtcConvertCalendarTickToTimerTime( RtcCalendar_t *calendar )
     return ( timeCounter );
 }
 
-static void RtcCheckCalendarRollOver( uint8_t year )
+/*static void RtcCheckCalendarRollOver( uint8_t year )
 {
     if( year == 99 )
     {
@@ -694,9 +694,9 @@ static void RtcCheckCalendarRollOver( uint8_t year )
         CalendarRollOverReady = false;
         Century = Century + 100;
     }
-}
+}*/
 
-static RtcCalendar_t RtcGetCalendar( void )
+/*static RtcCalendar_t RtcGetCalendar( void )
 {
     RtcCalendar_t calendar;
     HAL_RTC_GetTime( &RtcHandle, &calendar.CalendarTime, RTC_FORMAT_BIN );
@@ -704,7 +704,7 @@ static RtcCalendar_t RtcGetCalendar( void )
     calendar.CalendarCentury = Century;
     RtcCheckCalendarRollOver( calendar.CalendarDate.Year );
     return calendar;
-}
+}*/
 
 /*!
  * \brief RTC IRQ Handler of the RTC Alarm

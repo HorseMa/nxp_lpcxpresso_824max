@@ -18,14 +18,11 @@ Maintainer: Miguel Luis and Gregory Cristian
 #include <string.h>
 #include <math.h>
 #include "board.h"
-#include "FreeRTOS.h"
-#include "timers.h"
+#include "utilities.h"
 #include "LoRaMac.h"
 #include "Region.h"
 #include "Commissioning.h"
-#include "utilities.h"
 
-#define REGION_CN470
 /*!
  * Defines the application data transmission duty cycle. 5s, value in [ms].
  */
@@ -152,7 +149,7 @@ static uint32_t TxDutyCycleTime;
 /*!
  * Timer to handle the application data transmission duty cycle
  */
-static TimerHandle_t TxNextPacketTimer;
+static TimerEvent_t TxNextPacketTimer;
 
 /*!
  * Specifies the state of the application LED
@@ -162,17 +159,17 @@ static bool AppLedStateOn = false;
 /*!
  * Timer to handle the state of LED1
  */
-static TimerHandle_t Led1Timer;
+static TimerEvent_t Led1Timer;
 
 /*!
  * Timer to handle the state of LED2
  */
-static TimerHandle_t Led2Timer;
+static TimerEvent_t Led2Timer;
 
 /*!
  * Timer to handle the state of LED4
  */
-static TimerHandle_t Led4Timer;
+static TimerEvent_t Led4Timer;
 
 /*!
  * Indicates if a new packet can be sent
@@ -353,12 +350,12 @@ static bool SendFrame( void )
 /*!
  * \brief Function executed on TxNextPacket Timeout event
  */
-static void OnTxNextPacketTimerEvent( TimerHandle_t xTimer )
+static void OnTxNextPacketTimerEvent( void )
 {
     MibRequestConfirm_t mibReq;
     LoRaMacStatus_t status;
 
-    xTimerStop( TxNextPacketTimer,0 );
+    TimerStop( &TxNextPacketTimer );
 
     mibReq.Type = MIB_NETWORK_JOINED;
     status = LoRaMacMibGetRequestConfirm( &mibReq );
@@ -380,9 +377,9 @@ static void OnTxNextPacketTimerEvent( TimerHandle_t xTimer )
 /*!
  * \brief Function executed on Led 1 Timeout event
  */
-static void OnLed1TimerEvent( TimerHandle_t xTimer )
+static void OnLed1TimerEvent( void )
 {
-    xTimerStop( Led1Timer,0 );
+    TimerStop( &Led1Timer );
     // Switch LED 1 OFF
     //GpioWrite( &Led1, 1 );
 }
@@ -390,9 +387,9 @@ static void OnLed1TimerEvent( TimerHandle_t xTimer )
 /*!
  * \brief Function executed on Led 2 Timeout event
  */
-static void OnLed2TimerEvent( TimerHandle_t xTimer )
+static void OnLed2TimerEvent( void )
 {
-    xTimerStop( Led2Timer,0 );
+    TimerStop( &Led2Timer );
     // Switch LED 2 OFF
     //GpioWrite( &Led2, 1 );
 }
@@ -400,9 +397,9 @@ static void OnLed2TimerEvent( TimerHandle_t xTimer )
 /*!
  * \brief Function executed on Led 4 Timeout event
  */
-static void OnLed4TimerEvent( TimerHandle_t xTimer )
+static void OnLed4TimerEvent( void )
 {
-    xTimerStop( Led4Timer,0 );
+    TimerStop( &Led4Timer );
     // Switch LED 4 OFF
     //GpioWrite( &Led4, 1 );
 }
@@ -443,7 +440,7 @@ static void McpsConfirm( McpsConfirm_t *mcpsConfirm )
 
         // Switch LED 1 ON
         //GpioWrite( &Led1, 0 );
-        xTimerStart( Led1Timer ,0);
+        TimerStart( &Led1Timer );
     }
     NextTx = true;
 }
@@ -653,7 +650,7 @@ static void McpsIndication( McpsIndication_t *mcpsIndication )
 
     // Switch LED 2 ON for each received downlink
     //GpioWrite( &Led2, 0 );
-    xTimerStart( Led2Timer,0 );
+    TimerStart( &Led2Timer );
 }
 
 /*!
@@ -712,7 +709,12 @@ int main( void )
 
     //BoardInitMcu( );
     //BoardInitPeriph( );
-
+    
+    /* Enable SysTick Timer */
+    SystemCoreClockUpdate();
+    Chip_Clock_EnablePeriphClock(SYSCTL_CLOCK_SYS);
+    SysTick_Config(SystemCoreClock / 1000);
+    
     DeviceState = DEVICE_STATE_INIT;
 
     while( 1 )
@@ -721,9 +723,9 @@ int main( void )
         {
             case DEVICE_STATE_INIT:
             {
-                LoRaMacPrimitives.MacMcpsConfirm = McpsConfirm;
-                LoRaMacPrimitives.MacMcpsIndication = McpsIndication;
-                LoRaMacPrimitives.MacMlmeConfirm = MlmeConfirm;
+                //LoRaMacPrimitives.MacMcpsConfirm = McpsConfirm;
+                //LoRaMacPrimitives.MacMcpsIndication = McpsIndication;
+                //LoRaMacPrimitives.MacMlmeConfirm = MlmeConfirm;
                 //LoRaMacCallbacks.GetBatteryLevel = BoardGetBatteryLevel;
 #if defined( REGION_AS923 )
                 LoRaMacInitialization( &LoRaMacPrimitives, &LoRaMacCallbacks, LORAMAC_REGION_AS923 );
@@ -748,12 +750,16 @@ int main( void )
 #else
     #error "Please define a region in the compiler options."
 #endif
-                TxNextPacketTimer = xTimerCreate( "TxNextPacketTimer", 0, pdFALSE, 0, OnTxNextPacketTimerEvent );
-                Led1Timer = xTimerCreate( "Led1Timer", 0, pdFALSE, 0, OnLed1TimerEvent );
-                xTimerChangePeriod( Led1Timer, 25,0 );
+                TimerInit( &TxNextPacketTimer, OnTxNextPacketTimerEvent );
 
-                Led2Timer = xTimerCreate( "Led2Timer", 0, pdFALSE, 0, OnLed2TimerEvent );
-                xTimerChangePeriod( Led2Timer, 25,0 );
+                TimerInit( &Led1Timer, OnLed1TimerEvent );
+                TimerSetValue( &Led1Timer, 25 );
+
+                TimerInit( &Led2Timer, OnLed2TimerEvent );
+                TimerSetValue( &Led2Timer, 25 );
+
+                TimerInit( &Led4Timer, OnLed4TimerEvent );
+                TimerSetValue( &Led4Timer, 25 );
 
                 mibReq.Type = MIB_ADR;
                 mibReq.Param.AdrEnable = LORAWAN_ADR_ON;
@@ -813,7 +819,7 @@ int main( void )
                 if( DevAddr == 0 )
                 {
                     // Random seed initialization
-                    //srand1( BoardGetRandomSeed( ) );
+                    srand1(0x55aa);//( BoardGetRandomSeed( ) );
 
                     // Choose a random device address
                     DevAddr = randr( 0, 0x01FFFFFF );
@@ -869,8 +875,8 @@ int main( void )
                 DeviceState = DEVICE_STATE_SLEEP;
 
                 // Schedule next packet transmission
-                xTimerChangePeriod( TxNextPacketTimer, TxDutyCycleTime,0 );
-                xTimerStart( TxNextPacketTimer,0 );
+                TimerSetValue( &TxNextPacketTimer, TxDutyCycleTime );
+                TimerStart( &TxNextPacketTimer );
                 break;
             }
             case DEVICE_STATE_SLEEP:
@@ -885,11 +891,12 @@ int main( void )
                 break;
             }
         }
-        //if( GpsGetPpsDetectedState( ) == true )
+        /*
+        if( GpsGetPpsDetectedState( ) == true )
         {
             // Switch LED 4 ON
             //GpioWrite( &Led4, 0 );
-            //xTimerStart( Led4Timer ,0);
-        }
+            TimerStart( &Led4Timer );
+        }*/
     }
 }

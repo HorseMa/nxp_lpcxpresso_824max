@@ -22,8 +22,8 @@ Maintainer: Miguel Luis ( Semtech ), Gregory Cristian ( Semtech ) and Daniel Jae
 #include <string.h>
 #include <stdint.h>
 #include <math.h>
-#include "FreeRTOS.h"
-#include "timers.h"
+
+#include "timer.h"
 #include "utilities.h"
 #include "LoRaMac.h"
 #include "RegionCommon.h"
