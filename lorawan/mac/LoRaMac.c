@@ -2412,7 +2412,7 @@ LoRaMacStatus_t LoRaMacInitialization( LoRaMacPrimitives_t *primitives, LoRaMacC
     // Initialize timers
     MacStateCheckTimer = xTimerCreate( "MacStateCheckTimer", 1000, pdFALSE, 0, OnMacStateCheckTimerEvent );
     xTimerChangePeriod( MacStateCheckTimer, MAC_STATE_CHECK_TIMEOUT,0 );
-    
+    xTimerStop( MacStateCheckTimer,0 );
     TxDelayedTimer = xTimerCreate( "TxDelayedTimer", 1000, pdFALSE, 0, OnTxDelayedTimerEvent );
     RxWindowTimer1 = xTimerCreate( "RxWindowTimer1", 1000, pdFALSE, 0, OnRxWindow1TimerEvent );
     RxWindowTimer2 = xTimerCreate( "RxWindowTimer2", 1000, pdFALSE, 0, OnRxWindow2TimerEvent );

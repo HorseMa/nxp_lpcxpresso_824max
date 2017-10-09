@@ -782,10 +782,10 @@ static void vLEDTask0 (void *pvParameters) {
                 TxNextPacketTimer = xTimerCreate( "TxNextPacketTimer", 1000, pdFALSE, 0, OnTxNextPacketTimerEvent );
                 Led1Timer = xTimerCreate( "Led1Timer", 1000, pdFALSE, 0, OnLed1TimerEvent );
                 xTimerChangePeriod( Led1Timer, 25,0 );
-
+                xTimerStop( Led1Timer,0 );
                 Led2Timer = xTimerCreate( "Led2Timer", 1000, pdFALSE, 0, OnLed2TimerEvent );
                 xTimerChangePeriod( Led2Timer, 25,0 );
-
+                xTimerStop( Led2Timer,0 );
                 mibReq.Type = MIB_ADR;
                 mibReq.Param.AdrEnable = LORAWAN_ADR_ON;
                 LoRaMacMibSetRequestConfirm( &mibReq );

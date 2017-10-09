@@ -1014,7 +1014,7 @@ void SX1276SetRx( uint32_t timeout )
 void SX1276SetTx( uint32_t timeout )
 {
     xTimerChangePeriod( TxTimeoutTimer, timeout,0 );
-
+    xTimerStop( TxTimeoutTimer,0 );
     switch( SX1276.Settings.Modem )
     {
     case MODEM_FSK:
@@ -1121,7 +1121,7 @@ void SX1276SetTxContinuousWave( uint32_t freq, int8_t power, uint16_t time )
     SX1276Write( REG_DIOMAPPING2, RF_DIOMAPPING2_DIO4_10 | RF_DIOMAPPING2_DIO5_10 );
 
     xTimerChangePeriod( TxTimeoutTimer, timeout,0 );
-
+    xTimerStop( TxTimeoutTimer,0 );
     SX1276.Settings.State = RF_TX_RUNNING;
     xTimerStart( TxTimeoutTimer,0 );
     SX1276SetOpMode( RF_OPMODE_TRANSMITTER );
@@ -1473,18 +1473,18 @@ void PININT0_IRQHandler( void )
                                                     RF_IRQFLAGS1_SYNCADDRESSMATCH );
                         SX1276Write( REG_IRQFLAGS2, RF_IRQFLAGS2_FIFOOVERRUN );
 
-                        xTimerStop( RxTimeoutTimer,0 );
+                        xTimerStopFromISR( RxTimeoutTimer,0 );
 
                         if( SX1276.Settings.Fsk.RxContinuous == false )
                         {
-                            xTimerStop( RxTimeoutSyncWord,0 );
+                            xTimerStopFromISR( RxTimeoutSyncWord,0 );
                             SX1276.Settings.State = RF_IDLE;
                         }
                         else
                         {
                             // Continuous mode restart Rx chain
                             SX1276Write( REG_RXCONFIG, SX1276Read( REG_RXCONFIG ) | RF_RXCONFIG_RESTARTRXWITHOUTPLLLOCK );
-                            xTimerStart( RxTimeoutSyncWord,0 );
+                            xTimerStartFromISR( RxTimeoutSyncWord,0 );
                         }
 
                         if( ( RadioEvents != NULL ) && ( RadioEvents->RxError != NULL ) )
@@ -1519,18 +1519,18 @@ void PININT0_IRQHandler( void )
                     SX1276.Settings.FskPacketHandler.NbBytes += ( SX1276.Settings.FskPacketHandler.Size - SX1276.Settings.FskPacketHandler.NbBytes );
                 }
 
-                xTimerStop( RxTimeoutTimer,0 );
+                xTimerStopFromISR( RxTimeoutTimer,0 );
 
                 if( SX1276.Settings.Fsk.RxContinuous == false )
                 {
                     SX1276.Settings.State = RF_IDLE;
-                    xTimerStop( RxTimeoutSyncWord,0 );
+                    xTimerStopFromISR( RxTimeoutSyncWord,0 );
                 }
                 else
                 {
                     // Continuous mode restart Rx chain
                     SX1276Write( REG_RXCONFIG, SX1276Read( REG_RXCONFIG ) | RF_RXCONFIG_RESTARTRXWITHOUTPLLLOCK );
-                    xTimerStart( RxTimeoutSyncWord,0 );
+                    xTimerStartFromISR( RxTimeoutSyncWord,0 );
                 }
 
                 if( ( RadioEvents != NULL ) && ( RadioEvents->RxDone != NULL ) )
@@ -1559,7 +1559,7 @@ void PININT0_IRQHandler( void )
                         {
                             SX1276.Settings.State = RF_IDLE;
                         }
-                        xTimerStop( RxTimeoutTimer,0 );
+                        xTimerStopFromISR( RxTimeoutTimer,0 );
 
                         if( ( RadioEvents != NULL ) && ( RadioEvents->RxError != NULL ) )
                         {
@@ -1615,7 +1615,7 @@ void PININT0_IRQHandler( void )
                     {
                         SX1276.Settings.State = RF_IDLE;
                     }
-                    xTimerStop( RxTimeoutTimer,0 );
+                    xTimerStopFromISR( RxTimeoutTimer,0 );
 
                     if( ( RadioEvents != NULL ) && ( RadioEvents->RxDone != NULL ) )
                     {
@@ -1628,7 +1628,7 @@ void PININT0_IRQHandler( void )
             }
             break;
         case RF_TX_RUNNING:
-            xTimerStop( TxTimeoutTimer,0 );
+            xTimerStopFromISR( TxTimeoutTimer,0 );
             // TxDone interrupt
             switch( SX1276.Settings.Modem )
             {
@@ -1687,7 +1687,7 @@ void PININT1_IRQHandler( void )
                 break;
             case MODEM_LORA:
                 // Sync time out
-                xTimerStop( RxTimeoutTimer,0 );
+                xTimerStopFromISR( RxTimeoutTimer,0 );
                 // Clear Irq
                 SX1276Write( REG_LR_IRQFLAGS, RFLR_IRQFLAGS_RXTIMEOUT );
 
@@ -1746,7 +1746,7 @@ void PININT2_IRQHandler( void )
 
                 if( ( SX1276.Settings.FskPacketHandler.PreambleDetected == true ) && ( SX1276.Settings.FskPacketHandler.SyncWordDetected == false ) )
                 {
-                    xTimerStop( RxTimeoutSyncWord,0 );
+                    xTimerStopFromISR( RxTimeoutSyncWord,0 );
 
                     SX1276.Settings.FskPacketHandler.SyncWordDetected = true;
 
