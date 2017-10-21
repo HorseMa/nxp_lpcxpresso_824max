@@ -159,42 +159,42 @@ void SX1276IoIrqInit( void )
 {
   /* Configure channel 0 interrupt as edge sensitive and falling edge interrupt */
   Chip_PININT_SetPinModeEdge(LPC_PININT, PININTCH0);
-  Chip_PININT_EnableIntLow(LPC_PININT, PININTCH0);
+  Chip_PININT_EnableIntHigh(LPC_PININT, PININTCH0);
 
   /* Enable interrupt in the NVIC */
   NVIC_EnableIRQ(PININT0_IRQn);
 
   /* Configure channel 0 interrupt as edge sensitive and falling edge interrupt */
   Chip_PININT_SetPinModeEdge(LPC_PININT, PININTCH1);
-  Chip_PININT_EnableIntLow(LPC_PININT, PININTCH1);
+  Chip_PININT_EnableIntHigh(LPC_PININT, PININTCH1);
 
   /* Enable interrupt in the NVIC */
   NVIC_EnableIRQ(PININT1_IRQn);
 
   /* Configure channel 0 interrupt as edge sensitive and falling edge interrupt */
   Chip_PININT_SetPinModeEdge(LPC_PININT, PININTCH2);
-  Chip_PININT_EnableIntLow(LPC_PININT, PININTCH2);
+  Chip_PININT_EnableIntHigh(LPC_PININT, PININTCH2);
 
   /* Enable interrupt in the NVIC */
   NVIC_EnableIRQ(PININT2_IRQn);
 
   /* Configure channel 0 interrupt as edge sensitive and falling edge interrupt */
   Chip_PININT_SetPinModeEdge(LPC_PININT, PININTCH3);
-  Chip_PININT_EnableIntLow(LPC_PININT, PININTCH3);
+  Chip_PININT_EnableIntHigh(LPC_PININT, PININTCH3);
 
   /* Enable interrupt in the NVIC */
   NVIC_EnableIRQ(PININT3_IRQn);
 
   /* Configure channel 0 interrupt as edge sensitive and falling edge interrupt */
   Chip_PININT_SetPinModeEdge(LPC_PININT, PININTCH4);
-  Chip_PININT_EnableIntLow(LPC_PININT, PININTCH4);
+  Chip_PININT_EnableIntHigh(LPC_PININT, PININTCH4);
 
   /* Enable interrupt in the NVIC */
   NVIC_EnableIRQ(PININT4_IRQn);
 
   /* Configure channel 0 interrupt as edge sensitive and falling edge interrupt */
   Chip_PININT_SetPinModeEdge(LPC_PININT, PININTCH5);
-  Chip_PININT_EnableIntLow(LPC_PININT, PININTCH5);
+  Chip_PININT_EnableIntHigh(LPC_PININT, PININTCH5);
 
   /* Enable interrupt in the NVIC */
   NVIC_EnableIRQ(PININT5_IRQn);

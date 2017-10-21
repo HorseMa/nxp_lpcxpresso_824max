@@ -119,6 +119,9 @@ void Delay( float s )
 
 void DelayMs( uint32_t ms )
 {
+    uint32_t i,j;
+    for(i = 0;i < 1000;i++)
+      for(j = 0;j < 5;j++);
     //HAL_Delay( ms );
 }
 
