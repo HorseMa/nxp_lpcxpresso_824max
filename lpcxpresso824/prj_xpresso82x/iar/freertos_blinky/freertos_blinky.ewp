@@ -1137,7 +1137,8 @@
           <name>CCDefines</name>
           <state>CORE_M0PLUS</state>
           <state>DEBUG_UART=LPC_USART0</state>
-          <state>REGION_CN470</state>
+          <state>REGION_EU433</state>
+          <state>USE_MODEM_LORA</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -3873,7 +3874,7 @@
       <name>$PROJ_DIR$\..\..\..\chip_82x\startup\iar_startup_lpc82x.s</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classA\SensorNode\main.c</name>
+      <name>$PROJ_DIR$\..\..\..\..\lorawan\apps\ping-pong\SensorNode\main.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classA\Bleeper-76\mainA.c</name>

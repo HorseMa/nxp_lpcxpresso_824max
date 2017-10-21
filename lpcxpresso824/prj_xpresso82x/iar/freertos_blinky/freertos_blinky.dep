@@ -2,7 +2,7 @@
 
 <project>
   <fileVersion>2</fileVersion>
-  <fileChecksum>3790064632</fileChecksum>
+  <fileChecksum>1565244070</fileChecksum>
   <configuration>
     <name>ClassA</name>
     <outputs>
@@ -218,7 +218,9 @@
       <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\include\queue.h</file>
       <file>$PROJ_DIR$\ClassA\Obj\mainB.pbi</file>
       <file>$PROJ_DIR$\ClassA\Obj\usart.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\..\lorawan\mac\region\RegionEU433.h</file>
       <file>$PROJ_DIR$\..\..\..\chip_82x\src\sysinit_8xx.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\lorawan\apps\ping-pong\SensorNode\main.c</file>
     </outputs>
     <file>
       <name>$PROJ_DIR$\..\..\..\examples_82x\freertos_blinky\src\freertos_blinky.c</name>
@@ -801,10 +803,6 @@
           <name>ICCARM</name>
           <file> 127 136 186 86 92 96 135 206 89 113 85 120 200 140 143 147 78 165 139 67 146 102 179 131 122 116 175 184 84 123 71 197 68 121 150 164 185 115 187 70 195 148 201 174 178 124 87 114 137 125 66 55 169 94 119 56 202 111 170 149 107</file>
         </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 120 179 187 123 137 200 116 121 201 55 96 86 78 92 170 184 197 164 195 87 113 139 146 122 115 124 111 149 136 94 186 140 67 175 84 71 68 150 185 70 148 178 114 125 66 169 135 85 206 89 143 147 165 102 131 56 127 174 119 202 107</file>
-        </tool>
       </inputs>
     </file>
     <file>
@@ -822,11 +820,11 @@
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 95 92 96 135 206 89 113 85 56 119 202 127 136 186 86 120 200 140 143 147 78 165 139 67 146 102 179 131 122 116 175 184 84 123 71 197 68 121 150 164 185 115 187 70 195 148 201 174 178 124 87 114 137 125 66 55 169 94 149 107</file>
+          <file> 95 92 96 135 206 89 113 85 56 119 202 127 136 186 86 120 200 140 143 147 78 165 139 67 146 102 179 131 122 116 175 184 84 123 71 197 68 121 150 164 185 115 187 70 195 148 201 174 178 124 87 114 137 125 66 55 169 94 149 107 111</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 56 113 195 92 197 96 147 131 107 184 164 87 120 143 165 127 200 116 123 121 187 201 137 55 186 102 174 119 149 135 85 206 89 202 136 94 140 67 175 84 71 68 150 185 70 148 178 114 125 66 169 86 139 78 146 179 122 115 124 95</file>
+          <file> 186 96 70 89 94 71 125 92 179 107 202 136 140 175 150 178 169 86 200 78 115 124 127 113 135 85 206 67 84 68 185 148 114 66 139 146 122 174 119 149 111 56 116 184 123 197 121 164 187 195 201 87 137 55 120 143 147 165 102 131 95</file>
         </tool>
       </inputs>
     </file>
@@ -845,11 +843,11 @@
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 120 155 92 96 135 206 89 113 85 56 57 86 111 36 133 47</file>
+          <file> 120 155 92 96 135 206 89 113 85 56 57 86 111 36 133 212</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 113 96 92 155 47 120 86 111 36 133 56 57 135 85 206 89</file>
+          <file> 96 133 85 155 212 92 135 120 86 111 56 206 36 57 89 113</file>
         </tool>
       </inputs>
     </file>
@@ -872,7 +870,7 @@
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 164 186 124 119 133 184 87 120 179 174 149 197 195 96 200 86 78 115 92 41 38 116 123 121 187 201 137 55 113 139 146 122 127 36 90 136 94 140 67 175 84 71 68 150 185 70 148 178 114 125 66 169 135 85 206 89 143 147 165 102 131 56 202 111 107</file>
+          <file> 164 186 133 184 87 120 179 149 197 195 96 200 86 78 115 174 56 41 38 116 123 121 187 201 137 55 113 92 139 146 122 127 36 90 136 94 140 67 175 84 71 68 150 185 70 148 178 114 125 66 169 135 85 206 89 143 147 165 102 131 124 119 202 111 107</file>
         </tool>
       </inputs>
     </file>
@@ -941,7 +939,7 @@
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 166 92 77 144 155 149 96 113 120 86 111 36 56 57 107 135 85 206 89 145</file>
+          <file> 166 144 155 149 96 120 86 111 36 92 56 57 113 77 107 135 85 206 89 145</file>
         </tool>
       </inputs>
     </file>
@@ -1076,8 +1074,35 @@
         </tool>
       </inputs>
     </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\lorawan\apps\ping-pong\SensorNode\main.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 59</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 190</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 155 92 96 135 206 89 113 85 56 57 127 136 186 86 120 200 140 143 147 78 165 139 67 146 102 179 131 122 116 175 184 84 123 71 197 68 121 150 164 185 115 187 70 195 148 201 174 178 124 87 114 137 125 66 55 169 94 119 202 41 149 107</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 102 195 92 197 41 184 164 87 186 155 96 113 200 116 123 121 187 201 137 55 120 143 147 165 131 115 124 127 149 56 57 135 85 206 89 136 94 140 67 175 84 71 68 150 185 70 148 178 114 125 66 169 86 139 78 146 179 122 174 119 202 107</file>
+        </tool>
+      </inputs>
+    </file>
     <forcedrebuild>
       <name>$PROJ_DIR$\..\..\..\examples_82x\freertos_blinky\src\freertos_blinky.c</name>
+      <tool>ICCARM</tool>
+    </forcedrebuild>
+    <forcedrebuild>
+      <name>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classA\SensorNode\main.c</name>
       <tool>ICCARM</tool>
     </forcedrebuild>
     <forcedrebuild>

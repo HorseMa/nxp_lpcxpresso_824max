@@ -17,7 +17,7 @@ Maintainer: Miguel Luis and Gregory Cristian
 #include "board.h"
 #include "utilities.h"
 #include "typedef.h"
-
+#include "timer.h"
 /*!
  * Redefinition of rand() and srand() standard C functions.
  * These functions are redefined in order to get the same behavior across
@@ -119,6 +119,9 @@ void Delay( float s )
 
 void DelayMs( uint32_t ms )
 {
+    uint32_t i,j;
+    for(i = 0;i < 1000;i++)
+      for(j = 0;j < 5;j++);
     //HAL_Delay( ms );
 }
 

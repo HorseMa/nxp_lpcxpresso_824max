@@ -173,6 +173,11 @@ void TimerSetValue( TimerEvent_t *obj, uint32_t value )
     obj->Timestamp = value;
     obj->ReloadValue = value;
 }
+
+uint32_t TimerGetCur(void)
+{
+    return systicks;
+}
 #if 0
 TimerTime_t TimerGetValue( void )
 {

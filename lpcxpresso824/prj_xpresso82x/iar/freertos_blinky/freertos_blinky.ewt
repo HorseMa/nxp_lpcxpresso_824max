@@ -347,7 +347,7 @@
       <name>$PROJ_DIR$\..\..\..\chip_82x\startup\iar_startup_lpc82x.s</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classA\SensorNode\main.c</name>
+      <name>$PROJ_DIR$\..\..\..\..\lorawan\apps\ping-pong\SensorNode\main.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classA\Bleeper-76\mainA.c</name>

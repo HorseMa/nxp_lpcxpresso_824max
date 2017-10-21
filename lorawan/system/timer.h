@@ -78,7 +78,7 @@ void TimerReset( TimerEvent_t *obj );
  * \param [IN] value New timer timeout value
  */
 void TimerSetValue( TimerEvent_t *obj, uint32_t value );
-
+uint32_t TimerGetCur(void);
 /*!
  * \brief Read the current time
  *

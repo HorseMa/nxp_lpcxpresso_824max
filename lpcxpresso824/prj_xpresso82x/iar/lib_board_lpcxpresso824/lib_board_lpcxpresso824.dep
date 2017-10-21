@@ -84,6 +84,7 @@
       <file>$PROJ_DIR$\..\..\..\chip_82x\inc\uart_8xx.h</file>
       <file>$PROJ_DIR$\iar_output\Obj\iar_startup_lpc82x.o</file>
       <file>$PROJ_DIR$\iar_output\Obj\lib_board_lpcxpresso824.pbd</file>
+      <file>$PROJ_DIR$\..\..\..\..\lorawan\boards\SensorNode\sx1276-board.c</file>
     </outputs>
     <file>
       <name>[ROOT_NODE]</name>
