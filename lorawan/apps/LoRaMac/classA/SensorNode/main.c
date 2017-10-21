@@ -698,6 +698,10 @@ static void MlmeConfirm( MlmeConfirm_t *mlmeConfirm )
     NextTx = true;
 }
 
+uint8_t BoardGetBatteryLevel(void)
+{
+    return 0;
+}
 /**
  * Main application entry point.
  */
@@ -723,10 +727,10 @@ int main( void )
         {
             case DEVICE_STATE_INIT:
             {
-                //LoRaMacPrimitives.MacMcpsConfirm = McpsConfirm;
-                //LoRaMacPrimitives.MacMcpsIndication = McpsIndication;
-                //LoRaMacPrimitives.MacMlmeConfirm = MlmeConfirm;
-                //LoRaMacCallbacks.GetBatteryLevel = BoardGetBatteryLevel;
+                LoRaMacPrimitives.MacMcpsConfirm = McpsConfirm;
+                LoRaMacPrimitives.MacMcpsIndication = McpsIndication;
+                LoRaMacPrimitives.MacMlmeConfirm = MlmeConfirm;
+                LoRaMacCallbacks.GetBatteryLevel = BoardGetBatteryLevel;
 #if defined( REGION_AS923 )
                 LoRaMacInitialization( &LoRaMacPrimitives, &LoRaMacCallbacks, LORAMAC_REGION_AS923 );
 #elif defined( REGION_AU915 )
@@ -800,7 +804,7 @@ int main( void )
                 MlmeReq_t mlmeReq;
 
                 // Initialize LoRaMac device unique ID
-                BoardGetUniqueId( DevEui );
+                //BoardGetUniqueId( DevEui );
 
                 mlmeReq.Type = MLME_JOIN;
 
