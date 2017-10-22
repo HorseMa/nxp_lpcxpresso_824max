@@ -186,6 +186,14 @@ TimerTime_t TimerGetCurrentTime( void )
 
 TimerTime_t TimerGetElapsedTime( TimerTime_t savedTime )
 {
+    if(savedTime > systicks)
+    {
+        return (0xffffffff - savedTime + systicks);
+    }
+    else
+    {
+        return (systicks - savedTime);
+    }
     return 0;//RtcComputeElapsedTime( savedTime );
 }
 #if 0
