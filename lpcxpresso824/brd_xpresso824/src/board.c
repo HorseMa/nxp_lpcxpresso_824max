@@ -68,14 +68,17 @@ STATIC void Board_UART_Init(void)
 {
 	/* Enable the clock to the Switch Matrix */
 	Chip_Clock_EnablePeriphClock(SYSCTL_CLOCK_SWM);
-
+        Chip_Clock_EnablePeriphClock(SYSCTL_CLOCK_UART0);
 	Chip_Clock_SetUARTClockDiv(UART_CLOCK_DIV);
 
 #if (defined(BOARD_NXP_LPCXPRESSO_812) || defined(BOARD_LPC812MAX) || defined(BOARD_NXP_LPCXPRESSO_824))
 	/* Connect the U0_TXD_O and U0_RXD_I signals to port pins(P0.4, P0.0) */
 	Chip_SWM_DisableFixedPin(SWM_FIXED_ACMP_I1);
+        Chip_SWM_DisableFixedPin(SWM_FIXED_ADC11);
 	Chip_SWM_MovablePinAssign(SWM_U0_TXD_O, 4);
 	Chip_SWM_MovablePinAssign(SWM_U0_RXD_I, 0);
+        Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,4,TRUE); // SSEL
+        Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,0,FALSE); // SSEL
 #else
 	/* Configure your own UART pin muxing here if needed */
 #warning "No UART pin muxing defined"
@@ -197,7 +200,7 @@ void Board_GPIO_Init(void)
 	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO1,PIN_MODE_INACTIVE);
 	//Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO2,PIN_MODE_INACTIVE);
 	//Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO3,PIN_MODE_INACTIVE);
-	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO4,PIN_MODE_PULLUP);
+	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO4,PIN_MODE_REPEATER);
 	//Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO5,PIN_MODE_INACTIVE);
 	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO6,PIN_MODE_INACTIVE);
 	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO7,PIN_MODE_INACTIVE);

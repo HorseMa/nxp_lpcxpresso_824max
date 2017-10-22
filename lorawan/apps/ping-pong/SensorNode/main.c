@@ -201,7 +201,7 @@ int main( void )
 #endif
 
     Radio.Rx( RX_TIMEOUT_VALUE );
-
+    Board_UARTPutSTR("LoRa begin rx ...\r\n");
     while( 1 )
     {
         switch( State )
