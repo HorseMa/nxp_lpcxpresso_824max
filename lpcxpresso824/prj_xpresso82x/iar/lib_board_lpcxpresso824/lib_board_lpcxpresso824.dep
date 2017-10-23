@@ -6,13 +6,42 @@
   <configuration>
     <name>nxp_lpcxpresso_824</name>
     <outputs>
-      <file>$PROJ_DIR$\..\..\..\brd_xpresso824\src\board_sysinit.c</file>
-      <file>$PROJ_DIR$\..\..\..\brd_xpresso824\src\board.c</file>
+      <file>$TOOLKIT_DIR$\inc\c\stdint.h</file>
+      <file>$PROJ_DIR$\nxp_lpcxpresso_824\Obj\board.o</file>
+      <file>$TOOLKIT_DIR$\inc\c\stdio.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\ysizet.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\DLib_Defaults.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\sys_config.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\error_8xx.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\DLib_Config_Normal.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\wwdt_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\adc_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\fmc_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\startup\iar_startup_lpc82x.s</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\crc_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\lpc_types.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\pmu_8xx.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\DLib_Product_string.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\ystdio.h</file>
+      <file>$PROJ_DIR$\iar_output\Obj\board_sysinit.o</file>
+      <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
+      <file>$PROJ_DIR$\nxp_lpcxpresso_824\Obj\board_sysinit.o</file>
+      <file>$TOOLKIT_DIR$\inc\c\string.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\yfuns.h</file>
+      <file>$TOOLKIT_DIR$\lib\m6M_tl.a</file>
+      <file>$PROJ_DIR$\nxp_lpcxpresso_824\Exe\lib_board_lpcxpresso824.out</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\swm_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\core_cmFunc.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\iocon_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\syscon_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\spis_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\iap.h</file>
       <file>$PROJ_DIR$\..\..\..\chip_82x\inc\spi_8xx.h</file>
       <file>$PROJ_DIR$\..\..\..\brd_xpresso824\inc\retarget.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\yfuns.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\irc_8xx.h</file>
+      <file>$TOOLKIT_DIR$\lib\rt6M_tl.a</file>
       <file>$PROJ_DIR$\..\..\..\chip_82x\inc\dma_8xx.h</file>
+      <file>$PROJ_DIR$\iar_output\Obj\board.o</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\irc_8xx.h</file>
       <file>$PROJ_DIR$\..\..\..\chip_82x\inc\core_cm0plus.h</file>
       <file>$PROJ_DIR$\..\..\..\chip_82x\inc\ring_buffer.h</file>
       <file>$PROJ_DIR$\..\..\..\chip_82x\inc\mrt_8xx.h</file>
@@ -23,28 +52,27 @@
       <file>$PROJ_DIR$\..\..\..\chip_82x\inc\cmsis.h</file>
       <file>$PROJ_DIR$\..\..\..\chip_82x\inc\i2cs_8xx.h</file>
       <file>$PROJ_DIR$\..\..\..\chip_82x\inc\chip.h</file>
-      <file>$TOOLKIT_DIR$\lib\m6M_tl.a</file>
-      <file>$PROJ_DIR$\nxp_lpcxpresso_824\Exe\lib_board_lpcxpresso824.out</file>
-      <file>$TOOLKIT_DIR$\lib\rt6M_tl.a</file>
-      <file>$PROJ_DIR$\iar_output\Obj\board.o</file>
-      <file>$PROJ_DIR$\iar_output\Obj\board_sysinit.pbi</file>
       <file>$PROJ_DIR$\iar_output\Obj\board.pbi</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\inmux_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\romapi_8xx.h</file>
       <file>$TOOLKIT_DIR$\inc\c\DLib_Threads.h</file>
       <file>$TOOLKIT_DIR$\lib\dl6M_tln.a</file>
+      <file>$TOOLKIT_DIR$\inc\c\cmsis_iar.h</file>
+      <file>$PROJ_DIR$\iar_output\Obj\board_sysinit.pbi</file>
+      <file>$TOOLKIT_DIR$\inc\c\yvals.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\inmux_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\romapi_8xx.h</file>
+      <file>$TOOLKIT_DIR$\config\linker\NXP\LPC824M201.icf</file>
+      <file>$TOOLKIT_DIR$\inc\c\stdbool.h</file>
       <file>$PROJ_DIR$\..\..\..\chip_82x\inc\acmp_8xx.h</file>
       <file>$PROJ_DIR$\..\..\..\brd_xpresso824\inc\board_api.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\cmsis_iar.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\uart_8xx.h</file>
       <file>$PROJ_DIR$\iar_output\Obj\iar_startup_lpc82x.o</file>
-      <file>$TOOLKIT_DIR$\inc\c\yvals.h</file>
-      <file>$TOOLKIT_DIR$\config\linker\NXP\LPC824M201.icf</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\uart_8xx.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\ycheck.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\xencoding_limits.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\intrinsics.h</file>
       <file>$PROJ_DIR$\..\..\..\chip_82x\inc\rom_i2c_8xx.h</file>
       <file>$PROJ_DIR$\..\..\..\chip_82x\inc\i2c_common_8xx.h</file>
       <file>$PROJ_DIR$\..\..\..\chip_82x\inc\rom_uart_8xx.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\stdbool.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\ycheck.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\rom_pwr_8xx.h</file>
       <file>$PROJ_DIR$\..\..\..\chip_82x\inc\pinint_8xx.h</file>
       <file>$PROJ_DIR$\..\..\..\chip_82x\inc\clock_8xx.h</file>
       <file>$PROJ_DIR$\..\..\..\chip_82x\inc\spi_common_8xx.h</file>
@@ -52,91 +80,26 @@
       <file>$PROJ_DIR$\..\..\..\brd_xpresso824\inc\board.h</file>
       <file>$PROJ_DIR$\..\..\..\chip_82x\inc\wkt_8xx.h</file>
       <file>$PROJ_DIR$\..\..\..\chip_82x\inc\sct_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\rom_pwr_8xx.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\xencoding_limits.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\intrinsics.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\stdint.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\sys_config.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\error_8xx.h</file>
-      <file>$PROJ_DIR$\nxp_lpcxpresso_824\Obj\board.o</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\wwdt_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\adc_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\fmc_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\startup\iar_startup_lpc82x.s</file>
-      <file>$TOOLKIT_DIR$\inc\c\stdio.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\DLib_Defaults.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\lpc_types.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\ysizet.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\pmu_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\crc_8xx.h</file>
-      <file>$PROJ_DIR$\iar_output\Exe\board_nxp_lpcxpresso_824.a</file>
-      <file>$TOOLKIT_DIR$\inc\c\DLib_Config_Normal.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\DLib_Product_string.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\ystdio.h</file>
-      <file>$PROJ_DIR$\iar_output\Obj\board_sysinit.o</file>
-      <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
-      <file>$PROJ_DIR$\nxp_lpcxpresso_824\Obj\board_sysinit.o</file>
-      <file>$TOOLKIT_DIR$\inc\c\string.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\swm_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\core_cmFunc.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\iocon_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\syscon_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\spis_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\iap.h</file>
       <file>$PROJ_DIR$\iar_output\Obj\lib_board_lpcxpresso824.pbd</file>
+      <file>$PROJ_DIR$\..\..\..\brd_xpresso824\src\board_sysinit.c</file>
+      <file>$PROJ_DIR$\..\..\..\brd_xpresso824\src\board.c</file>
+      <file>$PROJ_DIR$\iar_output\Exe\board_nxp_lpcxpresso_824.a</file>
     </outputs>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\brd_xpresso824\src\board_sysinit.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 67</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 21</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 43 16 59 49 38 32 58 64 68 47 25 37 50 14 7 12 29 48 72 24 76 51 34 46 36 74 40 73 71 55 39 61 27 62 11 9 30 8 44 53 45 10 2 41 13 35 15 42 75 5 54 6 23 28 57 60 66</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 9 76 73 15 29 61 45 47 38 72 36 35 59 50 74 55 62 44 2 75 6 37 32 49 34 60 16 28 14 24 40 71 39 27 11 30 53 10 13 42 5 54 23 58 25 64 68 7 12 48 51 46 8 43 41 57 66</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\brd_xpresso824\src\board.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 20</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 22</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 43 16 59 49 38 32 58 64 68 47 25 37 50 14 7 12 29 48 72 24 76 51 34 46 36 74 40 73 71 55 39 61 27 62 11 9 30 8 44 53 45 10 2 41 13 35 15 42 75 5 54 6 23 28 57 60 66 70 65 3 4</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 2 74 76 50 62 6 29 41 60 55 44 75 47 38 72 36 32 3 73 61 9 45 15 37 49 34 8 59 70 16 28 14 24 40 71 39 27 11 30 53 10 13 42 5 54 23 58 25 64 68 7 12 48 51 46 35 57 43 66 65 4</file>
-        </tool>
-      </inputs>
-    </file>
     <file>
       <name>[ROOT_NODE]</name>
       <outputs>
         <tool>
           <name>IARCHIVE</name>
-          <file> 63</file>
+          <file> 77</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\chip_82x\startup\iar_startup_lpc82x.s</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 58</file>
         </tool>
       </outputs>
     </file>
@@ -145,18 +108,55 @@
       <inputs>
         <tool>
           <name>ILINK</name>
-          <file> 33 52 69 19 17 26</file>
+          <file> 54 1 19 32 22 48</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\..\chip_82x\startup\iar_startup_lpc82x.s</name>
+      <name>$PROJ_DIR$\..\..\..\brd_xpresso824\src\board_sysinit.c</name>
       <outputs>
         <tool>
-          <name>AARM</name>
-          <file> 31</file>
+          <name>ICCARM</name>
+          <file> 17</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 50</file>
         </tool>
       </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 71 45 13 0 60 51 4 7 18 61 47 55 5 43 36 41 49 62 25 53 29 6 63 66 65 27 68 26 24 10 67 14 56 12 40 38 59 37 72 8 73 39 30 69 42 64 44 70 28 35 9 33 52 57 2 3 16</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 47 59 0 6 24 70 60 4 69 13 53 56 39 9 7 51 57 43 68 67 40 8 42 35 52 18 36 41 62 66 3 45 5 27 26 10 14 12 38 72 73 30 44 28 33 55 61 25 49 29 63 65 2 71 37 64 16</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\brd_xpresso824\src\board.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 34</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 46</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 71 45 13 0 60 51 4 7 18 61 47 55 5 43 36 41 49 62 25 53 29 6 63 66 65 27 68 26 24 10 67 14 56 12 40 38 59 37 72 8 73 39 30 69 42 64 44 70 28 35 9 33 52 57 2 3 16 20 15 31 21</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 42 47 68 0 6 69 13 43 40 52 60 4 57 67 8 35 7 51 31 53 24 56 59 39 70 9 18 36 41 62 66 20 45 5 27 26 10 14 12 38 72 73 30 44 28 33 55 61 25 49 29 63 65 37 3 71 64 2 16 15 21</file>
+        </tool>
+      </inputs>
     </file>
     <forcedrebuild>
       <name>[MULTI_TOOL]</name>

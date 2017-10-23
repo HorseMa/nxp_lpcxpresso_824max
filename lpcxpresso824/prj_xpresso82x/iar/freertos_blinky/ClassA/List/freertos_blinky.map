@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR ELF Linker V7.30.3.8024/W32 for ARM                 22/Oct/2017  22:00:01
+# IAR ELF Linker V7.30.3.8024/W32 for ARM                 23/Oct/2017  23:51:14
 # Copyright 2007-2014 IAR Systems AB.
 #
 #    Output file  =  
@@ -58,17 +58,29 @@ __SystemLibrary = DLib
   .intvec            ro code  0x00000000    0xc0  iar_startup_lpc82x.o [1]
                             - 0x000000c0    0xc0
 
-"P1", part 1 of 2:                          0x24
+"P1", part 1 of 2:                         0x10c
   .rodata            const    0x000000c0     0x0  zero_init3.o [7]
   .rodata            const    0x000000c0     0x0  copy_init3.o [7]
-  Initializer bytes  ro data  0x000000c0    0x24  <for P2 s0>
-                            - 0x000000e4    0x24
+  .text              ro code  0x000000c0    0x30  copy_init3.o [7]
+  .text              ro code  0x000000f0    0x28  data_init.o [7]
+  .iar.init_table    const    0x00000118    0x24  - Linker created -
+  .text              ro code  0x0000013c    0x1a  cmain.o [7]
+  .text              ro code  0x00000156     0x8  exit.o [5]
+  .text              ro code  0x00000160     0xa  cexit.o [7]
+  .text              ro code  0x0000016c     0xc  XXexit.o [7]
+  .text              ro code  0x00000178    0x10  iar_startup_lpc82x.o [1]
+  .text              ro code  0x00000188     0xc  cstartup_M.o [7]
+  .rodata            const    0x00000194     0x8  board.o [3]
+  .text              ro code  0x0000019c     0x8  sysinit.o [1]
+  .text              ro code  0x000001a4     0x4  iar_startup_lpc82x.o [1]
+  Initializer bytes  ro data  0x000001a8    0x24  <for P2 s0>
+                            - 0x000001cc   0x10c
 
 "P3":                                        0x4
   .crp               ro code  0x000002fc     0x4  iar_startup_lpc82x.o [1]
                             - 0x00000300     0x4
 
-"P1", part 2 of 2:                        0x308c
+"P1", part 2 of 2:                        0x34a8
   .text              ro code  0x00000300  0x180c  sx1276.o [1]
   .text              ro code  0x00001b0c    0xfc  timer.o [1]
   .text              ro code  0x00001c08   0x410  sx1276-board.o [1]
@@ -95,29 +107,19 @@ __SystemLibrary = DLib
   .text              ro code  0x00002b98    0xae  I32DivModFast.o [7]
   .text              ro code  0x00002c46     0x2  iar_startup_lpc82x.o [1]
   .text              ro code  0x00002c48    0x34  syscon_8xx.o [4]
-  .text              ro code  0x00002c7c   0x114  clock_8xx.o [4]
-  .text              ro code  0x00002d90   0x308  main.o [1]
-  .text              ro code  0x00003098    0x10  chip_8xx.o [4]
-  .text              ro code  0x000030a8    0x28  board.o [3]
-  .text              ro code  0x000030d0    0x2c  strncmp.o [5]
-  .text              ro code  0x000030fc    0x5c  ABImemcpy.o [7]
-  .text              ro code  0x00003158    0x5e  uart_8xx.o [4]
-  .text              ro code  0x000031b8    0x7a  board_sysinit.o [3]
-  .text              ro code  0x00003234    0x14  sysinit_8xx.o [4]
-  .rodata            const    0x00003248    0x5c  sx1276-board.o [1]
-  .text              ro code  0x000032a4    0x30  copy_init3.o [7]
-  .text              ro code  0x000032d4    0x28  data_init.o [7]
-  .iar.init_table    const    0x000032fc    0x24  - Linker created -
-  .text              ro code  0x00003320    0x1a  cmain.o [7]
-  .text              ro code  0x0000333a     0x8  exit.o [5]
-  .text              ro code  0x00003344     0xa  cexit.o [7]
-  .text              ro code  0x00003350     0xc  XXexit.o [7]
-  .text              ro code  0x0000335c    0x10  iar_startup_lpc82x.o [1]
-  .text              ro code  0x0000336c     0xc  cstartup_M.o [7]
-  .rodata            const    0x00003378     0x8  board.o [3]
-  .text              ro code  0x00003380     0x8  sysinit.o [1]
-  .text              ro code  0x00003388     0x4  iar_startup_lpc82x.o [1]
-                            - 0x0000338c  0x308c
+  .text              ro code  0x00002c7c   0x1b4  clock_8xx.o [4]
+  .text              ro code  0x00002e30    0x6a  I64DivMod.o [7]
+  .text              ro code  0x00002e9c   0x358  main.o [1]
+  .text              ro code  0x000031f4    0x10  chip_8xx.o [4]
+  .text              ro code  0x00003204   0x320  board.o [3]
+  .text              ro code  0x00003524    0x2c  strncmp.o [5]
+  .text              ro code  0x00003550    0x5c  ABImemcpy.o [7]
+  .text              ro code  0x000035ac    0xf8  uart_8xx.o [4]
+  .text              ro code  0x000036a4    0x18  gpio_8xx.o [4]
+  .text              ro code  0x000036bc    0x7a  board_sysinit.o [3]
+  .text              ro code  0x00003738    0x14  sysinit_8xx.o [4]
+  .rodata            const    0x0000374c    0x5c  sx1276-board.o [1]
+                            - 0x000037a8  0x34a8
 
 "P2":                                      0x628
   P2 s0                       0x10000000    0x24  <Init block>
@@ -147,7 +149,7 @@ Zero (__iar_zero_init3)
 
 Copy (__iar_copy_init3)
     1 source range, total size 0x24:
-          0x000000c0   0x24
+          0x000001a8   0x24
     1 destination range, total size 0x24:
           0x10000000   0x24
 
@@ -161,37 +163,38 @@ Copy (__iar_copy_init3)
     ------                -------  -------  -------
 E:\µêÆÌ×°ÐÞ\Íø¹Ø\nxp_lpcxpresso_824max\lpcxpresso824\prj_xpresso82x\iar\freertos_blinky\ClassA\Obj: [1]
     iar_startup_lpc82x.o      224
-    main.o                    776       36      100
+    main.o                    856       36      100
     sx1276-board.o          1 040       92        1
     sx1276.o                6 156               432
     sysinit.o                   8
     timer.o                   252                 8
     utilities.o                88                 1
     -----------------------------------------------
-    Total:                  8 544      128      542
+    Total:                  8 624      128      542
 
 command line: [2]
     -----------------------------------------------
     Total:
 
 board_nxp_lpcxpresso_824.a: [3]
-    board.o                    40        8
+    board.o                   800        8
     board_sysinit.o           122
     -----------------------------------------------
-    Total:                    162        8
+    Total:                    922        8
 
 chip_8xx_lib.a: [4]
     chip_8xx.o                 16                 4
-    clock_8xx.o               276
+    clock_8xx.o               436
+    gpio_8xx.o                 24
     iocon_8xx.o                18
     irc_8xx.o               1 032                 2
     spi_8xx.o                  44
     swm_8xx.o                  72
     syscon_8xx.o               52
     sysinit_8xx.o              20
-    uart_8xx.o                 94
+    uart_8xx.o                248
     -----------------------------------------------
-    Total:                  1 624                 6
+    Total:                  1 962                 6
 
 dl6M_tln.a: [5]
     exit.o                      8
@@ -217,6 +220,7 @@ rt6M_tl.a: [7]
     ABImemcpy.o                92
     ABImemset.o                64
     I32DivModFast.o           174
+    I64DivMod.o               106
     XXexit.o                   12
     cexit.o                    10
     cmain.o                    26
@@ -225,12 +229,12 @@ rt6M_tl.a: [7]
     data_init.o                40
     zero_init3.o               42
     -----------------------------------------------
-    Total:                    520
+    Total:                    626
 
     Gaps                        8
     Linker created                      36    1 024
 ---------------------------------------------------
-    Grand Total:           12 488      172    1 572
+    Grand Total:           13 772      172    1 572
 
 
 *******************************************************************************
@@ -239,25 +243,32 @@ rt6M_tl.a: [7]
 
 Entry                      Address   Size  Type      Object
 -----                      -------   ----  ----      ------
-?main                   0x00003321         Code  Gb  cmain.o [7]
+?main                   0x0000013d         Code  Gb  cmain.o [7]
 BoardDisableIrq         0x000021bf    0xc  Code  Gb  utilities.o [1]
 BoardEnableIrq          0x000021cb   0x12  Code  Gb  utilities.o [1]
-Board_SetupClocking     0x000031cb   0x48  Code  Gb  board_sysinit.o [3]
-Board_SystemInit        0x00003225    0xe  Code  Gb  board_sysinit.o [3]
-Board_UARTPutChar       0x000030a9    0xe  Code  Gb  board.o [3]
-Board_UARTPutSTR        0x000030b7   0x14  Code  Gb  board.o [3]
+Board_Debug_Init        0x0000329f   0x90  Code  Gb  board.o [3]
+Board_GPIO_Init         0x00003341  0x186  Code  Gb  board.o [3]
+Board_Init              0x000034e1   0x42  Code  Gb  board.o [3]
+Board_SetupClocking     0x000036cf   0x48  Code  Gb  board_sysinit.o [3]
+Board_SystemInit        0x00003729    0xe  Code  Gb  board_sysinit.o [3]
+Board_UARTPutChar       0x0000327d    0xe  Code  Gb  board.o [3]
+Board_UARTPutSTR        0x0000328b   0x14  Code  Gb  board.o [3]
 Buffer                  0x100001d0   0x40  Data  Gb  main.o [1]
 BufferSize              0x10000004    0x2  Data  Gb  main.o [1]
 CSTACK$$Base            0x10000228          --   Gb  - Linker created -
 CSTACK$$Limit           0x10000628          --   Gb  - Linker created -
 Chip_Clock_DisablePeriphClock
                         0x00001c75   0x12  Code  Lc  sx1276-board.o [1]
+Chip_Clock_DisablePeriphClock
+                        0x00003217    0xc  Code  Lc  board.o [3]
 Chip_Clock_EnablePeriphClock
-                        0x00002dff   0x12  Code  Lc  main.o [1]
+                        0x00002f0b   0x12  Code  Lc  main.o [1]
 Chip_Clock_EnablePeriphClock
                         0x00001c63   0x12  Code  Lc  sx1276-board.o [1]
 Chip_Clock_EnablePeriphClock
-                        0x000031b9   0x12  Code  Lc  board_sysinit.o [3]
+                        0x00003205   0x12  Code  Lc  board.o [3]
+Chip_Clock_EnablePeriphClock
+                        0x000036bd   0x12  Code  Lc  board_sysinit.o [3]
 Chip_Clock_GetMainClockRate
                         0x00002ced   0x30  Code  Gb  clock_8xx.o [4]
 Chip_Clock_GetSystemClockRate
@@ -266,22 +277,31 @@ Chip_Clock_GetSystemPLLInClockRate
                         0x00002cb3   0x26  Code  Gb  clock_8xx.o [4]
 Chip_Clock_GetSystemPLLOutClockRate
                         0x00002cd9   0x14  Code  Gb  clock_8xx.o [4]
+Chip_Clock_GetUSARTNBaseClockRate
+                        0x00002d2f   0x36  Code  Gb  clock_8xx.o [4]
 Chip_Clock_GetWDTOSCRate
                         0x00002c91   0x22  Code  Gb  clock_8xx.o [4]
 Chip_Clock_SetMainClockSource
                         0x00002c81    0x2  Code  Gb  clock_8xx.o [4]
 Chip_Clock_SetSystemPLLSource
                         0x00002c7d    0x4  Code  Gb  clock_8xx.o [4]
+Chip_Clock_SetUSARTNBaseClockRate
+                        0x00002d65   0x5a  Code  Gb  clock_8xx.o [4]
 Chip_FMC_SetFLASHAccess
                         0x00002791    0x8  Code  Lc  irc_8xx.o [4]
+Chip_GPIO_Init          0x000036a5   0x10  Code  Gb  gpio_8xx.o [4]
 Chip_GPIO_SetPinDIR     0x00001cb9   0x12  Code  Lc  sx1276-board.o [1]
+Chip_GPIO_SetPinDIR     0x00003261   0x1c  Code  Lc  board.o [3]
 Chip_GPIO_SetPinDIRInput
                         0x00001ca9   0x10  Code  Lc  sx1276-board.o [1]
 Chip_GPIO_SetPinDIROutput
                         0x00001c99   0x10  Code  Lc  sx1276-board.o [1]
+Chip_GPIO_SetPinDIROutput
+                        0x00003251   0x10  Code  Lc  board.o [3]
 Chip_GPIO_SetPinOutHigh
                         0x00000305   0x10  Code  Lc  sx1276.o [1]
 Chip_GPIO_SetPinOutLow  0x00000315   0x10  Code  Lc  sx1276.o [1]
+Chip_GPIO_SetPinState   0x00003249    0x8  Code  Lc  board.o [3]
 Chip_IOCON_PinSetMode   0x0000267d   0x12  Code  Gb  iocon_8xx.o [4]
 Chip_IRC_SetFreq        0x00002799   0x9c  Code  Gb  irc_8xx.o [4]
 Chip_PININT_ClearIntStatus
@@ -304,6 +324,10 @@ Chip_SPI_SendMidFrame   0x0000033f    0x4  Code  Lc  sx1276.o [1]
 Chip_SPI_SetCFGRegBits  0x00001ccb    0xe  Code  Lc  sx1276-board.o [1]
 Chip_SPI_SetControlInfo
                         0x00000331    0xe  Code  Lc  sx1276.o [1]
+Chip_SWM_DisableFixedPin
+                        0x00003237   0x12  Code  Lc  board.o [3]
+Chip_SWM_EnableFixedPin
+                        0x00003223    0xc  Code  Lc  board.o [3]
 Chip_SWM_FixedPinEnable
                         0x000026af   0x20  Code  Gb  swm_8xx.o [4]
 Chip_SWM_MovablePinAssign
@@ -316,44 +340,48 @@ Chip_SYSCTL_EnablePINTWakeup
                         0x00001c53   0x10  Code  Lc  sx1276-board.o [1]
 Chip_SYSCTL_PeriphReset
                         0x00001c3b   0x10  Code  Lc  sx1276-board.o [1]
+Chip_SYSCTL_PeriphReset
+                        0x000035ad   0x1c  Code  Lc  uart_8xx.o [4]
 Chip_SYSCTL_PowerDown   0x00002c49   0x14  Code  Gb  syscon_8xx.o [4]
 Chip_SYSCTL_PowerUp     0x00002c5d   0x14  Code  Gb  syscon_8xx.o [4]
 Chip_SYSCTL_SetPinInterrupt
                         0x00001c4b    0x8  Code  Lc  sx1276-board.o [1]
-Chip_SetupIrcClocking   0x00003235    0x4  Code  Gb  sysinit_8xx.o [4]
-Chip_UART_GetStatus     0x0000315d    0x8  Code  Lc  uart_8xx.o [4]
-Chip_UART_Send          0x00003169   0x2a  Code  Gb  uart_8xx.o [4]
-Chip_UART_SendBlocking  0x00003193   0x24  Code  Gb  uart_8xx.o [4]
-Chip_UART_SendByte      0x00003159    0x4  Code  Lc  uart_8xx.o [4]
+Chip_SetupIrcClocking   0x00003739    0x4  Code  Gb  sysinit_8xx.o [4]
+Chip_UART_GetStatus     0x000035cd    0x8  Code  Lc  uart_8xx.o [4]
+Chip_UART_Init          0x000035ed   0x34  Code  Gb  uart_8xx.o [4]
+Chip_UART_Send          0x00003641   0x2a  Code  Gb  uart_8xx.o [4]
+Chip_UART_SendBlocking  0x0000366b   0x24  Code  Gb  uart_8xx.o [4]
+Chip_UART_SendByte      0x000035c9    0x4  Code  Lc  uart_8xx.o [4]
+Chip_UART_SetBaud       0x0000368f   0x16  Code  Gb  uart_8xx.o [4]
 DelayMs                 0x000021a3   0x1c  Code  Gb  utilities.o [1]
-ExtRateIn               0x0000337c    0x4  Data  Gb  board.o [3]
+ExtRateIn               0x00000198    0x4  Data  Gb  board.o [3]
 FskBandwidths           0x0000059c   0xb0  Data  Gb  sx1276.o [1]
 GetFskBandwidthRegValue
                         0x00000579   0x24  Code  Lc  sx1276.o [1]
 IrqNestLevel            0x10000223    0x1  Data  Lc  utilities.o [1]
 NVIC_EnableIRQ          0x00001c09    0xe  Code  Lc  sx1276-board.o [1]
-NVIC_SetPriority        0x00002d91   0x44  Code  Lc  main.o [1]
-OnRxDone                0x00002fdd   0x26  Code  Gb  main.o [1]
-OnRxError               0x00003023   0x10  Code  Gb  main.o [1]
-OnRxTimeout             0x00003013   0x10  Code  Gb  main.o [1]
-OnTxDone                0x00002fcd   0x10  Code  Gb  main.o [1]
-OnTxTimeout             0x00003003   0x10  Code  Gb  main.o [1]
-OscRateIn               0x00003378    0x4  Data  Gb  board.o [3]
+NVIC_SetPriority        0x00002e9d   0x44  Code  Lc  main.o [1]
+OnRxDone                0x0000313b   0x26  Code  Gb  main.o [1]
+OnRxError               0x00003185   0x10  Code  Gb  main.o [1]
+OnRxTimeout             0x00003175   0x10  Code  Gb  main.o [1]
+OnTxDone                0x0000312b   0x10  Code  Gb  main.o [1]
+OnTxTimeout             0x00003161   0x10  Code  Gb  main.o [1]
+OscRateIn               0x00000194    0x4  Data  Gb  board.o [3]
 PININT0_IRQHandler      0x00001641  0x268  Code  Gb  sx1276.o [1]
 PININT1_IRQHandler      0x000018b1   0xda  Code  Gb  sx1276.o [1]
 PININT2_IRQHandler      0x0000198b   0xf4  Code  Gb  sx1276.o [1]
 PININT3_IRQHandler      0x00001a7f   0x50  Code  Gb  sx1276.o [1]
 PININT4_IRQHandler      0x00001acf   0x22  Code  Gb  sx1276.o [1]
 PININT5_IRQHandler      0x00001af1    0xc  Code  Gb  sx1276.o [1]
-PingMsg                 0x00003088    0x8  Data  Gb  main.o [1]
-PongMsg                 0x00003090    0x8  Data  Gb  main.o [1]
-Radio                   0x00003248   0x5c  Data  Gb  sx1276-board.o [1]
+PingMsg                 0x000031e4    0x8  Data  Gb  main.o [1]
+PongMsg                 0x000031ec    0x8  Data  Gb  main.o [1]
+Radio                   0x0000374c   0x5c  Data  Gb  sx1276-board.o [1]
 RadioEvents             0x10000008   0x1c  Data  Lc  main.o [1]
 RadioEvents             0x10000090    0x4  Data  Lc  sx1276.o [1]
 RadioIsActive           0x10000222    0x1  Data  Lc  sx1276-board.o [1]
 RadioRegsInit           0x00001610   0x30  Data  Gb  sx1276.o [1]
-Region$$Table$$Base     0x000032fc          --   Gb  - Linker created -
-Region$$Table$$Limit    0x00003320          --   Gb  - Linker created -
+Region$$Table$$Base     0x00000118          --   Gb  - Linker created -
+Region$$Table$$Limit    0x0000013c          --   Gb  - Linker created -
 RssiValue               0x10000001    0x1  Data  Gb  main.o [1]
 RxChainCalibration      0x000004d1   0x8e  Code  Lc  sx1276.o [1]
 RxTimeoutSyncWord       0x100001bc   0x14  Data  Gb  sx1276.o [1]
@@ -398,11 +426,11 @@ SX1276WriteBuffer       0x000013a1   0x86  Code  Gb  sx1276.o [1]
 SX1276WriteFifo         0x000014b5    0xe  Code  Gb  sx1276.o [1]
 SnrValue                0x10000002    0x1  Data  Gb  main.o [1]
 State                   0x10000000    0x1  Data  Gb  main.o [1]
-SysTick_Config          0x00002dd5   0x2a  Code  Lc  main.o [1]
+SysTick_Config          0x00002ee1   0x2a  Code  Lc  main.o [1]
 SysTick_Handler         0x00001b73   0x38  Code  Gb  timer.o [1]
 SystemCoreClock         0x1000021c    0x4  Data  Gb  chip_8xx.o [4]
-SystemCoreClockUpdate   0x00003099   0x10  Code  Gb  chip_8xx.o [4]
-SystemInit              0x00003381    0x8  Code  Gb  sysinit.o [1]
+SystemCoreClockUpdate   0x000031f5   0x10  Code  Gb  chip_8xx.o [4]
+SystemInit              0x0000019d    0x8  Code  Gb  sysinit.o [1]
 TimerExists             0x00001bbd   0x18  Code  Lc  timer.o [1]
 TimerGetCurrentTime     0x00001be5    0x6  Code  Gb  timer.o [1]
 TimerGetElapsedTime     0x00001beb   0x16  Code  Gb  timer.o [1]
@@ -422,45 +450,48 @@ __aeabi_dadd            0x00002369         Code  Gb  DblAddSub.o [6]
 __aeabi_ddiv            0x0000204d         Code  Gb  DblDiv.o [6]
 __aeabi_dmul            0x000021e5         Code  Gb  DblMul.o [6]
 __aeabi_i2d             0x00002019         Code  Gb  I32ToDbl.o [6]
-__aeabi_memcpy          0x000030fd         Code  Gb  ABImemcpy.o [7]
+__aeabi_memcpy          0x00003551         Code  Gb  ABImemcpy.o [7]
 __aeabi_memset4         0x0000263d         Code  Gb  ABImemset.o [7]
 __aeabi_memset8         0x0000263d         Code  Gb  ABImemset.o [7]
 __aeabi_ui2d            0x0000202d         Code  Gb  I32ToDbl.o [6]
 __aeabi_uidiv           0x00002b99         Code  Gb  I32DivModFast.o [7]
 __aeabi_uidivmod        0x00002b99         Code  Gb  I32DivModFast.o [7]
-__cmain                 0x00003321         Code  Gb  cmain.o [7]
-__exit                  0x00003351         Code  Gb  XXexit.o [7]
+__aeabi_uldivmod        0x00002e31         Code  Gb  I64DivMod.o [7]
+__cmain                 0x0000013d         Code  Gb  cmain.o [7]
+__exit                  0x0000016d         Code  Gb  XXexit.o [7]
 __iar_Dint              0x00002705   0x8c  Code  Gb  xdint.o [6]
 __iar_Memset4_word      0x00002649         Code  Gb  ABImemset.o [7]
 __iar_ceil              0x00002559         Code  Gb  ceil.o [6]
 __iar_ceill             0x00002559         Code  Gb  ceil.o [6]
-__iar_copy_init3        0x000032a5   0x30  Code  Gb  copy_init3.o [7]
+__iar_copy_init3        0x000000c1   0x30  Code  Gb  copy_init3.o [7]
 __iar_d2uiz             0x00002161         Code  Gb  DblToI32.o [6]
-__iar_data_init3        0x000032d5   0x28  Code  Gb  data_init.o [7]
+__iar_data_init3        0x000000f1   0x28  Code  Gb  data_init.o [7]
 __iar_floor             0x000025e5         Code  Gb  floor.o [6]
 __iar_floorl            0x000025e5         Code  Gb  floor.o [6]
-__iar_program_start     0x0000336d         Code  Gb  cstartup_M.o [7]
+__iar_program_start     0x00000189         Code  Gb  cstartup_M.o [7]
 __iar_ui2d              0x00002031         Code  Gb  I32ToDbl.o [6]
 __iar_zero_init3        0x0000210f   0x2a  Code  Gb  zero_init3.o [7]
 __vector_table          0x00000000         Data  Gb  iar_startup_lpc82x.o [1]
 __vector_table_0x1c     0x00000010         Data  Gb  iar_startup_lpc82x.o [1]
-_call_main              0x0000332d         Code  Gb  cmain.o [7]
-_exit                   0x00003345         Code  Gb  cexit.o [7]
-_main                   0x00003337         Code  Gb  cmain.o [7]
+_call_main              0x00000149         Code  Gb  cmain.o [7]
+_exit                   0x00000161         Code  Gb  cexit.o [7]
+_main                   0x00000153         Code  Gb  cmain.o [7]
 ceil                    0x00002559         Code  Gb  ceil.o [6]
 ceill                   0x00002559         Code  Gb  ceil.o [6]
 chip_version            0x10000218    0x4  Data  Gb  sx1276.o [1]
 config_tab              0x00002844  0x354  Data  Lc  irc_8xx.o [4]
 config_tab_idx          0x10000220    0x2  Data  Lc  irc_8xx.o [4]
-exit                    0x0000333b    0x8  Code  Gb  exit.o [5]
+exit                    0x00000157    0x8  Code  Gb  exit.o [5]
 floor                   0x000025e5         Code  Gb  floor.o [6]
 floorl                  0x000025e5         Code  Gb  floor.o [6]
-main                    0x00002e11  0x1bc  Code  Gb  main.o [1]
+getUARTClockID          0x000035d5   0x18  Code  Lc  uart_8xx.o [4]
+main                    0x00002f29  0x202  Code  Gb  main.o [1]
 memcpy1                 0x0000218d   0x16  Code  Gb  utilities.o [1]
+prvSetupHardware        0x00002f1d    0xc  Code  Lc  main.o [1]
 round                   0x00002511   0x48  Code  Gb  round.o [6]
-strncmp                 0x000030d1   0x2c  Code  Gb  strncmp.o [5]
+strncmp                 0x00003525   0x2c  Code  Gb  strncmp.o [5]
 systicks                0x10000210    0x4  Data  Gb  timer.o [1]
-wdtOSCRate              0x00002d50   0x40  Data  Lc  clock_8xx.o [4]
+wdtOSCRate              0x00002df0   0x40  Data  Lc  clock_8xx.o [4]
 
 
 [1] = E:\µêÆÌ×°ÐÞ\Íø¹Ø\nxp_lpcxpresso_824max\lpcxpresso824\prj_xpresso82x\iar\freertos_blinky\ClassA\Obj
@@ -471,7 +502,7 @@ wdtOSCRate              0x00002d50   0x40  Data  Lc  clock_8xx.o [4]
 [6] = m6M_tl.a
 [7] = rt6M_tl.a
 
-  12 488 bytes of readonly  code memory
+  13 772 bytes of readonly  code memory
      172 bytes of readonly  data memory
    1 572 bytes of readwrite data memory
 

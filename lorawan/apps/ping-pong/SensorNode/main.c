@@ -145,7 +145,11 @@ void OnRxTimeout( void );
  * \brief Function executed on Radio Rx Error event
  */
 void OnRxError( void );
-
+static void prvSetupHardware(void)
+{
+	SystemCoreClockUpdate();
+	Board_Init();
+}
 /**
  * Main application entry point.
  */
@@ -160,7 +164,7 @@ int main( void )
     SystemCoreClockUpdate();
     Chip_Clock_EnablePeriphClock(SYSCTL_CLOCK_SYS);
     SysTick_Config(SystemCoreClock / 1000);
-
+    prvSetupHardware();
     // Radio initialization
     RadioEvents.TxDone = OnTxDone;
     RadioEvents.RxDone = OnRxDone;
@@ -211,6 +215,8 @@ int main( void )
             {
                 if( BufferSize > 0 )
                 {
+                    for(int i = 0;i < BufferSize;i++)
+                    Board_UARTPutChar(Buffer[i]);
                     if( strncmp( ( const char* )Buffer, ( const char* )PongMsg, 4 ) == 0 )
                     {
                         // Indicates on a LED that the received frame is a PONG
@@ -284,14 +290,24 @@ int main( void )
         case RX_ERROR:
             if( isMaster == true )
             {
+                BufferSize = BUFFER_SIZE;
                 // Send the next PING frame
-                Buffer[0] = 'P';
-                Buffer[1] = 'I';
-                Buffer[2] = 'N';
-                Buffer[3] = 'G';
-                for( i = 4; i < BufferSize; i++ )
+                Buffer[0] = '[';
+                Buffer[1] = '0';
+                Buffer[2] = '0';
+                Buffer[3] = '0';
+                Buffer[4] = '1';
+                Buffer[5] = ']';
+                Buffer[6] = ':';
+                Buffer[7] = 'P';
+                Buffer[8] = 'I';
+                Buffer[9] = 'N';
+                Buffer[10] = 'G';
+                Buffer[11] = '\r';
+                Buffer[12] = '\n';
+                for( i = 13; i < BufferSize; i++ )
                 {
-                    Buffer[i] = i - 4;
+                    Buffer[i] = i - 13;
                 }
                 DelayMs( 1 );
                 Radio.Send( Buffer, BufferSize );
