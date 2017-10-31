@@ -337,6 +337,7 @@ void OnTxDone( void )
 {
     Radio.Sleep( );
     State = TX;
+    Board_LED_Toggle(1);
 }
 
 void OnRxDone( uint8_t *payload, uint16_t size, int16_t rssi, int8_t snr )
@@ -347,6 +348,7 @@ void OnRxDone( uint8_t *payload, uint16_t size, int16_t rssi, int8_t snr )
     RssiValue = rssi;
     SnrValue = snr;
     State = RX;
+    Board_LED_Toggle(0);
 }
 
 void OnTxTimeout( void )

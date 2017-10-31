@@ -65,7 +65,7 @@ void Board_SetupClocking(void)
 	/* Crystal is available on the board
 	 * but not connected by default.
 	 */
-	Chip_SetupIrcClocking();
+	//Chip_SetupIrcClocking();
         Chip_Clock_EnablePeriphClock(SYSCTL_CLOCK_SWM);
   	/* Enable power to the system osc */
 	Chip_SYSCTL_PowerUp(SYSCTL_SLPWAKE_SYSOSC_PD);
@@ -79,7 +79,7 @@ void Board_SetupClocking(void)
 	Chip_SWM_FixedPinEnable(SWM_FIXED_XTALOUT, true);
         Chip_Clock_DisablePeriphClock(SYSCTL_CLOCK_SWM);
         
-	//Chip_SetupXtalClocking();
+	Chip_SetupXtalClocking();
 	SystemCoreClockUpdate();
 }
 

@@ -1139,7 +1139,6 @@
           <state>DEBUG_UART=LPC_USART0</state>
           <state>REGION_EU433</state>
           <state>USE_MODEM_LORA</state>
-          <state>BOARD_NXP_LPCXPRESSO_824</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
