@@ -381,7 +381,7 @@ static void OnLed1TimerEvent( void )
 {
     TimerStop( &Led1Timer );
     // Switch LED 1 OFF
-    //GpioWrite( &Led1, 1 );
+    Board_LED_Set(0,1);
 }
 
 /*!
@@ -391,7 +391,7 @@ static void OnLed2TimerEvent( void )
 {
     TimerStop( &Led2Timer );
     // Switch LED 2 OFF
-    //GpioWrite( &Led2, 1 );
+    Board_LED_Set(1,1);
 }
 
 /*!
@@ -439,7 +439,7 @@ static void McpsConfirm( McpsConfirm_t *mcpsConfirm )
         }
 
         // Switch LED 1 ON
-        //GpioWrite( &Led1, 0 );
+        Board_LED_Set(0,0);
         TimerStart( &Led1Timer );
     }
     NextTx = true;
@@ -649,7 +649,7 @@ static void McpsIndication( McpsIndication_t *mcpsIndication )
     }
 
     // Switch LED 2 ON for each received downlink
-    //GpioWrite( &Led2, 0 );
+    Board_LED_Set(1,0);
     TimerStart( &Led2Timer );
 }
 
@@ -702,6 +702,14 @@ uint8_t BoardGetBatteryLevel(void)
 {
     return 0;
 }
+
+/* Sets up system hardware */
+static void prvSetupHardware(void)
+{
+	SystemCoreClockUpdate();
+	Board_Init();
+}
+
 /**
  * Main application entry point.
  */
@@ -718,7 +726,7 @@ int main( void )
     SystemCoreClockUpdate();
     Chip_Clock_EnablePeriphClock(SYSCTL_CLOCK_SYS);
     SysTick_Config(SystemCoreClock / 1000);
-    
+    prvSetupHardware();
     DeviceState = DEVICE_STATE_INIT;
 
     while( 1 )

@@ -300,12 +300,12 @@ void RegionCN470InitDefaults( InitType_t type )
             }
 
             // Initialize the channels default mask
-            ChannelsDefaultMask[0] = 0xFFFF;
-            ChannelsDefaultMask[1] = 0xFFFF;
-            ChannelsDefaultMask[2] = 0xFFFF;
-            ChannelsDefaultMask[3] = 0xFFFF;
-            ChannelsDefaultMask[4] = 0xFFFF;
-            ChannelsDefaultMask[5] = 0xFFFF;
+            ChannelsDefaultMask[0] = 0x0003;
+            ChannelsDefaultMask[1] = 0x0000;
+            ChannelsDefaultMask[2] = 0x0000;
+            ChannelsDefaultMask[3] = 0x0000;
+            ChannelsDefaultMask[4] = 0x0000;
+            ChannelsDefaultMask[5] = 0x0000;
 
             // Update the channels mask
             RegionCommonChanMaskCopy( ChannelsMask, ChannelsDefaultMask, 6 );

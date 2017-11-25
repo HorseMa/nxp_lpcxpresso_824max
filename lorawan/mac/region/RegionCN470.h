@@ -98,7 +98,7 @@
 /*!
  * Default Max EIRP
  */
-#define CN470_DEFAULT_MAX_EIRP                      19.15f
+#define CN470_DEFAULT_MAX_EIRP                      22.15f
 
 /*!
  * Default antenna gain
@@ -199,8 +199,7 @@
 /*!
  * Data rates table definition
  */
-static const uint8_t DataratesCN470[]  = { 12, 11, 10,  9,  8,  7 };
-
+static const uint8_t DataratesCN470[]  = { 7, 7, 7,  7,  7,  7 };
 /*!
  * Bandwidths table definition in Hz
  */

@@ -100,7 +100,7 @@ void TimerStart( TimerEvent_t *obj )
         BoardEnableIrq( );
         return;
     }
-
+    obj->Next = NULL;
     if(TimerListHead == NULL)
     {
         TimerListHead = obj;
