@@ -702,6 +702,14 @@ uint8_t BoardGetBatteryLevel(void)
 {
     return 0;
 }
+
+/* Sets up system hardware */
+static void prvSetupHardware(void)
+{
+    SystemCoreClockUpdate();
+    Board_Init();
+}
+
 /**
  * Main application entry point.
  */
@@ -713,12 +721,13 @@ int main( void )
 
     //BoardInitMcu( );
     //BoardInitPeriph( );
-    
+    /* Sets up system hardware */
+    void prvSetupHardware();
     /* Enable SysTick Timer */
     SystemCoreClockUpdate();
     Chip_Clock_EnablePeriphClock(SYSCTL_CLOCK_SYS);
     SysTick_Config(SystemCoreClock / 1000);
-    
+
     DeviceState = DEVICE_STATE_INIT;
 
     while( 1 )

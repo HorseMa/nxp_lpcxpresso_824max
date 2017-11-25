@@ -188,6 +188,8 @@ void Board_Debug_Init(void)
         /* Enable receive data and line status interrupt */
 	Chip_UART_IntEnable(DEBUG_UART, UART_INTEN_RXRDY);
 	//Chip_UART_IntEnable(DEBUG_UART, UART_INTEN_TXRDY);	/* May not be needed */
+	/* Enable the IRQ for the UART */
+	NVIC_EnableIRQ(UART0_IRQn);
 
 #endif
 }
@@ -225,10 +227,10 @@ void Board_GPIO_Init(void)
 	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO26,PIN_MODE_INACTIVE);
 	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO27,PIN_MODE_INACTIVE);
 	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO28,PIN_MODE_INACTIVE);
-        
+
         Chip_Clock_EnablePeriphClock(SYSCTL_CLOCK_SWM);
         //Chip_Clock_DisablePeriphClock(SYSCTL_CLOCK_SWM);
-        
+
 	Chip_SWM_DisableFixedPin(SWM_FIXED_ACMP_I1);
 	Chip_SWM_DisableFixedPin(SWM_FIXED_ACMP_I2);
 	Chip_SWM_DisableFixedPin(SWM_FIXED_ACMP_I3);
