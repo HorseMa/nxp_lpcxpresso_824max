@@ -176,15 +176,17 @@ void Board_Debug_Init(void)
 {
 #if defined(DEBUG_UART)
 	Board_UART_Init();
-	Chip_UART_Init(DEBUG_UART);
-	Chip_UART_ConfigData(DEBUG_UART, UART_CFG_DATALEN_8 | UART_CFG_PARITY_NONE | UART_CFG_STOPLEN_1);
-	Chip_Clock_SetUSARTNBaseClockRate((115200 * 16), true);
-	Chip_UART_SetBaud(DEBUG_UART, 115200);
-	Chip_UART_Enable(DEBUG_UART);
-	Chip_UART_TXEnable(DEBUG_UART);
+	//Chip_UART_Init(DEBUG_UART);
+	//Chip_UART_ConfigData(DEBUG_UART, UART_CFG_DATALEN_8 | UART_CFG_PARITY_NONE | UART_CFG_STOPLEN_1);
+	//Chip_Clock_SetUSARTNBaseClockRate((115200 * 16), true);
+	//Chip_UART_SetBaud(DEBUG_UART, 115200);
+	//Chip_UART_Enable(DEBUG_UART);
+	//Chip_UART_TXEnable(DEBUG_UART);
         /* Enable receive data and line status interrupt */
-	Chip_UART_IntEnable(DEBUG_UART, UART_INTEN_RXRDY);
+	//Chip_UART_IntEnable(DEBUG_UART, UART_INTEN_RXRDY);
 	//Chip_UART_IntEnable(DEBUG_UART, UART_INTEN_TXRDY);	/* May not be needed */
+        //NVIC_EnableIRQ(UART0_IRQn);
+        //Chip_UART_ClearStatus(DEBUG_UART,UART_STAT_RXRDY | UART_INTEN_TXRDY | UART_INTEN_TXIDLE);
 
 #endif
 }

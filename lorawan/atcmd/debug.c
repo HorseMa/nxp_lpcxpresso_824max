@@ -25,9 +25,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "hw.h"
 #include "debug.h"
-#include "lmic.h"
+#include "board.h"
 
 #define LED_PORT        GPIOA // use GPIO PA8 (LED4 on IMST, P11/PPS/EXT1_10/GPS6 on Blipper)
 #define LED_PIN         8
@@ -36,6 +35,7 @@
 #define GPIO_AF_USART1  0x07
 
 void debug_init () {
+#if 0
     // configure LED pin as output
     hw_cfg_pin(LED_PORT, LED_PIN, GPIOCFG_MODE_OUT | GPIOCFG_OSPEED_40MHz | GPIOCFG_OTYPE_PUPD | GPIOCFG_PUPD_PUP);
     debug_led(0);
@@ -48,23 +48,25 @@ void debug_init () {
 
     // print banner
     debug_str("\r\n============== DEBUG STARTED ==============\r\n");
+#endif
 }
 
 void debug_led (int val) {
-    hw_set_pin(LED_PORT, LED_PIN, val);
+    //hw_set_pin(LED_PORT, LED_PIN, val);
 }
 
 void debug_char (char c) {
-    while( !(USART1->SR & USART_SR_TXE) );    
-    USART1->DR = c;
+    //while( !(USART1->SR & USART_SR_TXE) );    
+    //USART1->DR = c;
+    Board_UARTPutChar(c);
 }
 
-void debug_hex (u1_t b) {
+void debug_hex (uint8_t b) {
     debug_char("0123456789ABCDEF"[b>>4]);
     debug_char("0123456789ABCDEF"[b&0xF]);
 }
 
-void debug_buf (const u1_t* buf, int len) {
+void debug_buf (const uint8_t* buf, int len) {
     while(len--) {
         debug_hex(*buf++);
         debug_char(' ');
@@ -73,13 +75,13 @@ void debug_buf (const u1_t* buf, int len) {
     debug_char('\n');
 }
 
-void debug_uint (u4_t v) {
-    for(s1_t n=24; n>=0; n-=8) {
+void debug_uint (uint32_t v) {
+    for(int8_t n=24; n>=0; n-=8) {
         debug_hex(v>>n);
     }
 }
 
-void debug_int (s4_t v) {
+void debug_int (int32_t v) {
     char buf[10], *p = buf;
     int n = debug_fmt(buf, sizeof(buf), v, 10, 0, 0);
     while(n--)
@@ -92,23 +94,23 @@ void debug_str (const char* str) {
     }
 }
 
-void debug_val (const char* label, u4_t val) {
+void debug_val (const char* label, uint32_t val) {
     debug_str(label);
     debug_uint(val);
     debug_char('\r');
     debug_char('\n');
 }
 
-void debug_valdec (const char* label, s4_t val) {
+void debug_valdec (const char* label, int32_t val) {
     debug_str(label);
     debug_int(val);
     debug_char('\r');
     debug_char('\n');
 }
 
-int debug_fmt (char* buf, int max, s4_t val, int base, int width, char pad) {
+int debug_fmt (char* buf, int max, int32_t val, int base, int width, char pad) {
     char num[33], *p = num, *b = buf;
-    u4_t m, v;
+    uint32_t m, v;
     // special handling of negative decimals
     v = (base == 10 && val < 0) ? -val : val;
     // generate digits backwards
@@ -131,6 +133,7 @@ int debug_fmt (char* buf, int max, s4_t val, int base, int width, char pad) {
 }
 
 void debug_event (int ev) {
+#if 0
     static const char* evnames[] = {
         [EV_SCAN_TIMEOUT]   = "SCAN_TIMEOUT",
         [EV_BEACON_FOUND]   = "BEACON_FOUND",
@@ -153,4 +156,5 @@ void debug_event (int ev) {
     debug_str((ev < sizeof(evnames)/sizeof(evnames[0])) ? evnames[ev] : "EV_UNKNOWN" );
     debug_char('\r');
     debug_char('\n');
+#endif
 }

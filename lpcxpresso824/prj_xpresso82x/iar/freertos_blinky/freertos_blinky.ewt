@@ -412,6 +412,15 @@
         <name>$PROJ_DIR$\..\..\..\..\lorawan\atcmd\buffer.c</name>
       </file>
       <file>
+        <name>$PROJ_DIR$\..\..\..\..\lorawan\atcmd\debug.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\lorawan\atcmd\debug.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\lorawan\atcmd\eeprom.c</name>
+      </file>
+      <file>
         <name>$PROJ_DIR$\..\..\..\..\lorawan\atcmd\frame.c</name>
       </file>
       <file>

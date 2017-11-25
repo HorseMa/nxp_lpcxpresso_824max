@@ -31,10 +31,10 @@
 FRAME rxframe;
 FRAME txframe;
 
-static osjob_t txjob;
-static osjob_t rxjob;
+//static osjob_t txjob;
+//static osjob_t rxjob;
 
-void frame_init (FRAME* f, u1_t* buf, u2_t max) {
+void frame_init (FRAME* f, uint8_t* buf, uint16_t max) {
     f->state = 0;
     f->lrc = 0;
     f->len = 0;
@@ -43,11 +43,11 @@ void frame_init (FRAME* f, u1_t* buf, u2_t max) {
 }
 
 // called by usart irq handler (return next char to send 0x00XX, or 0x0100)
-u2_t frame_tx (u1_t next) {
+uint16_t frame_tx (uint8_t next) {
     if(next) {
 	return (txframe.len < txframe.max) ? txframe.buf[txframe.len++] : 0x100;
     } else { // complete
-	os_setCallback(&txjob, modem_txdone); // run job
+	//os_setCallback(&txjob, modem_txdone); // run job
 	return 0;
     }
 }
@@ -55,7 +55,7 @@ u2_t frame_tx (u1_t next) {
 // called by usart irq handler (pass received char, return 1 to continue rx, 0 to stop)
 // ASCII format:  ATxxxxxxx\r
 // Binary format: B%lxxxxxxxx%c
-u1_t frame_rx (u1_t c) {
+uint8_t frame_rx (uint8_t c) {
     switch(rxframe.state) {
     case FRAME_INIT:
 	if(c == 'a' || c == 'A') {
@@ -75,12 +75,12 @@ u1_t frame_rx (u1_t c) {
     case FRAME_A_T:
 	if(c == '\r') {
 	    rxframe.state = FRAME_A_OK;
-	    os_setCallback(&rxjob, modem_rxdone); // run job
+	    modem_rxdone();//os_setCallback(&rxjob, modem_rxdone); // run job
 	    return 0; // stop reception
 	} else {
 	    if(rxframe.len == rxframe.max) { // overflow
 		rxframe.state = FRAME_A_ERR;
-		os_setCallback(&rxjob, modem_rxdone); // run job
+		modem_rxdone();//os_setCallback(&rxjob, modem_rxdone); // run job
 		return 0; // stop reception
 	    }
 	    rxframe.buf[rxframe.len++] = c; // store cmd
@@ -89,7 +89,7 @@ u1_t frame_rx (u1_t c) {
     case FRAME_B_B:
 	if(c > rxframe.max) {
 	    rxframe.state = FRAME_B_ERR;
-	    os_setCallback(&rxjob, modem_rxdone); // run job
+	    modem_rxdone();//os_setCallback(&rxjob, modem_rxdone); // run job
 	    return 0; // stop reception
 	}
 	rxframe.max = c; // store len
@@ -109,7 +109,7 @@ u1_t frame_rx (u1_t c) {
 	} else {
 	    rxframe.state = FRAME_B_OK;
 	}
-	os_setCallback(&rxjob, modem_rxdone); // run job
+	modem_rxdone();//os_setCallback(&rxjob, modem_rxdone); // run job
 	return 0; // stop reception
     }
     return 1; // continue to receive

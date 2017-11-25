@@ -1182,9 +1182,9 @@ int16_t SX1276ReadRssi( RadioModems_t modem )
 
 void SX1276Reset( void )
 {
-    Chip_GPIO_SetPinOutLow(LPC_GPIO_PORT,0,15);
+    Chip_GPIO_SetPinOutLow(LPC_GPIO_PORT,0,23);
     DelayMs(1);
-    Chip_GPIO_SetPinOutHigh(LPC_GPIO_PORT,0,15);
+    Chip_GPIO_SetPinOutHigh(LPC_GPIO_PORT,0,23);
     DelayMs(6);
 }
 

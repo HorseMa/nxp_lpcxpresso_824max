@@ -22,6 +22,7 @@ Maintainer: Miguel Luis and Gregory Cristian
 #include "LoRaMac.h"
 #include "Region.h"
 #include "Commissioning.h"
+#include "modem.h"
 
 /*!
  * Defines the application data transmission duty cycle. 5s, value in [ms].
@@ -175,6 +176,8 @@ static TimerEvent_t Led4Timer;
  * Indicates if a new packet can be sent
  */
 static bool NextTx = true;
+
+extern RINGBUFF_T txring, rxring;
 
 /*!
  * Device states
@@ -718,7 +721,8 @@ int main( void )
     LoRaMacPrimitives_t LoRaMacPrimitives;
     LoRaMacCallback_t LoRaMacCallbacks;
     MibRequestConfirm_t mibReq;
-
+    int bytes;
+    uint8_t byte;
     //BoardInitMcu( );
     //BoardInitPeriph( );
     
@@ -727,10 +731,21 @@ int main( void )
     Chip_Clock_EnablePeriphClock(SYSCTL_CLOCK_SYS);
     SysTick_Config(SystemCoreClock / 1000);
     prvSetupHardware();
+    modem_init();
     DeviceState = DEVICE_STATE_INIT;
-
+    Chip_UART_SendRB(LPC_USART0, &txring, "power on\r\n", 10);
     while( 1 )
     {
+        bytes = Chip_UART_ReadRB(LPC_USART0, &rxring, &byte, 1);
+        if(bytes > 0)
+        {
+            //Chip_UART_SendRB(LPC_USART0, &txring, &byte, 1);
+            frame_rx(byte);
+            //if(frame_rx(byte) == 0) {
+                //Chip_UART_IntDisable(LPC_USART0, UART_INTEN_RXRDY);
+            //}
+        }
+        //Chip_UART_SendRB(LPC_USART0, &txring, &byte, 1);
         switch( DeviceState )
         {
             case DEVICE_STATE_INIT:

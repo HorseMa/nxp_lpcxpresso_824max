@@ -40,6 +40,8 @@ typedef uint32_t devaddr_t;
 #define LED_SESSION 1  // (IMST: yellow, LRSC: green)
 #define LED_POWER   2  // (IMST: green,  LRSC: red)
 
+#define EEPROM_BASE 0x8000
+
 // patch patterns
 #define PATTERN_JOINCFG_STR "g0CMw49rRbav6HwQN0115g42OpmvTn7q" // (32 bytes)
 #define PATTERN_JOINCFG_HEX "6730434d7734397252626176364877514e303131356734324f706d76546e3771"
