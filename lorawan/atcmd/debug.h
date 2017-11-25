@@ -25,53 +25,39 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "modem.h"
-#include "board.h"
+// intialize debug library
+void debug_init (void);
 
-#define NUMQ 5
+// set LED state
+void debug_led (int val);
 
-static struct {
-    u1_t* buf;
-    u2_t len;
-} queue[NUMQ];
+// write character to USART
+void debug_char (char c);
 
-static u1_t qhead;
+// write byte as two hex digits to USART
+void debug_hex (u1_t b);
 
-void queue_init () {
-    memset(queue, 0, sizeof(queue));
-    qhead = 0;
-}
+// write buffer as hex dump to USART
+void debug_buf (const u1_t* buf, int len);
 
-void queue_add (u1_t* buf, u2_t len) {
-    u1_t i, j;
-    hal_disableIRQs();
-    for(i=0, j=qhead; i<NUMQ; i++, j++) {
-    if(j == NUMQ) {
-        j = 0;
-    }
-    if(queue[j].buf == NULL) {
-        queue[j].buf = buf;
-        queue[j].len = len;
-        break;
-    }
-    }
-    if(i == NUMQ) {
-    hal_failed();
-    }
-    hal_enableIRQs();
-}
+// write 32-bit integer as eight hex digits to USART
+void debug_uint (u4_t v);
 
-u1_t queue_shift (FRAME* f) {
-    u1_t r = 0;
-    hal_disableIRQs();
-    if(queue[qhead].buf) {
-    frame_init(f, queue[qhead].buf, queue[qhead].len);
-    queue[qhead].buf = NULL;
-    if(++qhead == NUMQ) {
-        qhead = 0;
-    }
-    r = 1;
-    }
-    hal_enableIRQs();
-    return r;
-}
+// write 32-bit integer as signed decimal digits to USART
+void debug_int (s4_t v);
+
+// write nul-terminated string to USART
+void debug_str (const char* str);
+
+// write LMiC event name to USART
+void debug_event (int ev);
+
+// write label and 32-bit value as hex to USART
+void debug_val (const char* label, u4_t val);
+
+// write label and 32-bit value as signed decimal to USART
+void debug_valdec (const char* label, s4_t val);
+
+// convert integer 'val' to ASCII string (bin/oct/dec/hex/base36)
+// store string at 'buf', return number of characters written
+int debug_fmt (char* buf, int max, s4_t val, int base, int width, char pad);

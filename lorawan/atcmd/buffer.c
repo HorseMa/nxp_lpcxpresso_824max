@@ -27,62 +27,58 @@
 
 
 #include "modem.h"
-#include "FreeRTOS.h"
-#include "task.h"
 
 // ring buffer - append at end, free from beg
 
-static uint8_t buffer[256];
-static uint8_t* beg;
-static uint8_t* end;
-static uint8_t* max;
+static u1_t buffer[1024];
+static u1_t* beg;
+static u1_t* end;
+static u1_t* max;
 
 void buffer_init () {
     beg = end = max = buffer;
 }
 
-uint8_t* buffer_alloc (uint16_t len) {
-    uint8_t* buf = NULL;
-    
-    taskENTER_CRITICAL();
+u1_t* buffer_alloc (u2_t len) {
+    u1_t* buf = NULL;
+    hal_disableIRQs();
     if(beg <= end) { // .......******...
-	if(end + len < buffer + sizeof(buffer)) { // append
-	    buf = end;
-	    end += len;
-	    max = end;
-	} else { // wrap
-	    if(buffer + len < beg) {
-		buf = buffer;
-		end = buffer + len;
-	    }
-	}
-    } else { // ***.......*****.
-	if(end + len < beg) {
-	    buf = end;
-	    end += len;
-	}
+    if(end + len < buffer + sizeof(buffer)) { // append
+        buf = end;
+        end += len;
+        max = end;
+    } else { // wrap
+        if(buffer + len < beg) {
+        buf = buffer;
+        end = buffer + len;
+        }
     }
-    taskEXIT_CRITICAL();
+    } else { // ***.......*****.
+    if(end + len < beg) {
+        buf = end;
+        end += len;
+    }
+    }
+    hal_enableIRQs();
     return buf;
 }
 
-void buffer_free (uint8_t* buf, uint16_t len) {
+void buffer_free (u1_t* buf, u2_t len) {
     if(buf >= buffer && buf+len < buffer+sizeof(buffer)) {
-	
-        taskENTER_CRITICAL();
-	while(buf != beg); // halt if trying to free not from beginning
-	if(beg <= end) { // .......******...
-	    beg += len;
-	    if(beg == end) { // empty
-		beg = end = max = buffer; // reset
-	    }
-	} else { // ***.......*****.
-	    beg += len;
-	    if(beg == max) {
-		beg = buffer;
-		max = end;
-	    }
-	}
-	taskEXIT_CRITICAL();
+    hal_disableIRQs();
+    while(buf != beg); // halt if trying to free not from beginning
+    if(beg <= end) { // .......******...
+        beg += len;
+        if(beg == end) { // empty
+        beg = end = max = buffer; // reset
+        }
+    } else { // ***.......*****.
+        beg += len;
+        if(beg == max) {
+        beg = buffer;
+        max = end;
+        }
+    }
+    hal_enableIRQs();
     }
 }
