@@ -25,53 +25,41 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "modem.h"
-#include "board.h"
+#include "hw.h"
+#include "lmic.h"
 
-#define NUMQ 5
+// write 32-bit word to EEPROM memory
+void eeprom_write (u4_t* addr, u4_t val) {
+    // check previous value
+    if( *addr != val ) {
+        // unlock data eeprom memory and registers
+        FLASH->PEKEYR = 0x89ABCDEF; // FLASH_PEKEY1
+        FLASH->PEKEYR = 0x02030405; // FLASH_PEKEY2
 
-static struct {
-    u1_t* buf;
-    u2_t len;
-} queue[NUMQ];
+        // only auto-erase if neccessary (when content is non-zero)
+        FLASH->PECR &= ~FLASH_PECR_FTDW; // clear FTDW
 
-static u1_t qhead;
+        // write value
+        *addr = val;
 
-void queue_init () {
-    memset(queue, 0, sizeof(queue));
-    qhead = 0;
+        // check for end of programming
+        while(FLASH->SR & FLASH_SR_BSY); // loop while busy
+
+        // lock data eeprom memory and registers
+        FLASH->PECR |= FLASH_PECR_PELOCK;
+
+        // verify value
+        while( *(volatile u4_t*)addr != val ); // halt on mismatch
+    }
 }
 
-void queue_add (u1_t* buf, u2_t len) {
-    u1_t i, j;
-    hal_disableIRQs();
-    for(i=0, j=qhead; i<NUMQ; i++, j++) {
-    if(j == NUMQ) {
-        j = 0;
-    }
-    if(queue[j].buf == NULL) {
-        queue[j].buf = buf;
-        queue[j].len = len;
-        break;
-    }
-    }
-    if(i == NUMQ) {
-    hal_failed();
-    }
-    hal_enableIRQs();
-}
+void eeprom_copy (void* dst, const void* src, u2_t len) {
+    while(((u4_t)dst & 3) || ((u4_t)src & 3) || (len & 3)); // halt if not multiples of 4
+    u4_t* d = (u4_t*)dst;
+    u4_t* s = (u4_t*)src;
+    u2_t  l = len/4;
 
-u1_t queue_shift (FRAME* f) {
-    u1_t r = 0;
-    hal_disableIRQs();
-    if(queue[qhead].buf) {
-    frame_init(f, queue[qhead].buf, queue[qhead].len);
-    queue[qhead].buf = NULL;
-    if(++qhead == NUMQ) {
-        qhead = 0;
+    while(l--) {
+        eeprom_write(d++, *s++);
     }
-    r = 1;
-    }
-    hal_enableIRQs();
-    return r;
 }
