@@ -14,7 +14,7 @@ Maintainer: Miguel Luis and Gregory Cristian
 */
 #include "board.h"
 #include "timer.h"
-#include "rtc-board.h"
+//#include "rtc-board.h"
 #include "utilities.h"
 uint32_t systicks = 0;
 /*!

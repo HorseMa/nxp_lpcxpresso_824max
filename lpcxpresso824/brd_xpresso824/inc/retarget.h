@@ -155,7 +155,7 @@ label:
 
 #if defined(DEBUG_ENABLE) && !defined(DEBUG_SEMIHOSTING)
 
-_STD_BEGIN
+//_STD_BEGIN
 
 #pragma module_name = "?__write"
 
@@ -194,7 +194,7 @@ size_t __write(int handle, const unsigned char *buffer, size_t size)
 #endif /* defined(DEBUG_ENABLE) */
 }
 
-_STD_END
+//_STD_END
 #endif
 
 #endif /* defined (__ICCARM__) */
