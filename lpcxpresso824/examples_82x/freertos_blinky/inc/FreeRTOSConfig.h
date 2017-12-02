@@ -79,7 +79,7 @@
 #define configTICK_RATE_HZ				( ( TickType_t ) 1000 )
 #define configMAX_PRIORITIES			( ( UBaseType_t ) 8 )
 #define configMINIMAL_STACK_SIZE		( ( uint16_t ) 64 )
-#define configTOTAL_HEAP_SIZE			( ( size_t ) ( 1024 + 512 * 4 - 200) )
+#define configTOTAL_HEAP_SIZE			( ( size_t ) ( 1024 + 512) )
 #define configMAX_TASK_NAME_LEN			( 10 )
 #define configUSE_TRACE_FACILITY		1
 #define configUSE_16_BIT_TICKS			0
@@ -102,9 +102,9 @@
 this takes a finite time, and because a timer callback writes to an LED, the
 priority of the timer task is kept to a minimum to ensure it does not disrupt
 test tasks that check their own execution times. */
-#define configUSE_TIMERS				1
+#define configUSE_TIMERS				0
 #define configTIMER_TASK_PRIORITY		( 0 )
-#define configTIMER_QUEUE_LENGTH		15
+#define configTIMER_QUEUE_LENGTH		5
 #define configTIMER_TASK_STACK_DEPTH	( configMINIMAL_STACK_SIZE * 2 )
 
 /* Set the following definitions to 1 to include the API function, or zero
@@ -153,7 +153,7 @@ standard names - or at least those used in the unmodified vector table. */
 #define xPortPendSVHandler PendSV_Handler
 #define xPortSysTickHandler SysTick_Handler
 
-#define EXTRA_HEAP_SZ 0x10
+#define EXTRA_HEAP_SZ 0x1000
 
 #endif /* FREERTOS_CONFIG_H */
 

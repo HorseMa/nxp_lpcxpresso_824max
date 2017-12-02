@@ -1,5 +1,5 @@
 /*
- * @brief FreeRTOS Blinky example
+ * @brief Common FreeRTOS functions shared among platforms
  *
  * @note
  * Copyright(C) NXP Semiconductors, 2012
@@ -29,13 +29,20 @@
  * this code.
  */
 
-#include "board.h"
 #include "FreeRTOS.h"
 #include "task.h"
+#include "FreeRTOSCommonHooks.h"
+
+#include "chip.h"
 
 /*****************************************************************************
  * Private types/enumerations/variables
  ****************************************************************************/
+#if defined ( __ICCARM__ )
+#define __WEAK__   __weak
+#else
+#define __WEAK__   __attribute__((weak))
+#endif
 
 /*****************************************************************************
  * Public types/enumerations/variables
@@ -45,90 +52,63 @@
  * Private functions
  ****************************************************************************/
 
-/* Sets up system hardware */
-static void prvSetupHardware(void)
-{
-	SystemCoreClockUpdate();
-	Board_Init();
-}
-
-/* LED0 toggle thread */
-static void vLEDTask0 (void *pvParameters) {
-	bool LedState = false;
-	while (1) {
-		Board_LED_Set(0, LedState);
-		LedState = (bool) !LedState;
-
-		vTaskDelay(configTICK_RATE_HZ/2);
-	}
-}
-
-/* LED1 toggle thread */
-static void vLEDTask1 (void *pvParameters) {
-	bool LedState = false;
-	while (1) {
-		Board_LED_Set(1, LedState);
-		LedState = (bool) !LedState;
-
-		vTaskDelay(configTICK_RATE_HZ*2);
-	}
-}
-
-/* LED2 toggle thread */
-static void vLEDTask2 (void *pvParameters) {
-	bool LedState = false;
-	while (1) {
-		Board_LED_Set(2, LedState);
-		LedState = (bool) !LedState;
-
-		vTaskDelay(configTICK_RATE_HZ);
-	}
-}
-
 /*****************************************************************************
  * Public functions
  ****************************************************************************/
 
-/**
- * @brief	main routine for FreeRTOS blinky example
- * @return	Nothing, function should not exit
- */
-int main(void)
+/* Delay for the specified number of milliSeconds */
+void FreeRTOSDelay(uint32_t ms)
 {
-	prvSetupHardware();
+	TickType_t xDelayTime;
 
-	/* LED1 toggle thread */
-	xTaskCreate(vLEDTask1, "vTaskLed1",
-				configMINIMAL_STACK_SIZE, NULL, (tskIDLE_PRIORITY + 1UL),
-				(TaskHandle_t *) NULL);
-
-	/* LED2 toggle thread */
-	xTaskCreate(vLEDTask2, "vTaskLed2",
-				configMINIMAL_STACK_SIZE, NULL, (tskIDLE_PRIORITY + 1UL),
-				(TaskHandle_t *) NULL);
-
-	/* LED0 toggle thread */
-	xTaskCreate(vLEDTask0, "vTaskLed0",
-				configMINIMAL_STACK_SIZE, NULL, (tskIDLE_PRIORITY + 1UL),
-				(TaskHandle_t *) NULL);
-
-	/* Start the scheduler */
-	vTaskStartScheduler();
-
-	/* Should never arrive here */
-	return 1;
+	xDelayTime = xTaskGetTickCount();
+	vTaskDelayUntil(&xDelayTime, ms);
 }
 
-/**
- * Override stack overflow function so that it won't use printf [DEBUGOUT]
- */
-void vApplicationStackOverflowHook(TaskHandle_t pxTask, char *pcTaskName)
+/* FreeRTOS malloc fail hook */
+__WEAK__ void vApplicationMallocFailedHook(void)
 {
-	DEBUGSTR("Stack Over flow in :");
-	DEBUGSTR(pcTaskName);
+	taskDISABLE_INTERRUPTS();
+	__BKPT(0x01);
+	for (;; ) {}
+}
+
+/* FreeRTOS application idle hook */
+__WEAK__ void vApplicationIdleHook(void)
+{
+	/* Best to sleep here until next systick */
+	__WFI();
+}
+
+/* FreeRTOS stack overflow hook */
+__WEAK__ void vApplicationStackOverflowHook(TaskHandle_t pxTask, char *pcTaskName)
+{
+	(void) pxTask;
+	(void) pcTaskName;
+
 	/* Run time stack overflow checking is performed if
 	   configCHECK_FOR_STACK_OVERFLOW is defined to 1 or 2.  This hook
 	   function is called if a stack overflow is detected. */
 	taskDISABLE_INTERRUPTS();
+	__BKPT(0x02);
 	for (;; ) {}
 }
+
+/* FreeRTOS application tick hook */
+__WEAK__ void vApplicationTickHook(void)
+{}
+
+#ifdef __CC_ARM
+#ifndef EXTRA_HEAP_SZ
+#define EXTRA_HEAP_SZ 0x6000
+#endif
+static uint32_t extra_heap[EXTRA_HEAP_SZ / sizeof(uint32_t)];
+__attribute__((used)) unsigned __user_heap_extend(int var0, void **base, unsigned requested_size)
+{
+	if (requested_size > EXTRA_HEAP_SZ)
+		return 0;
+
+	*base = (void *) extra_heap;
+	return sizeof(extra_heap);
+}
+#endif

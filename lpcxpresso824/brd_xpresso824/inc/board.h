@@ -70,7 +70,7 @@ extern "C" {
 	the board code only supoprts UART0 in the Board_UART_Init() fucntion,
 	so be sure to change it there too if not using UART0.
  */
-#define DEBUG_UART LPC_USART0
+#define DEBUG_UART LPC_USART1
 
 /**
  * @}
