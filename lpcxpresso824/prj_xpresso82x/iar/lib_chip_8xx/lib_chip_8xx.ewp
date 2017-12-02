@@ -12,7 +12,7 @@
       <name>General</name>
       <archiveVersion>3</archiveVersion>
       <data>
-        <version>24</version>
+        <version>22</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -26,6 +26,11 @@
         <option>
           <name>ListPath</name>
           <state>iar_output\List</state>
+        </option>
+        <option>
+          <name>Variant</name>
+          <version>21</version>
+          <state>35</state>
         </option>
         <option>
           <name>GEndianMode</name>
@@ -54,6 +59,11 @@
           <state>1</state>
         </option>
         <option>
+          <name>FPU</name>
+          <version>3</version>
+          <state>0</state>
+        </option>
+        <option>
           <name>OGCoreOrChip</name>
           <state>1</state>
         </option>
@@ -73,11 +83,11 @@
         </option>
         <option>
           <name>OGProductVersion</name>
-          <state>6.50.2.4581</state>
+          <state>7.30.3.8061</state>
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>7.70.1.11471</state>
+          <state>7.30.3.8061</state>
         </option>
         <option>
           <name>GeneralEnableMisra</name>
@@ -93,7 +103,7 @@
         </option>
         <option>
           <name>GenLowLevelInterface</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>GEndianModeBE</name>
@@ -126,8 +136,13 @@
           <state>$TOOLKIT_DIR$\INC\c\DLib_Config_Normal.h</state>
         </option>
         <option>
+          <name>GFPUCoreSlave</name>
+          <version>21</version>
+          <state>35</state>
+        </option>
+        <option>
           <name>GBECoreSlave</name>
-          <version>24</version>
+          <version>21</version>
           <state>35</state>
         </option>
         <option>
@@ -142,34 +157,6 @@
           <name>GRuntimeLibThreads</name>
           <state>0</state>
         </option>
-        <option>
-          <name>CoreVariant</name>
-          <version>24</version>
-          <state>35</state>
-        </option>
-        <option>
-          <name>GFPUDeviceSlave</name>
-          <state>LPC824M201	NXP LPC824M201</state>
-        </option>
-        <option>
-          <name>FPU2</name>
-          <version>0</version>
-          <state>0</state>
-        </option>
-        <option>
-          <name>NrRegs</name>
-          <version>0</version>
-          <state>0</state>
-        </option>
-        <option>
-          <name>NEON</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>GFPUCoreSlave2</name>
-          <version>24</version>
-          <state>35</state>
-        </option>
       </data>
     </settings>
     <settings>
@@ -182,6 +169,7 @@
         <option>
           <name>CCDefines</name>
           <state>CORE_M0PLUS</state>
+          <state>BOARD_NXP_LPCXPRESSO_824</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -599,7 +587,7 @@
         <debug>1</debug>
         <option>
           <name>OOCOutputFormat</name>
-          <version>3</version>
+          <version>2</version>
           <state>0</state>
         </option>
         <option>
@@ -646,7 +634,7 @@
       <name>ILINK</name>
       <archiveVersion>0</archiveVersion>
       <data>
-        <version>17</version>
+        <version>16</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -663,7 +651,7 @@
         </option>
         <option>
           <name>IlinkOutputFile</name>
-          <state>lib_lpc_chip_8xx.out</state>
+          <state>lib_chip_8xx.out</state>
         </option>
         <option>
           <name>IlinkDebugInfoEnable</name>
@@ -727,7 +715,7 @@
         </option>
         <option>
           <name>IlinkIcfFile</name>
-          <state>lnk0t.icf</state>
+          <state>$TOOLKIT_DIR$\config\linker\NXP\LPC824M201.icf</state>
         </option>
         <option>
           <name>IlinkIcfFileSlave</name>
@@ -787,7 +775,7 @@
         </option>
         <option>
           <name>IlinkProgramEntryLabel</name>
-          <state></state>
+          <state>__iar_program_start</state>
         </option>
         <option>
           <name>DoFill</name>
@@ -929,10 +917,6 @@
         <option>
           <name>IlinkThreadsSlave</name>
           <state>1</state>
-        </option>
-        <option>
-          <name>IlinkLogCallGraph</name>
-          <state>0</state>
         </option>
       </data>
     </settings>

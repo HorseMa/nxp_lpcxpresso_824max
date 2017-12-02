@@ -91,17 +91,7 @@ void SX1276IoInit( void )
 
   /* Configure GPIO pin as input pin */
   Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, 0, 17);
-#if 0   // dio5 is not used, interrupt too often
-  /* Configure interrupt channel 0 for the GPIO pin in SysCon block */
-  //Chip_SWM_MovablePinAssign(SWM_SCT_IN5_I, 22);
-  Chip_SYSCTL_SetPinInterrupt(5, 22);   // DIO5
 
-  /* Configure channel 0 as wake up interrupt in SysCon block */
-  Chip_SYSCTL_EnablePINTWakeup(5);
-
-  /* Configure GPIO pin as input pin */
-  Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, 0, 22);
-#endif
   /* Configure interrupt channel 0 for the GPIO pin in SysCon block */
   //Chip_SWM_MovablePinAssign(SWM_SCT_IN3_I, 21);
   Chip_SYSCTL_SetPinInterrupt(3, 21);   // DIO3
@@ -122,17 +112,29 @@ void SX1276IoInit( void )
   /* Configure GPIO pin as input pin */
   Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, 0, 20);
   
+  #if 0   // dio5 is not used, interrupt too often
+  /* Configure interrupt channel 0 for the GPIO pin in SysCon block */
+  //Chip_SWM_MovablePinAssign(SWM_SCT_IN5_I, 22);
+  Chip_SYSCTL_SetPinInterrupt(5, 22);   // DIO5
+
+  /* Configure channel 0 as wake up interrupt in SysCon block */
+  Chip_SYSCTL_EnablePINTWakeup(5);
+
+  /* Configure GPIO pin as input pin */
+  Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, 0, 22);
+#endif
+  
   Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,23,TRUE); // NRESET
   Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO23,PIN_MODE_PULLUP);
   
   Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,14,TRUE); // SSEL
   Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO14,PIN_MODE_PULLUP);
   Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,25,TRUE); // SCK
-  Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO25,PIN_MODE_REPEATER);
+  Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO25,PIN_MODE_PULLUP);
   Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,7,FALSE); // MISO
   Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO7,PIN_MODE_INACTIVE);
   Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,6,TRUE); // MOSI
-  Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO6,PIN_MODE_REPEATER);
+  Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO6,PIN_MODE_PULLUP);
   
   
   Chip_SWM_MovablePinAssign(SWM_SPI1_SSEL0_IO, 14);
@@ -152,7 +154,7 @@ void SX1276IoInit( void )
                           SPI_CLOCK_CPHA0_CPOL0 |   /* Set Clock polarity to 0 */
                           SPI_CFG_MSB_FIRST_EN |/* Enable MSB first option */
                           SPI_CFG_SPOL_LO); /* Chipselect is active low */
-
+  Chip_SPIM_SetClockRate(LPC_SPI1,1000000);
   DelayConfigStruct.FrameDelay = 0;
   DelayConfigStruct.PostDelay = 0;
   DelayConfigStruct.PreDelay = 0;
@@ -198,13 +200,14 @@ void SX1276IoIrqInit( void )
 
   /* Enable interrupt in the NVIC */
   NVIC_EnableIRQ(PININT4_IRQn);
-
+#if 0
   /* Configure channel 0 interrupt as edge sensitive and falling edge interrupt */
   Chip_PININT_SetPinModeEdge(LPC_PININT, PININTCH5);
   Chip_PININT_EnableIntHigh(LPC_PININT, PININTCH5);
 
   /* Enable interrupt in the NVIC */
   NVIC_EnableIRQ(PININT5_IRQn);
+#endif
 }
 
 void SX1276IoDeInit( void )

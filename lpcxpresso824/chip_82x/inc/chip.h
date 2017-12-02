@@ -133,6 +133,7 @@ extern "C" {
 /* IRQ Handler alias list */
 #ifdef CHIP_LPC82X
 #define I2C_IRQHandler       I2C0_IRQHandler
+/*
 #define PININT0_IRQHandler   PIN_INT0_IRQHandler
 #define PININT1_IRQHandler   PIN_INT1_IRQHandler
 #define PININT2_IRQHandler   PIN_INT2_IRQHandler
@@ -141,6 +142,7 @@ extern "C" {
 #define PININT5_IRQHandler   PIN_INT5_IRQHandler
 #define PININT6_IRQHandler   PIN_INT6_IRQHandler
 #define PININT7_IRQHandler   PIN_INT7_IRQHandler
+*/
 #endif
 
 /**
