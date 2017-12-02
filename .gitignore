@@ -5,9 +5,7 @@
 *.pbd
 *.browse
 *.out
-
 *.sim
-
 *.dep
 *.ewp
 *.ewd
@@ -28,12 +26,9 @@
 *.jlink
 Obj/
 settings/
-!lpcxpresso824/prj_xpresso82x/iar/freertos_blinky/freertos_blinky.dep
+!lpcxpresso824/prj_xpresso82x/iar/freertos_blinky/freertos_blinky.ewd
 !lpcxpresso824/prj_xpresso82x/iar/freertos_blinky/freertos_blinky.ewp
-!lpcxpresso824/prj_xpresso82x/iar/freertos_blinky/freertos_blinky.ewt
-!lpcxpresso824/prj_xpresso82x/iar/lib_board_lpcxpresso824/lib_board_lpcxpresso824.dep
+!lpcxpresso824/prj_xpresso82x/iar/lib_board_lpcxpresso824/lib_board_lpcxpresso824.ewd
 !lpcxpresso824/prj_xpresso82x/iar/lib_board_lpcxpresso824/lib_board_lpcxpresso824.ewp
-!lpcxpresso824/prj_xpresso82x/iar/lib_board_lpcxpresso824/lib_board_lpcxpresso824.ewt
-!lpcxpresso824/prj_xpresso82x/iar/lib_chip_8xx/lib_chip_8xx.dep
+!lpcxpresso824/prj_xpresso82x/iar/lib_chip_8xx/lib_chip_8xx.ewd
 !lpcxpresso824/prj_xpresso82x/iar/lib_chip_8xx/lib_chip_8xx.ewp
-!lpcxpresso824/prj_xpresso82x/iar/lib_chip_8xx/lib_chip_8xx.ewt
