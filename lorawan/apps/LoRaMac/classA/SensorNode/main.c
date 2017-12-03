@@ -158,21 +158,6 @@ static TimerEvent_t TxNextPacketTimer;
 static bool AppLedStateOn = false;
 
 /*!
- * Timer to handle the state of LED1
- */
-static TimerEvent_t Led1Timer;
-
-/*!
- * Timer to handle the state of LED2
- */
-static TimerEvent_t Led2Timer;
-
-/*!
- * Timer to handle the state of LED4
- */
-static TimerEvent_t Led4Timer;
-
-/*!
  * Indicates if a new packet can be sent
  */
 static bool NextTx = true;
@@ -378,36 +363,6 @@ static void OnTxNextPacketTimerEvent( void )
 }
 
 /*!
- * \brief Function executed on Led 1 Timeout event
- */
-static void OnLed1TimerEvent( void )
-{
-    TimerStop( &Led1Timer );
-    // Switch LED 1 OFF
-    Board_LED_Set(0,1);
-}
-
-/*!
- * \brief Function executed on Led 2 Timeout event
- */
-static void OnLed2TimerEvent( void )
-{
-    TimerStop( &Led2Timer );
-    // Switch LED 2 OFF
-    Board_LED_Set(1,1);
-}
-
-/*!
- * \brief Function executed on Led 4 Timeout event
- */
-static void OnLed4TimerEvent( void )
-{
-    TimerStop( &Led4Timer );
-    // Switch LED 4 OFF
-    //GpioWrite( &Led4, 1 );
-}
-
-/*!
  * \brief   MCPS-Confirm event function
  *
  * \param   [IN] mcpsConfirm - Pointer to the confirm structure,
@@ -440,10 +395,6 @@ static void McpsConfirm( McpsConfirm_t *mcpsConfirm )
             default:
                 break;
         }
-
-        // Switch LED 1 ON
-        Board_LED_Set(0,0);
-        TimerStart( &Led1Timer );
     }
     NextTx = true;
 }
@@ -650,10 +601,6 @@ static void McpsIndication( McpsIndication_t *mcpsIndication )
             break;
         }
     }
-
-    // Switch LED 2 ON for each received downlink
-    Board_LED_Set(1,0);
-    TimerStart( &Led2Timer );
 }
 
 /*!
@@ -733,7 +680,6 @@ int main( void )
     prvSetupHardware();
     modem_init();
     DeviceState = DEVICE_STATE_INIT;
-    Chip_UART_SendRB(LPC_USART0, &txring, "power on\r\n", 10);
     while( 1 )
     {
         bytes = Chip_UART_ReadRB(LPC_USART0, &rxring, &byte, 1);
@@ -778,15 +724,6 @@ int main( void )
     #error "Please define a region in the compiler options."
 #endif
                 TimerInit( &TxNextPacketTimer, OnTxNextPacketTimerEvent );
-
-                TimerInit( &Led1Timer, OnLed1TimerEvent );
-                TimerSetValue( &Led1Timer, 25 );
-
-                TimerInit( &Led2Timer, OnLed2TimerEvent );
-                TimerSetValue( &Led2Timer, 25 );
-
-                TimerInit( &Led4Timer, OnLed4TimerEvent );
-                TimerSetValue( &Led4Timer, 25 );
 
                 mibReq.Type = MIB_ADR;
                 mibReq.Param.AdrEnable = LORAWAN_ADR_ON;

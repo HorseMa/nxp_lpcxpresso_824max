@@ -29,7 +29,7 @@
 #include "board.h"
 #include "LoRaMac.h"
 #include "utilities.h"
-
+#include "timer.h"
 
 //////////////////////////////////////////////////
 // CONFIGURATION (WILL BE PATCHED)
@@ -49,18 +49,18 @@ static const union {
     .pattern = { PATTERN_SESSCFG_STR }
 };
 #endif
+
+/*!
+ * Timer to handle the state of LED1
+ */
+TimerEvent_t Led1Timer_Tx;
+TimerEvent_t Led1Timer_Rx;
+TimerEvent_t Led1Timer_OnLine;
+TimerEvent_t Led1Timer_OffLine;
+struct lmic_t LMIC;
 // COMMAND TO SET DEVEUI=FF-FF-FF-FF-FF-FF-FF-00, APPEUI=DE-DE-AA-AA-00-00-00-1A (PORT=25501):
 //   ATJ=FFFFFFFFFFFFFF00,DEDEAAAA0000001A,AA5555555555555555AAAAAAAAAAAAAA
 //   OK
-
-// Event types for event callback
-enum _ev_t { EV_SCAN_TIMEOUT=1, EV_BEACON_FOUND,
-             EV_BEACON_MISSED, EV_BEACON_TRACKED, EV_JOINING,
-             EV_JOINED, EV_RFU1, EV_JOIN_FAILED, EV_REJOIN_FAILED,
-             EV_TXCOMPLETE, EV_LOST_TSYNC, EV_RESET,
-             EV_RXCOMPLETE, EV_LINK_DEAD, EV_LINK_ALIVE, EV_SCAN_FOUND,
-             EV_TXSTART };
-typedef enum _ev_t ev_t;
 
 static const char* evnames[] = {
     [EV_SCAN_TIMEOUT]   = "SCAN_TIMEOUT",
@@ -517,6 +517,133 @@ static void ledfunc () {
     leds_set(LED_POWER, 1);
 }
 
+static void OnLed1TimerEventRx( void )
+{
+    TimerStop( &Led1Timer_Rx );
+    // Switch LED 1 OFF
+    Board_LED_Set(0,1);
+    LedIndication(EN_LED_SENSSION_NET);
+}
+
+static void OnLed1TimerEventTx( void )
+{
+    TimerStop( &Led1Timer_Tx );
+    // Switch LED 1 OFF
+    Board_LED_Set(0,1);
+    LedIndication(EN_LED_SENSSION_NET);
+}
+
+static void OnLed1TimerEventNetOffline( void )
+{
+    static uint8_t state = 0;
+    switch(state)
+    {
+        case 0:
+        TimerStop( &Led1Timer_OffLine );
+        // Switch LED 1 ON
+        Board_LED_Set(0,1);
+        TimerSetValue( &Led1Timer_OffLine, 100 );
+        TimerStart( &Led1Timer_OffLine );
+        state = 1;
+        break;
+        case 1:
+        TimerStop( &Led1Timer_OffLine );
+        // Switch LED 1 OFF
+        Board_LED_Set(0,0);
+        TimerSetValue( &Led1Timer_OffLine, 200 );
+        TimerStart( &Led1Timer_OffLine );
+        state = 2;
+        break;
+        case 2:
+        TimerStop( &Led1Timer_OffLine );
+        // Switch LED 1 ON
+        Board_LED_Set(0,1);
+        TimerSetValue( &Led1Timer_OffLine, 100 );
+        TimerStart( &Led1Timer_OffLine );
+        state = 3;
+        break;
+        case 3:
+        TimerStop( &Led1Timer_OffLine );
+        // Switch LED 1 OFF
+        Board_LED_Set(0,0);
+        TimerSetValue( &Led1Timer_OffLine, 1000 );
+        TimerStart( &Led1Timer_OffLine );
+        state = 0;
+        break;
+        default:
+        state = 0;
+        break;
+    }
+}
+
+static void OnLed1TimerEventNetOnline( void )
+{
+    static uint8_t state = 0;
+    switch(state)
+    {
+        case 0:
+        TimerStop( &Led1Timer_OnLine );
+        // Switch LED 1 ON
+        Board_LED_Set(0,1);
+        TimerSetValue( &Led1Timer_OnLine, 100 );
+        TimerStart( &Led1Timer_OnLine );
+        state = 1;
+        break;
+        case 1:
+        TimerStop( &Led1Timer_OnLine );
+        // Switch LED 1 OFF
+        Board_LED_Set(0,0);
+        TimerSetValue( &Led1Timer_OnLine, 1000 );
+        TimerStart( &Led1Timer_OnLine );
+        state = 0;
+        break;
+        default:
+        state = 0;
+        break;
+    }
+}
+
+void LedIndication(LedSension_t senssion)
+{
+    TimerStop( &Led1Timer_Tx );
+    TimerStop( &Led1Timer_Rx );
+    TimerStop( &Led1Timer_OnLine );
+    TimerStop( &Led1Timer_OffLine );
+    // Switch LED 1 OFF
+    Board_LED_Set(0,0);
+    // Switch LED 1 ON
+    //Board_LED_Set(0,0);
+    switch(senssion)
+    {
+        case EN_LED_SENSSION_TX:
+        // Switch LED 1 ON
+        Board_LED_Set(0,1);
+        TimerSetValue( &Led1Timer_Tx, 25 );
+        TimerStart( &Led1Timer_Tx );
+        break;
+        case EN_LED_SENSSION_RX:
+        // Switch LED 1 ON
+        Board_LED_Set(0,1);
+        TimerSetValue( &Led1Timer_Rx, 50 );
+        TimerStart( &Led1Timer_Rx );
+        break;
+        case EN_LED_SENSSION_NET:
+        if(IsLoRaMacNetworkJoined)
+        {
+            TimerSetValue( &Led1Timer_OnLine, 1000 );
+            TimerStart( &Led1Timer_OnLine );
+        }
+        else
+        {
+            TimerSetValue( &Led1Timer_OffLine, 1000 );
+            TimerStart( &Led1Timer_OffLine );
+        }
+        break;
+        default:
+        break;
+    }
+}
+
 // start transmission of prepared response or queued event message
 static void modem_starttx () {
     hal_disableIRQs();
@@ -538,30 +665,22 @@ static void modem_starttx () {
 // LRSC MAC event handler
 // encode and queue event for output
 void onEvent (ev_t ev) {
-#if 0
-    // turn LED off for a short moment
-    leds_set(LED_POWER, 0);
-    os_setTimedCallback(&MODEM.ledjob, os_getTime()+ms2osticks(200), ledfunc);
-
+#if 1
+  /*
     // update sequence counters for session
     if(PERSIST->flags & FLAGS_SESSPAR) {
     eeprom_write(&PERSIST->seqnoUp, LMIC.seqnoUp);
     eeprom_write(&PERSIST->seqnoDn, LMIC.seqnoDn);
     }
-
+*/
     // take action on specific events
     switch(ev) {
     case EV_JOINING:
-    // start blinking
-    blinkfunc(&MODEM.blinkjob);
     break;
     case EV_JOINED: {
-    // cancel blink job
-    os_clearCallback(&MODEM.blinkjob);
-    // switch on LED
-    leds_set(LED_SESSION, 1);
+    LedIndication(EN_LED_SENSSION_NET);
     // save newly established session
-    sessparam_t newsession;
+    /*sessparam_t newsession;
     newsession.netid = LMIC.netid;
     newsession.devaddr = LMIC.devaddr;
     memcpy(newsession.nwkkey, LMIC.nwkKey, 16);
@@ -569,18 +688,18 @@ void onEvent (ev_t ev) {
     eeprom_copy(&PERSIST->sesspar, &newsession, sizeof(newsession));
     eeprom_write(&PERSIST->seqnoDn, LMIC.seqnoDn);
     eeprom_write(&PERSIST->seqnoUp, LMIC.seqnoUp);
-    eeprom_write(&PERSIST->flags, PERSIST->flags | FLAGS_SESSPAR);
+    eeprom_write(&PERSIST->flags, PERSIST->flags | FLAGS_SESSPAR);*/
       }
     }
 
     // report events (selected by eventmask)
-    if(PERSIST->eventmask & (1 << ev)) {
-    u1_t len = strlen(evnames[ev]);
-    u1_t* buf;
+    //if(PERSIST->eventmask & (1 << ev)) {
+    {uint8_t len = strlen(evnames[ev]);
+    uint8_t* buf;
     switch(ev) {
     case EV_TXCOMPLETE:
     case EV_RXCOMPLETE: { // report EV_XXCOMPLETE,<flags>[,<port>[,<downstream data>]]
-        u1_t f = LMIC.txrxFlags; // EV_XXCOMPLETE,FF[,PP[,DDDDDDDD...]]
+        uint8_t f = LMIC.txrxFlags; // EV_XXCOMPLETE,FF[,PP[,DDDDDDDD...]]
         buf = buffer_alloc(3 + len + 1 + 2 + ((f & TXRX_PORT) ? 3 : 0) + (LMIC.dataLen ? 1+2*LMIC.dataLen:0) + 2);
         memcpy(buf, "EV_", 3);
         memcpy(buf+3, evnames[ev], len);
@@ -608,8 +727,10 @@ void onEvent (ev_t ev) {
     }
     buf[len++] = '\r';
     buf[len++] = '\n';
-    queue_add(buf, len);
-    modem_starttx();
+    Chip_UART_SendRB(LPC_USART0, &txring, buf, len);
+    buffer_free(buf,len);
+    //queue_add(buf, len);
+    //modem_starttx();
     }
 #endif
 }
@@ -678,13 +799,19 @@ void modem_init () {
     modem_reset();
 
     buffer_init();
-    queue_init();
+    //queue_init();
 
     // initialize USART
     usart_init();
 
     // start reception of command
     frame_init(&rxframe, MODEM.cmdbuf, sizeof(MODEM.cmdbuf));
+    TimerInit( &Led1Timer_Tx,OnLed1TimerEventTx);
+    TimerInit( &Led1Timer_Rx,OnLed1TimerEventRx);
+    TimerInit( &Led1Timer_OnLine, OnLed1TimerEventNetOnline );
+    TimerInit( &Led1Timer_OffLine, OnLed1TimerEventNetOffline );
+    //TimerSetValue(&Led1Timer,1000);
+    //TimerStart( &Led1Timer );
     //usart_startrx();
 }
 

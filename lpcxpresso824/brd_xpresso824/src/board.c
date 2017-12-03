@@ -37,8 +37,8 @@
  * Private types/enumerations/variables
  ****************************************************************************/
 #define	UART_CLOCK_DIV	1
-#define LEDSAVAIL 2
-static const uint8_t ledBits[LEDSAVAIL] = {11, 11};
+#define LEDSAVAIL 1
+static const uint8_t ledBits[LEDSAVAIL] = {11};
 
 /*****************************************************************************
  * Public types/enumerations/variables

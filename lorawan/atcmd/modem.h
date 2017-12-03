@@ -27,6 +27,7 @@
 #ifndef __MODEM_H__
 #define __MODEM_H__
 #include "board.h"
+#include "timer.h"
 #include <string.h>
 // Device address
 typedef uint32_t devaddr_t;
@@ -35,7 +36,7 @@ typedef uint32_t devaddr_t;
 #define VERSION_MAJOR 1
 #define VERSION_MINOR 2
 #define VERSION_STR   "VERSION 1.2 ("__DATE__" "__TIME__")"
-
+#define MAX_LEN_FRAME   64
 // LED ids
 #define LED_SESSION 1  // (IMST: yellow, LRSC: green)
 #define LED_POWER   2  // (IMST: green,  LRSC: red)
@@ -76,6 +77,120 @@ typedef struct {
     uint32_t eventmask;
 } persist_t;
 
+struct lmic_t {
+    // Radio settings TX/RX (also accessed by HAL)
+    //ostime_t    txend;
+    //ostime_t    rxtime;
+    uint32_t        freq;
+    int8_t        rssi;
+    int8_t        snr;
+    //rps_t       rps;
+    uint8_t        rxsyms;
+    uint8_t        dndr;
+    int8_t        txpow;     // dBm
+
+    //osjob_t     osjob;
+
+    // Channel scheduling
+#if defined(CFG_eu868)
+    //band_t      bands[MAX_BANDS];
+    uint32_t        channelFreq[MAX_CHANNELS];
+    uint16_t        channelDrMap[MAX_CHANNELS];
+    uint16_t        channelMap;
+#elif defined(CFG_us915)
+    uint32_t        xchFreq[MAX_XCHANNELS];    // extra channel frequencies (if device is behind a repeater)
+    uint16_t        xchDrMap[MAX_XCHANNELS];   // extra channel datarate ranges  ---XXX: ditto
+    uint16_t        channelMap[(72+MAX_XCHANNELS+15)/16];  // enabled bits
+    uint16_t        chRnd;        // channel randomizer
+#endif
+    uint8_t        txChnl;          // channel for next TX
+    uint8_t        globalDutyRate;  // max rate: 1/2^k
+    //ostime_t    globalDutyAvail; // time device can send again
+    
+    uint32_t        netid;        // current network id (~0 - none)
+    uint16_t        opmode;
+    uint8_t        upRepeat;     // configured up repeat
+    int8_t        adrTxPow;     // ADR adjusted TX power
+    uint8_t        datarate;     // current data rate
+    uint8_t        errcr;        // error coding rate (used for TX only)
+    uint8_t        rejoinCnt;    // adjustment for rejoin datarate
+    int16_t        drift;        // last measured drift
+    int16_t        lastDriftDiff;
+    int16_t        maxDriftDiff;
+
+    uint8_t        pendTxPort;
+    uint8_t        pendTxConf;   // confirmed data
+    uint8_t        pendTxLen;    // +0x80 = confirmed
+    //uint8_t        pendTxData[MAX_LEN_PAYLOAD];
+
+    uint16_t        devNonce;     // last generated nonce
+    uint8_t        nwkKey[16];   // network session key
+    uint8_t        artKey[16];   // application router session key
+    //devaddr_t   devaddr;
+    uint32_t        seqnoDn;      // device level down stream seqno
+    uint32_t        seqnoUp;
+
+    uint8_t        dnConf;       // dn frame confirm pending: LORA::FCT_ACK or 0
+    int8_t        adrAckReq;    // counter until we reset data rate (0=off)
+    uint8_t        adrChanged;
+
+    uint8_t        margin;
+    uint8_t       ladrAns;      // link adr adapt answer pending
+    uint8_t       devsAns;      // device status answer pending
+    uint8_t        adrEnabled;
+    uint8_t        moreData;     // NWK has more data pending
+    uint8_t       dutyCapAns;   // have to ACK duty cycle settings
+    uint8_t        snchAns;      // answer set new channel
+    // 2nd RX window (after up stream)
+    uint8_t        dn2Dr;
+    uint8_t        dn2Freq;
+    uint8_t        dn2Ans;       // 0=no answer pend, 0x80+ACKs
+
+    // Class B state
+    uint8_t        missedBcns;   // unable to track last N beacons
+    uint8_t        bcninfoTries; // how often to try (scan mode only)
+    uint8_t        pingSetAns;   // answer set cmd and ACK bits
+    //rxsched_t   ping;         // pingable setup
+
+    // Public part of MAC state
+    uint8_t        txCnt;
+    uint8_t        txrxFlags;  // transaction flags (TX-RX combo)
+    uint8_t        dataBeg;    // 0 or start of data (dataBeg-1 is port)
+    uint8_t        dataLen;    // 0 no data or zero length data, >0 byte count of data
+    uint8_t        frame[MAX_LEN_FRAME];
+
+    uint8_t        bcnChnl;
+    uint8_t        bcnRxsyms;    // 
+    //ostime_t    bcnRxtime;
+    //bcninfo_t   bcninfo;      // Last received beacon info
+
+    uint8_t        noRXIQinversion;
+};
+
+// TX-RX transaction flags - report back to user
+enum { TXRX_ACK    = 0x80,   // confirmed UP frame was acked
+       TXRX_NACK   = 0x40,   // confirmed UP frame was not acked
+       TXRX_NOPORT = 0x20,   // set if a frame with a port was RXed, clr if no frame/no port
+       TXRX_PORT   = 0x10,   // set if a frame with a port was RXed, LMIC.frame[LMIC.dataBeg-1] => port
+       TXRX_DNW1   = 0x01,   // received in 1st DN slot
+       TXRX_DNW2   = 0x02,   // received in 2dn DN slot
+       TXRX_PING   = 0x04 }; // received in a scheduled RX slot
+// Event types for event callback
+enum _ev_t { EV_SCAN_TIMEOUT=1, EV_BEACON_FOUND,
+             EV_BEACON_MISSED, EV_BEACON_TRACKED, EV_JOINING,
+             EV_JOINED, EV_RFU1, EV_JOIN_FAILED, EV_REJOIN_FAILED,
+             EV_TXCOMPLETE, EV_LOST_TSYNC, EV_RESET,
+             EV_RXCOMPLETE, EV_LINK_DEAD, EV_LINK_ALIVE, EV_SCAN_FOUND,
+             EV_TXSTART };
+typedef enum _ev_t ev_t;
+
+typedef enum eLedSension
+{
+    EN_LED_SENSSION_TX,
+    EN_LED_SENSSION_RX,
+    EN_LED_SENSSION_NET,
+}LedSension_t;
+
 #define FLAGS_JOINPAR 0x01
 #define FLAGS_SESSPAR 0x02
 
@@ -102,6 +217,12 @@ typedef struct {
     uint8_t lrc;
  } FRAME;
 
+extern TimerEvent_t Led1Timer_Tx;
+extern TimerEvent_t Led1Timer_Rx;
+extern TimerEvent_t Led1Timer_OnLine;
+extern TimerEvent_t Led1Timer_OffLine;
+extern bool IsLoRaMacNetworkJoined;
+extern struct lmic_t LMIC;
 
 void modem_init (void);
 //void modem_rxdone (osjob_t* j);
@@ -128,6 +249,7 @@ void usart_startrx (void);
 
 void leds_init (void);
 void leds_set (uint8_t id, uint8_t state);
+void LedIndication(LedSension_t senssion);
 
 uint8_t gethex (uint8_t* dst, const uint8_t* src, uint16_t len);
 uint8_t puthex (uint8_t* dst, const uint8_t* src, uint8_t len);
