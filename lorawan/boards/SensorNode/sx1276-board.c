@@ -61,17 +61,19 @@ const struct Radio_s Radio =
 void SX1276IoInit( void )
 {
   SPI_DELAY_CONFIG_T DelayConfigStruct;
-
+  Chip_Clock_EnablePeriphClock(SYSCTL_CLOCK_SWM);
   /* Configure interrupt channel 0 for the GPIO pin in SysCon block */
-  Chip_SYSCTL_SetPinInterrupt(0, 17);   // DIO0
+  //Chip_SWM_MovablePinAssign(SWM_SCT_IN0_I, 19);
+  Chip_SYSCTL_SetPinInterrupt(0, 19);   // DIO0
 
   /* Configure channel 0 as wake up interrupt in SysCon block */
   Chip_SYSCTL_EnablePINTWakeup(0);
 
   /* Configure GPIO pin as input pin */
-  Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, 0, 17);
+  Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, 0, 19);
 
   /* Configure interrupt channel 0 for the GPIO pin in SysCon block */
+  //Chip_SWM_MovablePinAssign(SWM_SCT_IN1_I, 18);
   Chip_SYSCTL_SetPinInterrupt(1, 18);   // DIO1
 
   /* Configure channel 0 as wake up interrupt in SysCon block */
@@ -81,24 +83,17 @@ void SX1276IoInit( void )
   Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, 0, 18);
 
   /* Configure interrupt channel 0 for the GPIO pin in SysCon block */
-  Chip_SYSCTL_SetPinInterrupt(2, 19);   // DIO2
+  //Chip_SWM_MovablePinAssign(SWM_SCT_IN2_I, 17);
+  Chip_SYSCTL_SetPinInterrupt(2, 17);   // DIO2
 
   /* Configure channel 0 as wake up interrupt in SysCon block */
   Chip_SYSCTL_EnablePINTWakeup(2);
 
   /* Configure GPIO pin as input pin */
-  Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, 0, 19);
-#if 0   // dio5 is not used, interrupt too often
-  /* Configure interrupt channel 0 for the GPIO pin in SysCon block */
-  Chip_SYSCTL_SetPinInterrupt(5, 20);   // DIO5
+  Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, 0, 17);
 
-  /* Configure channel 0 as wake up interrupt in SysCon block */
-  Chip_SYSCTL_EnablePINTWakeup(5);
-
-  /* Configure GPIO pin as input pin */
-  Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, 0, 20);
-#endif
   /* Configure interrupt channel 0 for the GPIO pin in SysCon block */
+  //Chip_SWM_MovablePinAssign(SWM_SCT_IN3_I, 21);
   Chip_SYSCTL_SetPinInterrupt(3, 21);   // DIO3
 
   /* Configure channel 0 as wake up interrupt in SysCon block */
@@ -108,31 +103,44 @@ void SX1276IoInit( void )
   Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, 0, 21);
 
   /* Configure interrupt channel 0 for the GPIO pin in SysCon block */
-  Chip_SYSCTL_SetPinInterrupt(4, 22);   // DIO4
+  //Chip_SWM_MovablePinAssign(SWM_SCT_IN4_I, 20);
+  Chip_SYSCTL_SetPinInterrupt(4, 20);   // DIO4
 
   /* Configure channel 0 as wake up interrupt in SysCon block */
   Chip_SYSCTL_EnablePINTWakeup(4);
 
   /* Configure GPIO pin as input pin */
+  Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, 0, 20);
+  
+  #if 0   // dio5 is not used, interrupt too often
+  /* Configure interrupt channel 0 for the GPIO pin in SysCon block */
+  //Chip_SWM_MovablePinAssign(SWM_SCT_IN5_I, 22);
+  Chip_SYSCTL_SetPinInterrupt(5, 22);   // DIO5
+
+  /* Configure channel 0 as wake up interrupt in SysCon block */
+  Chip_SYSCTL_EnablePINTWakeup(5);
+
+  /* Configure GPIO pin as input pin */
   Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, 0, 22);
+#endif
   
-  Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,15,TRUE); // NRESET
-  Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO15,PIN_MODE_REPEATER);
+  Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,23,TRUE); // NRESET
+  Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO23,PIN_MODE_PULLUP);
   
-  Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,24,TRUE); // SSEL
-  Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO24,PIN_MODE_REPEATER);
+  Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,14,TRUE); // SSEL
+  Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO14,PIN_MODE_PULLUP);
   Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,25,TRUE); // SCK
-  Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO25,PIN_MODE_REPEATER);
-  Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,27,FALSE); // MISO
-  Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO27,PIN_MODE_INACTIVE);
-  Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,26,TRUE); // MOSI
-  Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO26,PIN_MODE_REPEATER);
+  Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO25,PIN_MODE_PULLUP);
+  Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,7,FALSE); // MISO
+  Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO7,PIN_MODE_INACTIVE);
+  Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,6,TRUE); // MOSI
+  Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO6,PIN_MODE_PULLUP);
   
-  Chip_Clock_EnablePeriphClock(SYSCTL_CLOCK_SWM);
-  Chip_SWM_MovablePinAssign(SWM_SPI1_SSEL0_IO, 24);
+  
+  Chip_SWM_MovablePinAssign(SWM_SPI1_SSEL0_IO, 14);
   Chip_SWM_MovablePinAssign(SWM_SPI1_SCK_IO, 25);
-  Chip_SWM_MovablePinAssign(SWM_SPI1_MISO_IO, 27);
-  Chip_SWM_MovablePinAssign(SWM_SPI1_MOSI_IO, 26);
+  Chip_SWM_MovablePinAssign(SWM_SPI1_MISO_IO, 7);
+  Chip_SWM_MovablePinAssign(SWM_SPI1_MOSI_IO, 6);
   Chip_Clock_DisablePeriphClock(SYSCTL_CLOCK_SWM);
   /*
     ConfigStruct.Mode = SPI_MODE_MASTER;
@@ -146,13 +154,14 @@ void SX1276IoInit( void )
                           SPI_CLOCK_CPHA0_CPOL0 |   /* Set Clock polarity to 0 */
                           SPI_CFG_MSB_FIRST_EN |/* Enable MSB first option */
                           SPI_CFG_SPOL_LO); /* Chipselect is active low */
-
+  Chip_SPIM_SetClockRate(LPC_SPI1,1000000);
   DelayConfigStruct.FrameDelay = 0;
   DelayConfigStruct.PostDelay = 0;
   DelayConfigStruct.PreDelay = 0;
   DelayConfigStruct.TransferDelay = 0;
   Chip_SPI_DelayConfig(LPC_SPI1, &DelayConfigStruct);
   Chip_SPI_Enable(LPC_SPI1);
+  Chip_Clock_EnablePeriphClock(SYSCTL_CLOCK_SPI1);
 }
 
 void SX1276IoIrqInit( void )
@@ -191,13 +200,14 @@ void SX1276IoIrqInit( void )
 
   /* Enable interrupt in the NVIC */
   NVIC_EnableIRQ(PININT4_IRQn);
-
+#if 0
   /* Configure channel 0 interrupt as edge sensitive and falling edge interrupt */
   Chip_PININT_SetPinModeEdge(LPC_PININT, PININTCH5);
   Chip_PININT_EnableIntHigh(LPC_PININT, PININTCH5);
 
   /* Enable interrupt in the NVIC */
   NVIC_EnableIRQ(PININT5_IRQn);
+#endif
 }
 
 void SX1276IoDeInit( void )

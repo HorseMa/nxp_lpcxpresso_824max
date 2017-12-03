@@ -15,6 +15,7 @@ Maintainer: Miguel Luis and Gregory Cristian
 #include <string.h>
 #include "board.h"
 #include "radio.h"
+#include "modem.h"
 #include "utilities.h"
 
 #if defined( REGION_AS923 )
@@ -61,7 +62,7 @@ Maintainer: Miguel Luis and Gregory Cristian
     #error "Please define a frequency band in the compiler options."
 #endif
 
-#define TX_OUTPUT_POWER                             20        // dBm
+#define TX_OUTPUT_POWER                             14        // dBm
 
 #if defined( USE_MODEM_LORA )
 
@@ -116,6 +117,8 @@ States_t State = LOWPOWER;
 int8_t RssiValue = 0;
 int8_t SnrValue = 0;
 
+extern RINGBUFF_T txring, rxring;
+
 /*!
  * Radio events function pointer
  */
@@ -145,11 +148,14 @@ void OnRxTimeout( void );
  * \brief Function executed on Radio Rx Error event
  */
 void OnRxError( void );
+
+/* Sets up system hardware */
 static void prvSetupHardware(void)
 {
 	SystemCoreClockUpdate();
 	Board_Init();
 }
+
 /**
  * Main application entry point.
  */
@@ -157,14 +163,19 @@ int main( void )
 {
     bool isMaster = true;
     uint8_t i;
-
+    int bytes;
+    uint8_t byte;
     // Target board initialization
     //BoardInitMcu( );
     //BoardInitPeriph( );
+    prvSetupHardware();
+    modem_init();
+    
+    /* Enable SysTick Timer */
     SystemCoreClockUpdate();
     Chip_Clock_EnablePeriphClock(SYSCTL_CLOCK_SYS);
     SysTick_Config(SystemCoreClock / 1000);
-    prvSetupHardware();
+    
     // Radio initialization
     RadioEvents.TxDone = OnTxDone;
     RadioEvents.RxDone = OnRxDone;
@@ -174,16 +185,16 @@ int main( void )
 
     Radio.Init( &RadioEvents );
 
-    Radio.SetChannel( RF_FREQUENCY );
+    Radio.SetChannel( RF_FREQUENCY + PERSIST->sesspar.channle * 200000 );
 
 #if defined( USE_MODEM_LORA )
 
     Radio.SetTxConfig( MODEM_LORA, TX_OUTPUT_POWER, 0, LORA_BANDWIDTH,
-                                   LORA_SPREADING_FACTOR, LORA_CODINGRATE,
+                                   PERSIST->sesspar.baudrate, LORA_CODINGRATE,
                                    LORA_PREAMBLE_LENGTH, LORA_FIX_LENGTH_PAYLOAD_ON,
                                    true, 0, 0, LORA_IQ_INVERSION_ON, 3000 );
 
-    Radio.SetRxConfig( MODEM_LORA, LORA_BANDWIDTH, LORA_SPREADING_FACTOR,
+    Radio.SetRxConfig( MODEM_LORA, LORA_BANDWIDTH, PERSIST->sesspar.baudrate,
                                    LORA_CODINGRATE, 0, LORA_PREAMBLE_LENGTH,
                                    LORA_SYMBOL_TIMEOUT, LORA_FIX_LENGTH_PAYLOAD_ON,
                                    0, true, 0, 0, LORA_IQ_INVERSION_ON, true );
@@ -205,9 +216,18 @@ int main( void )
 #endif
 
     Radio.Rx( RX_TIMEOUT_VALUE );
-    Board_UARTPutSTR("LoRa begin rx ...\r\n");
+
     while( 1 )
     {
+        bytes = Chip_UART_ReadRB(LPC_USART0, &rxring, &byte, 1);
+        if(bytes > 0)
+        {
+            //Chip_UART_SendRB(LPC_USART0, &txring, &byte, 1);
+            frame_rx(byte);
+            //if(frame_rx(byte) == 0) {
+                //Chip_UART_IntDisable(LPC_USART0, UART_INTEN_RXRDY);
+            //}
+        }
         switch( State )
         {
         case RX:
@@ -215,8 +235,6 @@ int main( void )
             {
                 if( BufferSize > 0 )
                 {
-                    for(int i = 0;i < BufferSize;i++)
-                    Board_UARTPutChar(Buffer[i]);
                     if( strncmp( ( const char* )Buffer, ( const char* )PongMsg, 4 ) == 0 )
                     {
                         // Indicates on a LED that the received frame is a PONG
@@ -290,24 +308,14 @@ int main( void )
         case RX_ERROR:
             if( isMaster == true )
             {
-                BufferSize = BUFFER_SIZE;
                 // Send the next PING frame
-                Buffer[0] = '[';
-                Buffer[1] = '0';
-                Buffer[2] = '0';
-                Buffer[3] = '0';
-                Buffer[4] = '1';
-                Buffer[5] = ']';
-                Buffer[6] = ':';
-                Buffer[7] = 'P';
-                Buffer[8] = 'I';
-                Buffer[9] = 'N';
-                Buffer[10] = 'G';
-                Buffer[11] = '\r';
-                Buffer[12] = '\n';
-                for( i = 13; i < BufferSize; i++ )
+                Buffer[0] = 'P';
+                Buffer[1] = 'I';
+                Buffer[2] = 'N';
+                Buffer[3] = 'G';
+                for( i = 4; i < BufferSize; i++ )
                 {
-                    Buffer[i] = i - 13;
+                    Buffer[i] = i - 4;
                 }
                 DelayMs( 1 );
                 Radio.Send( Buffer, BufferSize );
@@ -335,20 +343,20 @@ int main( void )
 
 void OnTxDone( void )
 {
+    LedIndication(EN_LED_SENSSION_TX);
     Radio.Sleep( );
     State = TX;
-    Board_LED_Toggle(1);
 }
 
 void OnRxDone( uint8_t *payload, uint16_t size, int16_t rssi, int8_t snr )
 {
+    LedIndication(EN_LED_SENSSION_RX);
     Radio.Sleep( );
     BufferSize = size;
     memcpy( Buffer, payload, BufferSize );
     RssiValue = rssi;
     SnrValue = snr;
     State = RX;
-    Board_LED_Toggle(0);
 }
 
 void OnTxTimeout( void )

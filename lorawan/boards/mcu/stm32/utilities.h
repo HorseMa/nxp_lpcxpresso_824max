@@ -104,4 +104,6 @@ void Delay( float s );
 void DelayMs( uint32_t ms );
 void BoardDisableIrq( void );
 void BoardEnableIrq( void );
+#define hal_enableIRQs  BoardEnableIrq
+#define hal_disableIRQs BoardDisableIrq
 #endif // __UTILITIES_H__

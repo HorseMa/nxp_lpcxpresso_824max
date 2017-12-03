@@ -17,7 +17,7 @@ Maintainer: Miguel Luis and Gregory Cristian
 #include "board.h"
 #include "utilities.h"
 #include "typedef.h"
-#include "timer.h"
+
 /*!
  * Redefinition of rand() and srand() standard C functions.
  * These functions are redefined in order to get the same behavior across

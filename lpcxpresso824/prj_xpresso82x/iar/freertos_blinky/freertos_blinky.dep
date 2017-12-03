@@ -2,321 +2,226 @@
 
 <project>
   <fileVersion>2</fileVersion>
-  <fileChecksum>1565244070</fileChecksum>
+  <fileChecksum>2849347423</fileChecksum>
   <configuration>
-    <name>ClassA</name>
+    <name>iflash_nxp_lpcxpresso_812</name>
     <outputs>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\mac\LoRaMac.c</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\pinint_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\mac\region\RegionEU433.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\wwdt_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\acmp_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\romapi_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\adc_8xx.h</file>
-      <file>$PROJ_DIR$\ClassA\Obj\timer.o</file>
-      <file>$PROJ_DIR$\ClassA\List\freertos_blinky.map</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\sct_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\spi_8xx.h</file>
-      <file>$PROJ_DIR$\ClassA\Obj\main.o</file>
-      <file>$TOOLKIT_DIR$\inc\c\DLib_Product_string.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\ysizet.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\i2cm_8xx.h</file>
-      <file>$TOOLKIT_DIR$\lib\dl6M_tln.a</file>
-      <file>$PROJ_DIR$\ClassA\Obj\LoRaMac.pbi</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\sys_config.h</file>
-      <file>$PROJ_DIR$\ClassA\Obj\freertos_blinky.pbd</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\rom_i2c_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\mac\region\RegionCN470.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\intrinsics.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\string.h</file>
-      <file>$PROJ_DIR$\ClassA\Obj\Region.o</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\dma_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\mac\region\Region.h</file>
-      <file>$PROJ_DIR$\ClassA\Obj\main.pbi</file>
-      <file>$PROJ_DIR$\ClassA\Obj\sysinit.pbi</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\clock_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\spi_common_8xx.h</file>
-      <file>$PROJ_DIR$\ClassA\Exe\freertos_blinky.hex</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\mac\region\RegionCommon.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\boards\SensorNode\rtc-board.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\inmux_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\boards\SensorNode\sx1276-board.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\mrt_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\iap.h</file>
-      <file>$PROJ_DIR$\ClassA\Obj\iar_startup_lpc82x.o</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\gpio_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\boards\mcu\stm32\utilities.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\sct_pwm_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\core_cmInstr.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\rom_pwr_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\brd_xpresso824\inc\board.h</file>
-      <file>$PROJ_DIR$\ClassA\Obj\RegionCN470.o</file>
-      <file>$TOOLKIT_DIR$\inc\c\xencoding_limits.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\system\timer.h</file>
-      <file>$TOOLKIT_DIR$\config\linker\NXP\LPC824M201.icf</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\uart_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\lpc_types.h</file>
-      <file>$PROJ_DIR$\ClassA\Obj\RegionCN470.pbi</file>
-      <file>$PROJ_DIR$\ClassA\Obj\cmac.pbi</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\iocon_8xx.h</file>
-      <file>$PROJ_DIR$\ClassA\Obj\sx1276.pbi</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\wkt_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\spis_8xx.h</file>
-      <file>$PROJ_DIR$\ClassA\Obj\cmac.o</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\chip.h</file>
-      <file>$PROJ_DIR$\ClassA\Obj\aes.o</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\boards\mcu\stm32\utilities.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\mac\LoRaMac.h</file>
-      <file>$PROJ_DIR$\..\..\..\examples_82x\freertos_blinky\src\freertos_blinky.c</file>
       <file>$PROJ_DIR$\..\..\..\chip_82x\startup\iar_startup_lpc82x.s</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\apps\ping-pong\SensorNode\main.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classA\Bleeper-76\mainA.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classC\Bleeper-76\mainC.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classB\Bleeper-76\mainB.c</file>
-      <file>$PROJ_DIR$\..\..\..\examples_82x\periph_wwdt\readme.txt</file>
+      <file>$PROJ_DIR$\..\..\..\examples_82x\freertos_blinky\src\freertos_blinky.c</file>
       <file>$PROJ_DIR$\..\..\..\chip_82x\startup\sysinit.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\croutine.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertoslpc\FreeRTOSCommonHooks.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\portable\MemMang\heap_2.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\list.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\portable\IAR\ARM_CM0\port.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\portable\IAR\ARM_CM0\portasm.s</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\queue.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\tasks.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\timers.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\lorawan\apps\ping-pong\SensorNode\main.c</file>
+      <file>$PROJ_DIR$\..\..\..\examples_82x\periph_wwdt\readme.txt</file>
       <file>$PROJ_DIR$\..\lib_board_lpcxpresso824\iar_output\Exe\board_nxp_lpcxpresso_824.a</file>
+      <file>$PROJ_DIR$\..\..\..\..\lorawan\boards\SensorNode\sx1276-board.c</file>
       <file>$PROJ_DIR$\..\lib_chip_8xx\iar_output\Exe\chip_8xx_lib.a</file>
+      <file>$PROJ_DIR$\..\..\..\..\lorawan\atcmd\debug.c</file>
       <file>$PROJ_DIR$\..\..\..\..\lorawan\atcmd\buffer.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\lorawan\atcmd\debug.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\lorawan\atcmd\eeprom.c</file>
       <file>$PROJ_DIR$\..\..\..\..\lorawan\atcmd\frame.c</file>
       <file>$PROJ_DIR$\..\..\..\..\lorawan\atcmd\hex.c</file>
       <file>$PROJ_DIR$\..\..\..\..\lorawan\atcmd\modem.c</file>
       <file>$PROJ_DIR$\..\..\..\..\lorawan\atcmd\modem.h</file>
       <file>$PROJ_DIR$\..\..\..\..\lorawan\atcmd\queue_IBM.c</file>
       <file>$PROJ_DIR$\..\..\..\..\lorawan\atcmd\usart.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\system\crypto\aes.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\lorawan\system\delay.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\lorawan\system\delay.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\lorawan\boards\SensorNode\sx1276-board.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\lorawan\system\timer.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\lorawan\boards\SensorNode\typedef.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\lorawan\system\timer.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\lorawan\boards\mcu\stm32\utilities.c</file>
       <file>$PROJ_DIR$\..\..\..\..\lorawan\system\crypto\aes.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\lorawan\boards\mcu\stm32\utilities.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\lorawan\mac\region\RegionCommon.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\lorawan\system\crypto\aes.c</file>
       <file>$PROJ_DIR$\..\..\..\..\lorawan\system\crypto\cmac.c</file>
       <file>$PROJ_DIR$\..\..\..\..\lorawan\system\crypto\cmac.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\boards\SensorNode\rtc-board.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\boards\SensorNode\sx1276-board.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\system\timer.c</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\fmc_8xx.h</file>
-      <file>$PROJ_DIR$\ClassA\Obj\sx1276.o</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\rom_uart_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\crc_8xx.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\yvals.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\stdlib.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\syscon_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\ring_buffer.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\spim_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\boards\SensorNode\typedef.h</file>
-      <file>$PROJ_DIR$\ClassA\Obj\LoRaMacCrypto.o</file>
-      <file>$PROJ_DIR$\ClassA\Obj\LoRaMacCrypto.pbi</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\error_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\src\uart_8xx.c</file>
-      <file>$PROJ_DIR$\..\..\..\brd_xpresso824\src\board_sysinit.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\mac\region\Region.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\lorawan\mac\LoRaMac.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\lorawan\mac\LoRaMac.h</file>
       <file>$PROJ_DIR$\..\..\..\..\lorawan\mac\LoRaMacCrypto.c</file>
       <file>$PROJ_DIR$\..\..\..\..\lorawan\mac\LoRaMacCrypto.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\lorawan\mac\LoRaMacTest.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\lorawan\mac\region\Region.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\lorawan\mac\region\Region.h</file>
       <file>$PROJ_DIR$\..\..\..\..\lorawan\mac\region\RegionCN470.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\mac\region\RegionCommon.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\lorawan\mac\region\RegionCN470.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\lorawan\mac\region\RegionCommon.h</file>
       <file>$PROJ_DIR$\..\..\..\..\lorawan\radio\radio.h</file>
       <file>$PROJ_DIR$\..\..\..\..\lorawan\radio\sx1276\sx1276.c</file>
       <file>$PROJ_DIR$\..\..\..\..\lorawan\radio\sx1276\sx1276.h</file>
       <file>$PROJ_DIR$\..\..\..\..\lorawan\radio\sx1276\sx1276Regs-Fsk.h</file>
       <file>$PROJ_DIR$\..\..\..\..\lorawan\radio\sx1276\sx1276Regs-LoRa.h</file>
-      <file>$PROJ_DIR$\..\..\..\brd_xpresso824\inc\board_api.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\ycheck.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\xtgmath.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\pmu_8xx.h</file>
-      <file>$PROJ_DIR$\ClassA\Obj\sx1276-board.o</file>
-      <file>$PROJ_DIR$\..\..\..\brd_xpresso824\src\board.c</file>
-      <file>$PROJ_DIR$\ClassA\Obj\RegionCommon.o</file>
-      <file>$PROJ_DIR$\ClassA\Obj\Region.pbi</file>
-      <file>$TOOLKIT_DIR$\inc\c\stdint.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\mac\LoRaMacTest.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\math.h</file>
-      <file>$TOOLKIT_DIR$\lib\m6M_tl.a</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\irc_8xx.h</file>
-      <file>$PROJ_DIR$\ClassA\Obj\utilities.o</file>
-      <file>$TOOLKIT_DIR$\inc\c\stdio.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\stdbool.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\core_cm0plus.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\core_cmFunc.h</file>
       <file>$TOOLKIT_DIR$\inc\c\DLib_Defaults.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\DLib_Threads.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\i2c_common_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\cmsis.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\swm_8xx.h</file>
-      <file>$TOOLKIT_DIR$\lib\rt6M_tl.a</file>
-      <file>$TOOLKIT_DIR$\inc\c\cmsis_iar.h</file>
-      <file>$PROJ_DIR$\ClassA\Obj\RegionCommon.pbi</file>
-      <file>$TOOLKIT_DIR$\inc\c\ymath.h</file>
-      <file>$PROJ_DIR$\ClassA\Obj\utilities.pbi</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\i2cs_8xx.h</file>
-      <file>$PROJ_DIR$\ClassA\Obj\aes.pbi</file>
-      <file>$PROJ_DIR$\ClassA\Obj\timer.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\acmp_8xx.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\DLib_Product_string.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\stdlib.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\spim_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\rom_pwr_8xx.h</file>
       <file>$TOOLKIT_DIR$\inc\c\ystdio.h</file>
-      <file>$PROJ_DIR$\ClassA\Exe\freertos_blinky.out</file>
-      <file>$PROJ_DIR$\ClassA\Obj\sysinit.o</file>
-      <file>$PROJ_DIR$\ClassA\Obj\LoRaMac.o</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\wwdt_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\lorawan\mac\region\RegionEU433.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\gpio_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\i2cm_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\sct_pwm_8xx.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\DLib_Threads.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\error_8xx.h</file>
       <file>$TOOLKIT_DIR$\inc\c\DLib_Config_Normal.h</file>
-      <file>$PROJ_DIR$\ClassA\Obj\sx1276-board.pbi</file>
+      <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\intrinsics.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\irc_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\adc_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\inmux_8xx.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\cmsis_iar.h</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\frame.pbi</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\timer.o</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\sx1276.o</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\core_cm0plus.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\core_cmInstr.h</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\iar_startup_lpc82x.o</file>
+      <file>$PROJ_DIR$\..\..\..\brd_xpresso824\inc\board.h</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\hex.o</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\sys_config.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\sct_8xx.h</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\sx1276-board.o</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\freertos_blinky.pbd</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\LoRaMac.o</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\RegionCommon.pbi</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\queue_IBM.pbi</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\sx1276.pbi</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\main.o</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\LoRaMacCrypto.pbi</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\aes.pbi</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\RegionCN470.pbi</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\sysinit.o</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\cmac.pbi</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\timer.pbi</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\RegionCN470.o</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Exe\freertos_blinky.out</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\sysinit.pbi</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\queue_IBM.o</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\Region.pbi</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\LoRaMac.pbi</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\debug.o</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\LoRaMacCrypto.o</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\modem.o</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\utilities.o</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\debug.pbi</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\hex.pbi</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\utilities.pbi</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\aes.o</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\usart.o</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\cmac.o</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\sx1276-board.pbi</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\buffer.pbi</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\Region.o</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\frame.o</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\buffer.o</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\modem.pbi</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\usart.pbi</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\RegionCommon.o</file>
+      <file>$TOOLKIT_DIR$\inc\c\xtgmath.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\ymath.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\math.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\yvals.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\string.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\stdint.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\stdbool.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\ysizet.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\i2c_common_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\i2cs_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\pmu_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\ring_buffer.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\ycheck.h</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\List\freertos_blinky.map</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\mrt_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\iocon_8xx.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\xencoding_limits.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\lpc_types.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\rom_i2c_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\dma_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\syscon_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\fmc_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\crc_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\wkt_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\spi_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\spis_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classA\SensorNode\main.c</file>
+      <file>$TOOLKIT_DIR$\inc\c\stdio.h</file>
+      <file>$TOOLKIT_DIR$\lib\rt6M_tl.a</file>
+      <file>$TOOLKIT_DIR$\config\linker\NXP\LPC824M201.icf</file>
+      <file>$TOOLKIT_DIR$\lib\m6M_tl.a</file>
+      <file>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classA\SensorNode\Commissioning.h</file>
+      <file>$TOOLKIT_DIR$\lib\dl6M_tln.a</file>
+      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Exe\freertos_blinky.hex</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\core_cmFunc.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\swm_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\pinint_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\uart_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\iap.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\rom_uart_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\spi_common_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\chip.h</file>
+      <file>$PROJ_DIR$\..\..\..\brd_xpresso824\inc\board_api.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\cmsis.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\romapi_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\clock_8xx.h</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\src\uart_8xx.c</file>
+      <file>$PROJ_DIR$\..\..\..\chip_82x\src\ring_buffer.c</file>
     </outputs>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\mac\LoRaMac.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 154</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 16</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 43 57 49 128 120 98 138 155 121 45 139 135 17 141 136 41 144 21 137 5 36 106 19 42 96 100 28 52 142 94 1 123 4 97 38 35 48 101 54 3 9 40 10 29 14 140 148 102 55 132 6 24 33 119 134 13 151 114 60 46 25 111 129 39 103</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 48 120 25 142 102 121 41 42 29 39 49 5 4 40 6 136 21 13 114 111 119 141 28 1 38 3 14 132 33 128 138 139 155 98 106 43 60 129 57 17 100 52 94 123 97 35 54 9 10 148 55 24 135 45 137 144 36 19 96 101 140 134 151 46 103</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\boards\mcu\stm32\utilities.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 133</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 147</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 99 120 98 138 155 121 45 139 13 134 151 43 57 49 128 135 17 141 136 41 144 21 137 5 36 106 19 42 96 100 28 52 142 94 1 123 4 97 38 35 48 101 54 3 9 40 10 29 14 140 148 102 55 132 6 24 33 119 39 103 46</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 98 9 120 121 123 41 42 103 151 57 52 35 148 135 136 21 43 45 138 139 155 17 100 94 97 54 10 55 24 49 106 134 39 46 13 119 141 5 28 142 1 4 38 48 3 40 14 102 132 6 33 128 137 144 36 19 96 101 29 99 140</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>[ROOT_NODE]</name>
-      <outputs>
-        <tool>
-          <name>ILINK</name>
-          <file> 152 8</file>
-        </tool>
-      </outputs>
-    </file>
     <file>
       <name>$PROJ_DIR$\..\..\..\chip_82x\startup\iar_startup_lpc82x.s</name>
       <outputs>
         <tool>
           <name>AARM</name>
-          <file> 37</file>
+          <file> 72</file>
         </tool>
       </outputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\apps\ping-pong\SensorNode\main.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 11</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 26</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 22 120 98 138 155 121 45 139 13 12 43 57 49 128 135 17 141 136 41 144 21 137 5 36 106 19 42 96 100 28 52 142 94 1 123 4 97 38 35 48 101 54 3 9 40 10 29 14 140 148 102 55 132 6 24 33 119 134 151 114 39 103</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 106 155 9 134 13 98 123 120 138 139 57 52 35 148 49 114 12 121 17 100 94 97 54 10 55 24 135 136 41 21 42 43 39 45 119 141 5 28 142 1 4 38 48 3 40 14 102 132 6 33 128 137 144 36 19 96 29 22 101 140 151 103</file>
-        </tool>
-      </inputs>
     </file>
     <file>
       <name>$PROJ_DIR$\..\..\..\chip_82x\startup\sysinit.c</name>
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 153</file>
+          <file> 87</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 27</file>
+          <file> 92</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 43 57 49 128 120 98 138 155 121 45 139 135 17 141 136 41 144 21 137 5 36 106 19 42 96 100 28 52 142 94 1 123 4 97 38 35 48 101 54 3 9 40 10 29 14 140 148 102 55 132 6 24 33 119 134 13 151</file>
+          <file> 73 156 132 120 127 118 46 60 61 131 58 121 75 158 70 71 66 62 149 159 153 59 133 51 154 135 160 130 150 136 151 125 47 137 55 129 152 126 138 53 76 57 139 155 56 123 124 50 140 63 64 134 65 157 142 122 52</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 10 100 98 17 97 24 128 144 29 94 54 55 135 19 57 52 123 35 9 148 45 120 137 36 96 49 13 119 141 5 28 142 1 4 38 48 3 40 14 102 132 6 33 138 139 155 121 136 41 21 106 42 134 43 101 140 151</file>
+          <file> 57 159 127 118 132 47 64 60 150 152 50 120 46 58 59 123 156 157 158 160 151 55 53 56 63 65 61 70 71 62 51 122 75 135 130 136 125 137 129 138 76 139 124 140 134 121 131 149 66 153 133 154 126 73 155 142 52</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\system\crypto\aes.c</name>
+      <name>$PROJ_DIR$\..\..\..\..\lorawan\apps\ping-pong\SensorNode\main.c</name>
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 58</file>
+          <file> 83</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 149</file>
+          <file> 112</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 99 120 98 138 155 121 45 139 13 128 88</file>
+          <file> 119 127 118 46 60 61 131 58 122 48 73 156 132 120 121 75 158 70 71 66 62 149 159 153 59 133 51 154 135 160 130 150 136 151 125 47 137 55 129 152 126 138 53 76 57 139 155 56 123 124 50 140 63 64 134 65 157 142 52 41 15 21 26 22</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 88 45 99 98 121 128 120 13 138 139 155</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\system\crypto\cmac.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 56</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 51</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 128 120 98 138 155 121 45 139 88 90 39 103</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 121 120 90 88 39 98 138 139 155 128 45 103</file>
+          <file> 129 70 62 155 26 130 124 121 123 142 119 127 125 76 118 71 51 41 131 75 135 136 137 138 139 140 134 132 59 73 15 122 48 46 58 60 61 156 157 158 159 160 150 151 47 55 152 53 57 56 50 63 64 65 120 149 66 153 133 154 126 52 21 22</file>
         </tool>
       </inputs>
     </file>
@@ -325,675 +230,53 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 124</file>
+          <file> 77</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 156</file>
+          <file> 106</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 43 57 49 128 120 98 138 155 121 45 139 135 17 141 136 41 144 21 137 5 36 106 19 42 96 100 28 52 142 94 1 123 4 97 38 35 48 101 54 3 9 40 10 29 14 140 148 102 55 132 6 24 33 119 134 13 151 114 116 117 118 34 46</file>
+          <file> 73 156 132 120 127 118 46 60 61 131 58 121 75 158 70 71 66 62 149 159 153 59 133 51 154 135 160 130 150 136 151 125 47 137 55 129 152 126 138 53 76 57 139 155 56 123 124 50 140 63 64 134 65 157 142 122 52 41 43 44 45 20 21</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 136 101 28 21 14 141 38 33 119 1 3 132 121 41 120 42 140 98 114 49 5 142 4 48 40 102 6 128 138 139 155 106 43 116 34 57 17 100 52 94 123 97 35 54 9 10 148 55 24 135 45 137 144 36 19 96 151 118 29 134 13 117 46</file>
+          <file> 150 46 50 127 152 120 58 59 43 132 159 47 57 64 60 118 155 41 73 156 157 158 160 151 55 53 56 63 65 61 70 71 62 51 20 75 135 130 136 125 137 129 138 76 139 124 140 134 121 131 149 66 153 133 154 142 52 45 126 123 122 44 21</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\system\timer.c</name>
+      <name>$PROJ_DIR$\..\..\..\..\lorawan\atcmd\debug.c</name>
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 7</file>
+          <file> 96</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 150</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 43 57 49 128 120 98 138 155 121 45 139 135 17 141 136 41 144 21 137 5 36 106 19 42 96 100 28 52 142 94 1 123 4 97 38 35 48 101 54 3 9 40 10 29 14 140 148 102 55 132 6 24 33 119 134 13 151 46 32 39 103</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 134 121 42 3 41 119 1 132 120 141 28 38 14 33 136 21 32 49 5 142 4 48 40 102 6 128 138 139 155 98 106 46 39 57 17 100 52 94 123 97 35 54 9 10 148 55 24 135 45 137 144 36 19 96 29 13 43 101 140 151 103</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\mac\region\Region.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 23</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 127</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 135 22 120 98 138 155 121 45 139 13 12 128 46 60 25 2</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 98 25 139 22 2 120 138 135 128 46 13 155 60 12 121 45</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\mac\LoRaMacCrypto.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 104</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 105</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 99 120 98 138 155 121 45 139 13 128 39 103 88 90 111</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 45 98 120 103 90 155 39 138 139 128 88 111 13 121 99</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\mac\region\RegionCN470.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 44</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 50</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 135 22 120 98 138 155 121 45 139 13 12 128 130 146 122 116 114 117 118 43 57 49 17 141 136 41 144 21 137 5 36 106 19 42 96 100 28 52 142 94 1 123 4 97 38 35 48 101 54 3 9 40 10 29 14 140 148 102 55 132 6 24 33 119 134 151 60 46 39 103 25 31 20</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 120 35 39 121 98 122 57 52 148 17 128 144 130 114 12 123 9 19 22 43 31 13 138 139 155 117 100 94 97 54 10 55 24 135 137 36 96 49 29 134 116 60 25 20 45 146 118 119 141 5 28 142 1 4 38 48 3 40 14 102 132 6 33 136 41 21 106 42 101 140 46 103 151</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\mac\region\RegionCommon.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 126</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 145</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 135 22 120 98 138 155 121 45 139 13 12 128 130 146 122 46 39 103 60 31</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 31 130 22 39 98 135 128 46 60 120 13 12 45 146 103 138 139 155 121 122</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\radio\sx1276\sx1276.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 95</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 53</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 130 120 146 98 138 155 121 45 139 122 22 13 12 43 57 49 128 135 17 141 136 41 144 21 137 5 36 106 19 42 96 100 28 52 142 94 1 123 4 97 38 35 48 101 54 3 9 40 10 29 14 140 148 102 55 132 6 24 33 119 134 151 114 116 117 118 34 46 39 103</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 42 98 138 10 120 100 41 130 139 17 97 24 43 34 155 94 54 55 135 136 21 101 140 118 146 121 57 52 123 35 9 148 49 106 151 114 22 116 46 39 122 45 13 12 119 141 5 28 142 1 4 38 48 3 40 14 102 132 6 33 128 137 144 36 19 96 29 134 117 103</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\ClassA\Exe\freertos_blinky.out</name>
-      <outputs>
-        <tool>
-          <name>ILINK</name>
-          <file> 8</file>
-        </tool>
-        <tool>
-          <name>OBJCOPY</name>
-          <file> 30</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ILINK</name>
-          <file> 47 58 78 79 56 37 154 104 11 23 44 126 124 95 153 7 133 143 131 15</file>
-        </tool>
-      </inputs>
-    </file>
-    <forcedrebuild>
-      <name>$PROJ_DIR$\..\..\..\examples_82x\freertos_blinky\src\freertos_blinky.c</name>
-      <tool>ICCARM</tool>
-    </forcedrebuild>
-    <forcedrebuild>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classA\Bleeper-76\mainA.c</name>
-      <tool>ICCARM</tool>
-    </forcedrebuild>
-    <forcedrebuild>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classC\Bleeper-76\mainC.c</name>
-      <tool>ICCARM</tool>
-    </forcedrebuild>
-    <forcedrebuild>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classB\Bleeper-76\mainB.c</name>
-      <tool>ICCARM</tool>
-    </forcedrebuild>
-    <forcedrebuild>
-      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\croutine.c</name>
-      <tool>ICCARM</tool>
-    </forcedrebuild>
-    <forcedrebuild>
-      <name>$PROJ_DIR$\..\..\..\..\freertos\freertoslpc\FreeRTOSCommonHooks.c</name>
-      <tool>ICCARM</tool>
-    </forcedrebuild>
-    <forcedrebuild>
-      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\portable\MemMang\heap_2.c</name>
-      <tool>ICCARM</tool>
-    </forcedrebuild>
-    <forcedrebuild>
-      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\list.c</name>
-      <tool>ICCARM</tool>
-    </forcedrebuild>
-    <forcedrebuild>
-      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\portable\IAR\ARM_CM0\port.c</name>
-      <tool>ICCARM</tool>
-    </forcedrebuild>
-    <forcedrebuild>
-      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\queue.c</name>
-      <tool>ICCARM</tool>
-    </forcedrebuild>
-    <forcedrebuild>
-      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\tasks.c</name>
-      <tool>ICCARM</tool>
-    </forcedrebuild>
-    <forcedrebuild>
-      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\timers.c</name>
-      <tool>ICCARM</tool>
-    </forcedrebuild>
-    <forcedrebuild>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\atcmd\buffer.c</name>
-      <tool>ICCARM</tool>
-    </forcedrebuild>
-    <forcedrebuild>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\atcmd\frame.c</name>
-      <tool>ICCARM</tool>
-    </forcedrebuild>
-    <forcedrebuild>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\atcmd\hex.c</name>
-      <tool>ICCARM</tool>
-    </forcedrebuild>
-    <forcedrebuild>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\atcmd\modem.c</name>
-      <tool>ICCARM</tool>
-    </forcedrebuild>
-    <forcedrebuild>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\atcmd\queue_IBM.c</name>
-      <tool>ICCARM</tool>
-    </forcedrebuild>
-    <forcedrebuild>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\atcmd\usart.c</name>
-      <tool>ICCARM</tool>
-    </forcedrebuild>
-    <forcedrebuild>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\boards\SensorNode\rtc-board.c</name>
-      <tool>ICCARM</tool>
-    </forcedrebuild>
-  </configuration>
-  <configuration>
-    <name>ClassB</name>
-    <outputs>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\mac\LoRaMac.c</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\pinint_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\wwdt_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\acmp_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\romapi_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\adc_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\sct_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\spi_8xx.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\DLib_Product_string.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\ysizet.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\i2cm_8xx.h</file>
-      <file>$TOOLKIT_DIR$\lib\dl6M_tln.a</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\sys_config.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\rom_i2c_8xx.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\intrinsics.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\string.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\dma_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\clock_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\spi_common_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\inmux_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\mrt_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\iap.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\gpio_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\boards\mcu\stm32\utilities.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\sct_pwm_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\core_cmInstr.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\rom_pwr_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\brd_xpresso824\inc\board.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\xencoding_limits.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\system\timer.h</file>
-      <file>$TOOLKIT_DIR$\config\linker\NXP\LPC824M201.icf</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\uart_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\lpc_types.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\iocon_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\wkt_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\spis_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\chip.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\boards\mcu\stm32\utilities.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\mac\LoRaMac.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\startup\iar_startup_lpc82x.s</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classA\Bleeper-76\mainA.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classC\Bleeper-76\mainC.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classB\Bleeper-76\mainB.c</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\startup\sysinit.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\croutine.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertoslpc\FreeRTOSCommonHooks.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\portable\MemMang\heap_2.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\list.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\portable\IAR\ARM_CM0\port.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\portable\IAR\ARM_CM0\portasm.s</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\queue.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\tasks.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\timers.c</file>
-      <file>$PROJ_DIR$\..\lib_board_lpcxpresso824\iar_output\Exe\board_nxp_lpcxpresso_824.a</file>
-      <file>$PROJ_DIR$\..\lib_chip_8xx\iar_output\Exe\chip_8xx_lib.a</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\system\crypto\aes.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\system\crypto\aes.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\system\crypto\cmac.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\system\crypto\cmac.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\system\timer.c</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\fmc_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\rom_uart_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\crc_8xx.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\yvals.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\stdlib.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\syscon_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\ring_buffer.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\spim_8xx.h</file>
-      <file>$PROJ_DIR$\ClassB\Obj\croutine.o</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\error_8xx.h</file>
-      <file>$PROJ_DIR$\ClassB\Obj\timer.pbi</file>
-      <file>$TOOLKIT_DIR$\inc\c\stddef.h</file>
-      <file>$PROJ_DIR$\ClassB\Obj\tasks.pbi</file>
-      <file>$PROJ_DIR$\ClassB\Obj\LoRaMac.o</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\include\queue.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\include\projdefs.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\portable\IAR\ARM_CM0\portmacro.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\include\portable.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\include\mpu_wrappers.h</file>
-      <file>$PROJ_DIR$\ClassB\Obj\utilities.pbi</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\boards\Bleeper-76\LoRaMac-board.h</file>
-      <file>$PROJ_DIR$\ClassB\Obj\LoRaMacCrypto.o</file>
-      <file>$PROJ_DIR$\ClassB\Exe\freertos_blinky.hex</file>
-      <file>$PROJ_DIR$\ClassB\Obj\sx1276-board.o</file>
-      <file>$PROJ_DIR$\ClassB\List\freertos_blinky.map</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classB\Bleeper-76\main.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\boards\Bleeper-76\sx1276-board.c</file>
-      <file>$PROJ_DIR$\ClassB\Obj\queue.o</file>
-      <file>$PROJ_DIR$\ClassB\Obj\timers.o</file>
-      <file>$PROJ_DIR$\ClassB\Obj\mainC.o</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\include\list.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\include\task.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\boards\Bleeper-76\sx1276-board.h</file>
-      <file>$PROJ_DIR$\ClassB\Obj\mainC.pbi</file>
-      <file>$PROJ_DIR$\ClassB\Obj\mainB.o</file>
-      <file>$PROJ_DIR$\ClassB\Obj\timer.o</file>
-      <file>$PROJ_DIR$\ClassB\Obj\cmac.pbi</file>
-      <file>$PROJ_DIR$\ClassB\Obj\heap_2.pbi</file>
-      <file>$PROJ_DIR$\ClassB\Obj\croutine.pbi</file>
-      <file>$PROJ_DIR$\ClassB\Obj\sysinit.pbi</file>
-      <file>$PROJ_DIR$\ClassB\Obj\mainA.o</file>
-      <file>$PROJ_DIR$\ClassB\Obj\utilities.o</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classC\Bleeper-76\main.c</file>
-      <file>$PROJ_DIR$\ClassB\Obj\queue.pbi</file>
-      <file>$PROJ_DIR$\ClassB\Obj\LoRaMac.pbi</file>
-      <file>$PROJ_DIR$\ClassB\Obj\timers.pbi</file>
-      <file>$PROJ_DIR$\ClassB\Obj\main.pbi</file>
-      <file>$PROJ_DIR$\ClassB\Obj\port.pbi</file>
-      <file>$PROJ_DIR$\ClassB\Obj\sx1276.pbi</file>
-      <file>$PROJ_DIR$\ClassB\Obj\aes.pbi</file>
-      <file>$PROJ_DIR$\ClassB\Obj\list.pbi</file>
-      <file>$PROJ_DIR$\ClassB\Obj\cmac.o</file>
-      <file>$PROJ_DIR$\..\..\..\examples_82x\freertos_blinky\inc\FreeRTOSConfig.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classA\Bleeper-76\main.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertoslpc\FreeRTOSCommonHooks.h</file>
-      <file>$PROJ_DIR$\ClassB\Obj\LoRaMacCrypto.pbi</file>
-      <file>$PROJ_DIR$\ClassB\Exe\freertos_blinky.out</file>
-      <file>$PROJ_DIR$\ClassB\Obj\FreeRTOSCommonHooks.o</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\include\timers.h</file>
-      <file>$PROJ_DIR$\ClassB\Obj\mainA.pbi</file>
-      <file>$PROJ_DIR$\ClassB\Obj\FreeRTOSCommonHooks.pbi</file>
-      <file>$PROJ_DIR$\ClassB\Obj\sx1276-board.pbi</file>
-      <file>$PROJ_DIR$\ClassB\Obj\mainB.pbi</file>
-      <file>$PROJ_DIR$\ClassB\Obj\port.o</file>
-      <file>$PROJ_DIR$\ClassB\Obj\sysinit.o</file>
-      <file>$PROJ_DIR$\ClassB\Obj\main.o</file>
-      <file>$PROJ_DIR$\ClassB\Obj\list.o</file>
-      <file>$PROJ_DIR$\ClassB\Obj\heap_2.o</file>
-      <file>$PROJ_DIR$\ClassB\Obj\tasks.o</file>
-      <file>$PROJ_DIR$\ClassB\Obj\aes.o</file>
-      <file>$PROJ_DIR$\ClassB\Obj\iar_startup_lpc82x.o</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\include\croutine.h</file>
-      <file>$PROJ_DIR$\ClassB\Obj\sx1276.o</file>
-      <file>$PROJ_DIR$\ClassB\Obj\portasm.o</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\include\StackMacros.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\include\FreeRTOS.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\mac\LoRaMacCrypto.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\mac\LoRaMacCrypto.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\radio\radio.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\radio\sx1276\sx1276.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\radio\sx1276\sx1276.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\radio\sx1276\sx1276Regs-Fsk.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\radio\sx1276\sx1276Regs-LoRa.h</file>
-      <file>$PROJ_DIR$\..\..\..\brd_xpresso824\inc\board_api.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\ycheck.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\xtgmath.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\pmu_8xx.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\stdint.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\math.h</file>
-      <file>$TOOLKIT_DIR$\lib\m6M_tl.a</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\irc_8xx.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\stdio.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\stdbool.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\core_cm0plus.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\core_cmFunc.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\DLib_Defaults.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\DLib_Threads.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\i2c_common_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\cmsis.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\swm_8xx.h</file>
-      <file>$TOOLKIT_DIR$\lib\rt6M_tl.a</file>
-      <file>$TOOLKIT_DIR$\inc\c\cmsis_iar.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\ymath.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\i2cs_8xx.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\ystdio.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\DLib_Config_Normal.h</file>
-    </outputs>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\mac\LoRaMac.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 73</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 104</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 27 36 32 148 144 63 156 166 145 28 157 153 12 159 154 25 162 14 155 4 21 69 13 26 61 65 17 33 160 60 1 147 3 62 22 20 31 66 34 2 6 24 7 18 10 158 164 67 35 151 5 16 19 143 152 9 165 29 137 38 80 138 140 141 142 23</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 67 25 160 145 26 18 138 31 144 23 32 4 3 24 5 154 14 63 27 36 143 159 17 1 22 2 10 151 19 148 156 157 166 69 80 141 29 137 38 140 12 65 33 60 147 62 20 34 6 7 164 35 16 153 28 155 162 21 13 61 66 165 158 152 9 142</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\boards\mcu\stm32\utilities.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 101</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 79</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 64 144 63 156 166 145 28 157 9 152 165 23 27 36 32 148 153 12 159 154 25 162 14 155 4 21 69 13 26 61 65 17 33 160 60 1 147 3 62 22 20 31 66 34 2 6 24 7 18 10 158 164 67 35 151 5 16 19 143</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 35 14 154 27 60 63 165 34 153 145 12 65 62 7 16 25 144 26 152 23 28 156 157 166 33 147 20 6 164 32 69 9 36 143 159 4 17 160 1 3 22 31 2 24 10 67 151 5 19 148 155 162 21 13 61 18 64 66 158</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>[ROOT_NODE]</name>
-      <outputs>
-        <tool>
-          <name>ILINK</name>
-          <file> 84 116</file>
-        </tool>
-      </outputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\chip_82x\startup\iar_startup_lpc82x.s</name>
-      <outputs>
-        <tool>
-          <name>AARM</name>
-          <file> 130</file>
-        </tool>
-      </outputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classA\Bleeper-76\mainA.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
           <file> 100</file>
         </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 119</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 4 32 24 144 3 5 155 61 27 163 160 31 67 162 21 158 80 15 38 63 28 36 143 159 17 1 22 2 10 151 19 148 12 13 18 152 149 29 23 9 8 156 157 166 145 146 65 33 60 147 62 20 34 6 7 164 35 16 153 154 25 14 69 26 66 165</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classC\Bleeper-76\mainC.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 89</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 93</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 4 32 24 144 3 5 155 61 27 163 160 31 67 162 21 158 80 15 38 63 28 36 143 159 17 1 22 2 10 151 19 148 12 13 18 152 149 29 23 9 8 156 157 166 145 146 65 33 60 147 62 20 34 6 7 164 35 16 153 154 25 14 69 26 66 165</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classB\Bleeper-76\mainB.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 94</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 122</file>
-        </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 15 144 63 156 166 145 28 157 9 8 149 163 146 27 36 32 148 153 12 159 154 25 162 14 155 4 21 69 13 26 61 65 17 33 160 60 1 147 3 62 22 20 31 66 34 2 6 24 7 18 10 158 164 67 35 151 5 16 19 143 152 165 29 38 80 23</file>
+          <file> 10 49 127 118 46 60 61 131 58 122 120 73 156 132 121 75 158 70 71 66 62 149 159 153 59 133 51 154 135 160 130 150 136 151 125 47 137 55 129 152 126 138 53 76 57 139 155 56 123 124 50 140 63 64 134 65 157 142 52</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 4 32 24 144 3 5 155 61 27 163 160 31 67 162 21 158 80 15 38 63 28 36 143 159 17 1 22 2 10 151 19 148 12 13 18 152 149 29 23 9 8 156 157 166 145 146 65 33 60 147 62 20 34 6 7 164 35 16 153 154 25 14 69 26 66 165</file>
+          <file> 120 160 133 118 156 56 158 55 65 132 61 157 151 53 63 75 66 126 155 122 49 131 127 46 58 60 159 150 47 152 57 50 64 149 153 154 73 135 130 136 125 137 129 138 76 139 124 140 134 121 70 71 62 59 51 123 142 10 52</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\..\chip_82x\startup\sysinit.c</name>
+      <name>$PROJ_DIR$\..\..\..\..\lorawan\atcmd\buffer.c</name>
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 124</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 99</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 27 36 32 148 144 63 156 166 145 28 157 153 12 159 154 25 162 14 155 4 21 69 13 26 61 65 17 33 160 60 1 147 3 62 22 20 31 66 34 2 6 24 7 18 10 158 164 67 35 151 5 16 19 143 152 9 165</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 32 3 5 166 4 24 144 63 160 31 67 148 156 157 69 158 36 143 159 17 1 22 2 10 151 19 145 154 25 14 26 9 12 65 33 60 147 62 20 34 6 7 164 35 16 153 28 155 162 21 13 61 66 27 18 152 165</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\croutine.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 68</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 98</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 135 71 144 63 156 166 145 28 157 9 148 75 112 27 36 32 153 12 159 154 25 162 14 155 4 21 69 13 26 61 65 17 33 160 60 1 147 3 62 22 20 31 66 34 2 6 24 7 18 10 158 164 67 35 151 5 16 19 143 152 165 77 76 78 91 90 131</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 17 18 28 159 10 162 144 36 22 19 21 78 112 143 1 2 151 155 61 90 131 75 77 9 32 4 160 3 31 24 67 5 148 12 13 63 135 91 71 156 157 166 145 27 65 33 60 147 62 20 34 6 7 164 35 16 153 154 25 14 69 26 152 165 66 158 76</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\freertos\freertoslpc\FreeRTOSCommonHooks.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 117</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 120</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 135 71 144 63 156 166 145 28 157 9 148 75 112 27 36 32 153 12 159 154 25 162 14 155 4 21 69 13 26 61 65 17 33 160 60 1 147 3 62 22 20 31 66 34 2 6 24 7 18 10 158 164 67 35 151 5 16 19 143 152 165 77 76 78 91 90 114</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 19 144 21 36 22 28 159 17 10 162 9 112 143 1 2 151 155 61 114 75 77 32 4 160 3 31 24 67 5 148 12 13 158 91 71 63 156 157 166 145 27 65 33 60 147 62 20 34 6 7 164 35 16 153 154 25 14 69 26 66 76 135 18 152 165 78 90</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\portable\MemMang\heap_2.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 127</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 97</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 64 144 63 156 166 145 28 157 9 135 71 148 75 112 27 36 32 153 12 159 154 25 162 14 155 4 21 69 13 26 61 65 17 33 160 60 1 147 3 62 22 20 31 66 34 2 6 24 7 18 10 158 164 67 35 151 5 16 19 143 152 165 77 76 78 91 90</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 18 60 32 35 144 64 9 34 153 25 61 63 75 77 27 12 65 62 7 16 154 14 135 28 112 33 147 20 6 164 21 78 90 91 156 157 166 145 71 148 36 143 159 4 17 160 1 3 22 31 2 24 10 67 151 5 19 155 162 13 152 165 69 26 66 158 76</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\list.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 126</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
           <file> 110</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 64 144 63 156 166 145 28 157 9 135 71 148 75 112 27 36 32 153 12 159 154 25 162 14 155 4 21 69 13 26 61 65 17 33 160 60 1 147 3 62 22 20 31 66 34 2 6 24 7 18 10 158 164 67 35 151 5 16 19 143 152 165 77 76 78 90</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 4 28 166 32 24 63 3 5 12 148 9 144 156 157 160 31 67 90 145 71 36 143 159 17 1 22 2 10 151 19 155 162 69 158 135 75 112 77 27 65 33 60 147 62 20 34 6 7 164 35 16 153 154 25 14 26 66 76 64 21 13 61 18 152 165 78</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\portable\IAR\ARM_CM0\port.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 123</file>
         </tool>
         <tool>
           <name>BICOMP</name>
@@ -1003,838 +286,112 @@
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 14 144 135 71 63 156 166 145 28 157 9 148 75 112 27 36 32 153 12 159 154 25 162 155 4 21 69 13 26 61 65 17 33 160 60 1 147 3 62 22 20 31 66 34 2 6 24 7 18 10 158 164 67 35 151 5 16 19 143 152 165 77 76 78 91 90</file>
+          <file> 15 73 156 132 120 127 118 46 60 61 131 58 121 75 158 70 71 66 62 149 159 153 59 133 51 154 135 160 130 150 136 151 125 47 137 55 129 152 126 138 53 76 57 139 155 56 123 124 50 140 63 64 134 65 157 142 122 52 21 119 48 26 22</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 153 18 32 9 63 34 25 60 35 75 77 145 27 12 65 62 7 16 154 14 69 91 144 112 156 157 166 33 147 20 6 164 26 78 90 135 71 148 28 36 143 159 4 17 160 1 3 22 31 2 24 10 67 151 5 19 155 162 21 13 61 152 165 66 158 76</file>
+          <file> 76 120 118 75 126 66 73 125 130 129 124 121 133 132 122 119 135 136 137 138 139 140 134 131 127 149 153 154 52 26 21 156 157 158 159 160 150 151 47 55 152 53 57 56 50 63 64 65 46 58 60 61 70 71 62 59 51 155 48 15 123 142 22</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\portable\IAR\ARM_CM0\portasm.s</name>
-      <outputs>
-        <tool>
-          <name>AARM</name>
-          <file> 133</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>AARM</name>
-          <file> 112</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\queue.c</name>
+      <name>$PROJ_DIR$\..\..\..\..\lorawan\atcmd\frame.c</name>
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 87</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 103</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 64 144 63 156 166 145 28 157 9 15 8 135 71 148 75 112 27 36 32 153 12 159 154 25 162 14 155 4 21 69 13 26 61 65 17 33 160 60 1 147 3 62 22 20 31 66 34 2 6 24 7 18 10 158 164 67 35 151 5 16 19 143 152 165 77 76 78 91 90 74</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 12 144 145 3 148 63 5 162 8 32 4 24 165 74 28 156 157 166 9 160 31 67 13 152 64 15 135 91 71 36 143 159 17 1 22 2 10 151 19 155 21 61 18 78 90 75 112 77 27 65 33 60 147 62 20 34 6 7 164 35 16 153 154 25 14 69 26 66 158 76</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\tasks.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 128</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 72</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 64 144 63 156 166 145 28 157 9 15 8 135 71 148 75 112 27 36 32 153 12 159 154 25 162 14 155 4 21 69 13 26 61 65 17 33 160 60 1 147 3 62 22 20 31 66 34 2 6 24 7 18 10 158 164 67 35 151 5 16 19 143 152 165 77 76 78 91 90 118 134</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 77 16 27 158 62 63 145 75 12 65 7 154 14 66 76 64 15 118 28 144 156 157 166 9 60 34 35 153 25 26 91 135 134 8 112 33 147 20 6 164 32 69 71 148 36 143 159 4 17 160 1 3 22 31 2 24 10 67 151 5 19 155 162 21 13 61 18 152 165 78 90</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\timers.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 88</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 105</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 64 144 63 156 166 145 28 157 9 135 71 148 75 112 27 36 32 153 12 159 154 25 162 14 155 4 21 69 13 26 61 65 17 33 160 60 1 147 3 62 22 20 31 66 34 2 6 24 7 18 10 158 164 67 35 151 5 16 19 143 152 165 77 76 78 91 90 74 118</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 9 28 6 144 147 32 74 112 63 33 20 164 61 18 135 75 77 27 12 65 60 62 34 7 35 16 153 154 25 14 21 78 90 91 118 156 157 166 145 71 148 36 143 159 4 17 160 1 3 22 31 2 24 10 67 151 5 19 155 162 13 152 165 64 69 26 66 158 76</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\system\crypto\aes.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 129</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
           <file> 109</file>
         </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 67</file>
+        </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 64 144 63 156 166 145 28 157 9 148 56</file>
+          <file> 15 73 156 132 120 127 118 46 60 61 131 58 121 75 158 70 71 66 62 149 159 153 59 133 51 154 135 160 130 150 136 151 125 47 137 55 129 152 126 138 53 76 57 139 155 56 123 124 50 140 63 64 134 65 157 142 122 52 21 119 48</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 63 56 166 28 157 148 144 9 145 64 156</file>
+          <file> 150 61 51 132 50 71 152 127 122 21 159 47 57 64 70 62 118 156 157 158 160 151 55 53 56 63 65 120 46 58 60 59 155 52 73 119 75 135 130 136 125 137 129 138 76 139 124 140 134 121 131 149 66 153 133 154 126 48 15 123 142</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\system\crypto\cmac.c</name>
+      <name>$PROJ_DIR$\..\..\..\..\lorawan\atcmd\hex.c</name>
       <outputs>
         <tool>
           <name>ICCARM</name>
+          <file> 74</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 101</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 73 156 132 120 127 118 46 60 61 131 58 121 75 158 70 71 66 62 149 159 153 59 133 51 154 135 160 130 150 136 151 125 47 137 55 129 152 126 138 53 76 57 139 155 56 123 124 50 140 63 64 134 65 157 142 122 52 15 21 119 48</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 137 75 134 66 135 139 153 132 122 136 138 140 131 127 149 154 118 130 125 129 76 124 121 120 133 126 52 21 15 156 157 158 159 160 150 151 47 55 152 53 57 56 50 63 64 65 46 58 60 61 70 71 62 59 51 155 48 73 123 142 119</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\lorawan\atcmd\modem.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 98</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
           <file> 111</file>
         </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 96</file>
-        </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 148 144 63 156 166 145 28 157 56 58 23 27 36 32 153 12 159 154 25 162 14 155 4 21 69 13 26 61 65 17 33 160 60 1 147 3 62 22 20 31 66 34 2 6 24 7 18 10 158 164 67 35 151 5 16 19 143 152 9 165</file>
+          <file> 15 73 156 132 120 127 118 46 60 61 131 58 121 75 158 70 71 66 62 149 159 153 59 133 51 154 135 160 130 150 136 151 125 47 137 55 129 152 126 138 53 76 57 139 155 56 123 124 50 140 63 64 134 65 157 142 122 52 21 119 48 32 26 22 41</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 16 62 56 12 65 7 154 14 28 144 27 60 34 35 153 25 26 158 32 58 63 33 147 20 6 164 69 9 23 156 157 166 145 36 143 159 4 17 160 1 3 22 31 2 24 10 67 151 5 19 148 155 162 21 13 61 66 18 152 165</file>
+          <file> 129 32 73 130 124 121 133 21 125 76 118 75 120 66 52 119 135 136 137 138 139 140 134 131 127 149 153 154 132 122 15 26 41 156 157 158 159 160 150 151 47 55 152 53 57 56 50 63 64 65 46 58 60 61 70 71 62 59 51 155 48 126 123 142 22</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\system\timer.c</name>
+      <name>$PROJ_DIR$\..\..\..\..\lorawan\atcmd\queue_IBM.c</name>
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 95</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 70</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 27 36 32 148 144 63 156 166 145 28 157 153 12 159 154 25 162 14 155 4 21 69 13 26 61 65 17 33 160 60 1 147 3 62 22 20 31 66 34 2 6 24 7 18 10 158 164 67 35 151 5 16 19 143 152 9 165 29</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 20 21 33 164 162 9 29 147 6 28 144 155 61 12 65 60 62 34 7 35 16 153 63 148 13 158 32 27 36 143 159 4 17 160 1 3 22 31 2 24 10 67 151 5 19 156 157 166 145 154 25 14 69 26 66 18 152 165</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classB\Bleeper-76\main.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 125</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 106</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 15 144 63 156 166 145 28 157 9 8 149 163 146 27 36 32 148 153 12 159 154 25 162 14 155 4 21 69 13 26 61 65 17 33 160 60 1 147 3 62 22 20 31 66 34 2 6 24 7 18 10 158 164 67 35 151 5 16 19 143 152 165 29 38 80 23</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 4 32 24 144 3 5 155 61 27 163 160 31 67 162 21 158 80 15 38 63 28 36 143 159 17 1 22 2 10 151 19 148 12 13 18 152 149 29 23 9 8 156 157 166 145 146 65 33 60 147 62 20 34 6 7 164 35 16 153 154 25 14 69 26 66 165</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\boards\Bleeper-76\sx1276-board.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 83</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 121</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 27 36 32 148 144 63 156 166 145 28 157 153 12 159 154 25 162 14 155 4 21 69 13 26 61 65 17 33 160 60 1 147 3 62 22 20 31 66 34 2 6 24 7 18 10 158 164 67 35 151 5 16 19 143 152 9 165 138 140 141 142 92</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 148 69 31 157 160 67 144 156 32 4 3 24 5 166 63 140 36 143 159 17 1 22 2 10 151 19 145 154 25 14 26 66 158 141 138 92 12 65 33 60 147 62 20 34 6 7 164 35 16 153 28 155 162 21 13 61 9 27 18 152 165 142</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classC\Bleeper-76\main.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 125</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 106</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 15 144 63 156 166 145 28 157 9 8 149 163 146 27 36 32 148 153 12 159 154 25 162 14 155 4 21 69 13 26 61 65 17 33 160 60 1 147 3 62 22 20 31 66 34 2 6 24 7 18 10 158 164 67 35 151 5 16 19 143 152 165 29 38 80 23</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 4 32 24 144 3 5 155 61 27 163 160 31 67 162 21 158 80 15 38 63 28 36 143 159 17 1 22 2 10 151 19 148 12 13 18 152 149 29 23 9 8 156 157 166 145 146 65 33 60 147 62 20 34 6 7 164 35 16 153 154 25 14 69 26 66 165</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classA\Bleeper-76\main.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 125</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 106</file>
-        </tool>
-      </outputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\ClassB\Exe\freertos_blinky.out</name>
-      <outputs>
-        <tool>
-          <name>ILINK</name>
-          <file> 84</file>
-        </tool>
-        <tool>
-          <name>OBJCOPY</name>
-          <file> 82</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ILINK</name>
-          <file> 30 129 53 54 111 68 117 127 130 126 73 81 94 123 133 87 83 132 124 128 95 88 101 161 150 11</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\mac\LoRaMacCrypto.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 81</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 115</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 64 144 63 156 166 145 28 157 9 148 23 27 36 32 153 12 159 154 25 162 14 155 4 21 69 13 26 61 65 17 33 160 60 1 147 3 62 22 20 31 66 34 2 6 24 7 18 10 158 164 67 35 151 5 16 19 143 152 165 56 58 137</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 162 63 143 2 12 148 66 145 1 151 58 27 36 159 17 22 10 19 13 32 23 28 144 156 157 166 4 160 3 31 24 67 5 155 21 61 18 56 137 9 65 33 60 147 62 20 34 6 7 164 35 16 153 154 25 14 69 26 165 64 158 152</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\radio\sx1276\sx1276.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 132</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 108</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 149 144 163 63 156 166 145 28 157 146 15 9 8 27 36 32 148 153 12 159 154 25 162 14 155 4 21 69 13 26 61 65 17 33 160 60 1 147 3 62 22 20 31 66 34 2 6 24 7 18 10 158 164 67 35 151 5 16 19 143 152 165 138 140 141 142 92 29</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 67 165 92 63 160 142 166 31 148 12 162 144 156 157 32 4 3 24 5 13 152 138 29 163 145 36 143 159 17 1 22 2 10 151 19 155 21 61 18 149 15 27 140 146 28 9 8 65 33 60 147 62 20 34 6 7 164 35 16 153 154 25 14 69 26 66 158 141</file>
-        </tool>
-      </inputs>
-    </file>
-    <forcedrebuild>
-      <name>[MULTI_TOOL]</name>
-      <tool>ILINK</tool>
-    </forcedrebuild>
-  </configuration>
-  <configuration>
-    <name>ClassC</name>
-    <outputs>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\mac\LoRaMac.c</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\pinint_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\wwdt_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\acmp_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\romapi_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\adc_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\sct_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\spi_8xx.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\DLib_Product_string.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\ysizet.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\i2cm_8xx.h</file>
-      <file>$TOOLKIT_DIR$\lib\dl6M_tln.a</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\sys_config.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\rom_i2c_8xx.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\intrinsics.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\string.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\dma_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\clock_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\spi_common_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\inmux_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\mrt_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\iap.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\gpio_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\boards\mcu\stm32\utilities.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\sct_pwm_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\core_cmInstr.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\rom_pwr_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\brd_xpresso824\inc\board.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\xencoding_limits.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\system\timer.h</file>
-      <file>$TOOLKIT_DIR$\config\linker\NXP\LPC824M201.icf</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\uart_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\lpc_types.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\iocon_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\wkt_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\spis_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\chip.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\boards\mcu\stm32\utilities.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\mac\LoRaMac.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\startup\iar_startup_lpc82x.s</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classA\Bleeper-76\mainA.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classC\Bleeper-76\mainC.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classB\Bleeper-76\mainB.c</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\startup\sysinit.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\croutine.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertoslpc\FreeRTOSCommonHooks.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\portable\MemMang\heap_2.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\list.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\portable\IAR\ARM_CM0\port.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\portable\IAR\ARM_CM0\portasm.s</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\queue.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\tasks.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\timers.c</file>
-      <file>$PROJ_DIR$\..\lib_board_lpcxpresso824\iar_output\Exe\board_nxp_lpcxpresso_824.a</file>
-      <file>$PROJ_DIR$\..\lib_chip_8xx\iar_output\Exe\chip_8xx_lib.a</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\system\crypto\aes.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\system\crypto\aes.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\system\crypto\cmac.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\system\crypto\cmac.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\system\timer.c</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\fmc_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\rom_uart_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\crc_8xx.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\yvals.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\stdlib.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\syscon_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\ring_buffer.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\spim_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\error_8xx.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\stddef.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\include\queue.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\include\projdefs.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\portable\IAR\ARM_CM0\portmacro.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\include\portable.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\include\mpu_wrappers.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\boards\Bleeper-76\LoRaMac-board.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\boards\Bleeper-76\sx1276-board.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\include\list.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\include\task.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\boards\Bleeper-76\sx1276-board.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classC\Bleeper-76\main.c</file>
-      <file>$PROJ_DIR$\..\..\..\examples_82x\freertos_blinky\inc\FreeRTOSConfig.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classA\Bleeper-76\main.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertoslpc\FreeRTOSCommonHooks.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\include\timers.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\include\croutine.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\include\StackMacros.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\include\FreeRTOS.h</file>
-      <file>$PROJ_DIR$\ClassC\Obj\timers.pbi</file>
-      <file>$PROJ_DIR$\ClassC\Obj\LoRaMac.o</file>
-      <file>$PROJ_DIR$\ClassC\Obj\LoRaMacCrypto.pbi</file>
-      <file>$PROJ_DIR$\ClassC\Obj\tasks.pbi</file>
-      <file>$PROJ_DIR$\ClassC\Obj\mainA.o</file>
-      <file>$PROJ_DIR$\ClassC\Obj\mainC.pbi</file>
-      <file>$PROJ_DIR$\ClassC\Obj\list.o</file>
-      <file>$PROJ_DIR$\ClassC\Obj\iar_startup_lpc82x.o</file>
-      <file>$PROJ_DIR$\ClassC\Obj\sx1276-board.pbi</file>
-      <file>$PROJ_DIR$\ClassC\Obj\cmac.o</file>
-      <file>$PROJ_DIR$\ClassC\Obj\sx1276-board.o</file>
-      <file>$PROJ_DIR$\ClassC\Obj\utilities.pbi</file>
-      <file>$PROJ_DIR$\ClassC\Obj\tasks.o</file>
-      <file>$PROJ_DIR$\ClassC\Obj\main.o</file>
-      <file>$PROJ_DIR$\ClassC\Exe\freertos_blinky.out</file>
-      <file>$PROJ_DIR$\ClassC\Exe\freertos_blinky.hex</file>
-      <file>$PROJ_DIR$\ClassC\Obj\sx1276.o</file>
-      <file>$PROJ_DIR$\ClassC\Obj\croutine.o</file>
-      <file>$PROJ_DIR$\ClassC\Obj\mainA.pbi</file>
-      <file>$PROJ_DIR$\ClassC\Obj\timer.o</file>
-      <file>$PROJ_DIR$\ClassC\Obj\FreeRTOSCommonHooks.o</file>
-      <file>$PROJ_DIR$\ClassC\Obj\queue.o</file>
-      <file>$PROJ_DIR$\ClassC\Obj\mainB.pbi</file>
-      <file>$PROJ_DIR$\ClassC\Obj\sysinit.o</file>
-      <file>$PROJ_DIR$\ClassC\Obj\sysinit.pbi</file>
-      <file>$PROJ_DIR$\ClassC\Obj\aes.pbi</file>
-      <file>$PROJ_DIR$\ClassC\Obj\timer.pbi</file>
-      <file>$PROJ_DIR$\ClassC\Obj\croutine.pbi</file>
-      <file>$PROJ_DIR$\ClassC\List\freertos_blinky.map</file>
-      <file>$PROJ_DIR$\ClassC\Obj\main.pbi</file>
-      <file>$PROJ_DIR$\ClassC\Obj\utilities.o</file>
-      <file>$PROJ_DIR$\ClassC\Obj\queue.pbi</file>
-      <file>$PROJ_DIR$\ClassC\Obj\LoRaMacCrypto.o</file>
-      <file>$PROJ_DIR$\ClassC\Obj\mainC.o</file>
-      <file>$PROJ_DIR$\ClassC\Obj\mainB.o</file>
-      <file>$PROJ_DIR$\ClassC\Obj\aes.o</file>
-      <file>$PROJ_DIR$\ClassC\Obj\port.pbi</file>
-      <file>$PROJ_DIR$\ClassC\Obj\port.o</file>
-      <file>$PROJ_DIR$\ClassC\Obj\sx1276.pbi</file>
-      <file>$PROJ_DIR$\ClassC\Obj\portasm.o</file>
-      <file>$PROJ_DIR$\ClassC\Obj\list.pbi</file>
-      <file>$PROJ_DIR$\ClassC\Obj\cmac.pbi</file>
-      <file>$PROJ_DIR$\ClassC\Obj\timers.o</file>
-      <file>$PROJ_DIR$\ClassC\Obj\heap_2.o</file>
-      <file>$PROJ_DIR$\ClassC\Obj\LoRaMac.pbi</file>
-      <file>$PROJ_DIR$\ClassC\Obj\heap_2.pbi</file>
-      <file>$PROJ_DIR$\ClassC\Obj\FreeRTOSCommonHooks.pbi</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\mac\LoRaMacCrypto.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\mac\LoRaMacCrypto.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\radio\radio.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\radio\sx1276\sx1276.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\radio\sx1276\sx1276.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\radio\sx1276\sx1276Regs-Fsk.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\radio\sx1276\sx1276Regs-LoRa.h</file>
-      <file>$PROJ_DIR$\..\..\..\brd_xpresso824\inc\board_api.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\ycheck.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\xtgmath.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\pmu_8xx.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\stdint.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\math.h</file>
-      <file>$TOOLKIT_DIR$\lib\m6M_tl.a</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\irc_8xx.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\stdio.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\stdbool.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\core_cm0plus.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\core_cmFunc.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\DLib_Defaults.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\DLib_Threads.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\i2c_common_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\cmsis.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\swm_8xx.h</file>
-      <file>$TOOLKIT_DIR$\lib\rt6M_tl.a</file>
-      <file>$TOOLKIT_DIR$\inc\c\cmsis_iar.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\ymath.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\i2cs_8xx.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\ystdio.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\DLib_Config_Normal.h</file>
-    </outputs>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\mac\LoRaMac.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 89</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 132</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 27 36 32 147 143 63 155 165 144 28 156 152 12 158 153 25 161 14 154 4 21 68 13 26 61 65 17 33 159 60 1 146 3 62 22 20 31 66 34 2 6 24 7 18 10 157 163 67 35 150 5 16 19 142 151 9 164 29 136 38 75 137 139 140 141 23</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 67 25 159 144 26 18 137 31 143 23 32 4 3 24 5 153 14 63 27 36 142 158 17 1 22 2 10 150 19 147 155 156 165 68 75 140 29 136 38 139 12 65 33 60 146 62 20 34 6 7 163 35 16 152 28 154 161 21 13 61 66 164 157 151 9 141</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\boards\mcu\stm32\utilities.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 118</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 99</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 64 143 63 155 165 144 28 156 9 151 164 23 27 36 32 147 152 12 158 153 25 161 14 154 4 21 68 13 26 61 65 17 33 159 60 1 146 3 62 22 20 31 66 34 2 6 24 7 18 10 157 163 67 35 150 5 16 19 142</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 35 14 153 27 60 63 164 34 152 144 12 65 62 7 16 25 143 26 151 23 28 155 156 165 33 146 20 6 163 32 68 9 36 142 158 4 17 159 1 3 22 31 2 24 10 67 150 5 19 147 154 161 21 13 61 18 64 66 157</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>[ROOT_NODE]</name>
-      <outputs>
-        <tool>
-          <name>ILINK</name>
-          <file> 116 102</file>
-        </tool>
-      </outputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\chip_82x\startup\iar_startup_lpc82x.s</name>
-      <outputs>
-        <tool>
-          <name>AARM</name>
-          <file> 95</file>
-        </tool>
-      </outputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classA\Bleeper-76\mainA.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 92</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 106</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 4 32 24 143 3 5 154 61 27 162 159 31 67 161 21 157 75 15 38 63 28 36 142 158 17 1 22 2 10 150 19 147 12 13 18 151 148 29 23 9 8 155 156 165 144 145 65 33 60 146 62 20 34 6 7 163 35 16 152 153 25 14 68 26 66 164</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classC\Bleeper-76\mainC.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 121</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
           <file> 93</file>
         </tool>
-      </outputs>
-      <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 4 32 24 143 3 5 154 61 27 162 159 31 67 161 21 157 75 15 38 63 28 36 142 158 17 1 22 2 10 150 19 147 12 13 18 151 148 29 23 9 8 155 156 165 144 145 65 33 60 146 62 20 34 6 7 163 35 16 152 153 25 14 68 26 66 164</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classB\Bleeper-76\mainB.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 122</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 110</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 4 32 24 143 3 5 154 61 27 162 159 31 67 161 21 157 75 15 38 63 28 36 142 158 17 1 22 2 10 150 19 147 12 13 18 151 148 29 23 9 8 155 156 165 144 145 65 33 60 146 62 20 34 6 7 163 35 16 152 153 25 14 68 26 66 164</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\chip_82x\startup\sysinit.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 111</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 112</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 27 36 32 147 143 63 155 165 144 28 156 152 12 158 153 25 161 14 154 4 21 68 13 26 61 65 17 33 159 60 1 146 3 62 22 20 31 66 34 2 6 24 7 18 10 157 163 67 35 150 5 16 19 142 151 9 164</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 32 3 5 165 4 24 143 63 159 31 67 147 155 156 68 157 36 142 158 17 1 22 2 10 150 19 144 153 25 14 26 9 12 65 33 60 146 62 20 34 6 7 163 35 16 152 28 154 161 21 13 61 66 27 18 151 164</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\croutine.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 105</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 115</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 87 69 143 63 155 165 144 28 156 9 147 71 81 27 36 32 152 12 158 153 25 161 14 154 4 21 68 13 26 61 65 17 33 159 60 1 146 3 62 22 20 31 66 34 2 6 24 7 18 10 157 163 67 35 150 5 16 19 142 151 164 73 72 74 78 77 85</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 17 18 28 158 10 161 143 36 22 19 21 74 81 142 1 2 150 154 61 77 85 71 73 9 32 4 159 3 31 24 67 5 147 12 13 63 87 78 69 155 156 165 144 27 65 33 60 146 62 20 34 6 7 163 35 16 152 153 25 14 68 26 151 164 66 157 72</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\freertos\freertoslpc\FreeRTOSCommonHooks.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 108</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 134</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 87 69 143 63 155 165 144 28 156 9 147 71 81 27 36 32 152 12 158 153 25 161 14 154 4 21 68 13 26 61 65 17 33 159 60 1 146 3 62 22 20 31 66 34 2 6 24 7 18 10 157 163 67 35 150 5 16 19 142 151 164 73 72 74 78 77 83</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 19 143 21 36 22 28 158 17 10 161 9 81 142 1 2 150 154 61 83 71 73 32 4 159 3 31 24 67 5 147 12 13 157 78 69 63 155 156 165 144 27 65 33 60 146 62 20 34 6 7 163 35 16 152 153 25 14 68 26 66 72 87 18 151 164 74 77</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\portable\MemMang\heap_2.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 131</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 133</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 64 143 63 155 165 144 28 156 9 87 69 147 71 81 27 36 32 152 12 158 153 25 161 14 154 4 21 68 13 26 61 65 17 33 159 60 1 146 3 62 22 20 31 66 34 2 6 24 7 18 10 157 163 67 35 150 5 16 19 142 151 164 73 72 74 78 77</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 18 60 32 35 143 64 9 34 152 25 61 63 71 73 27 12 65 62 7 16 153 14 87 28 81 33 146 20 6 163 21 74 77 78 155 156 165 144 69 147 36 142 158 4 17 159 1 3 22 31 2 24 10 67 150 5 19 154 161 13 151 164 68 26 66 157 72</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\list.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 94</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 128</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 64 143 63 155 165 144 28 156 9 87 69 147 71 81 27 36 32 152 12 158 153 25 161 14 154 4 21 68 13 26 61 65 17 33 159 60 1 146 3 62 22 20 31 66 34 2 6 24 7 18 10 157 163 67 35 150 5 16 19 142 151 164 73 72 74 77</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 4 28 165 32 24 63 3 5 12 147 9 143 155 156 159 31 67 77 144 69 36 142 158 17 1 22 2 10 150 19 154 161 68 157 87 71 81 73 27 65 33 60 146 62 20 34 6 7 163 35 16 152 153 25 14 26 66 72 64 21 13 61 18 151 164 74</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\portable\IAR\ARM_CM0\port.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 125</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 124</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 14 143 87 69 63 155 165 144 28 156 9 147 71 81 27 36 32 152 12 158 153 25 161 154 4 21 68 13 26 61 65 17 33 159 60 1 146 3 62 22 20 31 66 34 2 6 24 7 18 10 157 163 67 35 150 5 16 19 142 151 164 73 72 74 78 77</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 152 18 32 9 63 34 25 60 35 71 73 144 27 12 65 62 7 16 153 14 68 78 143 81 155 156 165 33 146 20 6 163 26 74 77 87 69 147 28 36 142 158 4 17 159 1 3 22 31 2 24 10 67 150 5 19 154 161 21 13 61 151 164 66 157 72</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\portable\IAR\ARM_CM0\portasm.s</name>
-      <outputs>
-        <tool>
-          <name>AARM</name>
-          <file> 127</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>AARM</name>
           <file> 81</file>
         </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\queue.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 109</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 119</file>
-        </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 64 143 63 155 165 144 28 156 9 15 8 87 69 147 71 81 27 36 32 152 12 158 153 25 161 14 154 4 21 68 13 26 61 65 17 33 159 60 1 146 3 62 22 20 31 66 34 2 6 24 7 18 10 157 163 67 35 150 5 16 19 142 151 164 73 72 74 78 77 70</file>
+          <file> 15 73 156 132 120 127 118 46 60 61 131 58 121 75 158 70 71 66 62 149 159 153 59 133 51 154 135 160 130 150 136 151 125 47 137 55 129 152 126 138 53 76 57 139 155 56 123 124 50 140 63 64 134 65 157 142 122 52 21 119 48 26 22</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 12 143 144 3 147 63 5 161 8 32 4 24 164 70 28 155 156 165 9 159 31 67 13 151 64 15 87 78 69 36 142 158 17 1 22 2 10 150 19 154 21 61 18 74 77 71 81 73 27 65 33 60 146 62 20 34 6 7 163 35 16 152 153 25 14 68 26 66 157 72</file>
+          <file> 130 133 118 121 73 124 129 132 125 76 75 120 66 126 122 26 119 135 136 137 138 139 140 134 131 127 149 153 154 52 21 156 157 158 159 160 150 151 47 55 152 53 57 56 50 63 64 65 46 58 60 61 70 71 62 59 51 155 48 15 123 142 22</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\tasks.c</name>
+      <name>$PROJ_DIR$\..\..\..\..\lorawan\atcmd\usart.c</name>
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 100</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 91</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 64 143 63 155 165 144 28 156 9 15 8 87 69 147 71 81 27 36 32 152 12 158 153 25 161 14 154 4 21 68 13 26 61 65 17 33 159 60 1 146 3 62 22 20 31 66 34 2 6 24 7 18 10 157 163 67 35 150 5 16 19 142 151 164 73 72 74 78 77 84 86</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 73 16 27 157 62 63 144 71 12 65 7 153 14 66 72 64 15 84 28 143 155 156 165 9 60 34 35 152 25 26 78 87 86 8 81 33 146 20 6 163 32 68 69 147 36 142 158 4 17 159 1 3 22 31 2 24 10 67 150 5 19 154 161 21 13 61 18 151 164 74 77</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\timers.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 130</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 88</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 64 143 63 155 165 144 28 156 9 87 69 147 71 81 27 36 32 152 12 158 153 25 161 14 154 4 21 68 13 26 61 65 17 33 159 60 1 146 3 62 22 20 31 66 34 2 6 24 7 18 10 157 163 67 35 150 5 16 19 142 151 164 73 72 74 78 77 70 84</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 9 28 6 143 146 32 70 81 63 33 20 163 61 18 87 71 73 27 12 65 60 62 34 7 35 16 152 153 25 14 21 74 77 78 84 155 156 165 144 69 147 36 142 158 4 17 159 1 3 22 31 2 24 10 67 150 5 19 154 161 13 151 164 64 68 26 66 157 72</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\system\crypto\aes.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 123</file>
+          <file> 104</file>
         </tool>
         <tool>
           <name>BICOMP</name>
@@ -1844,34 +401,11 @@
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 64 143 63 155 165 144 28 156 9 147 56</file>
+          <file> 15 73 156 132 120 127 118 46 60 61 131 58 121 75 158 70 71 66 62 149 159 153 59 133 51 154 135 160 130 150 136 151 125 47 137 55 129 152 126 138 53 76 57 139 155 56 123 124 50 140 63 64 134 65 157 142 122 52 21 119 48 26 22</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 63 56 165 28 156 147 143 9 144 64 155</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\system\crypto\cmac.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 97</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 129</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 147 143 63 155 165 144 28 156 56 58 23 27 36 32 152 12 158 153 25 161 14 154 4 21 68 13 26 61 65 17 33 159 60 1 146 3 62 22 20 31 66 34 2 6 24 7 18 10 157 163 67 35 150 5 16 19 142 151 9 164</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 16 62 56 12 65 7 153 14 28 143 27 60 34 35 152 25 26 157 32 58 63 33 146 20 6 163 68 9 23 155 156 165 144 36 142 158 4 17 159 1 3 22 31 2 24 10 67 150 5 19 147 154 161 21 13 61 66 18 151 164</file>
+          <file> 129 132 127 130 124 121 133 119 73 125 76 118 75 120 66 126 123 155 142 122 26 135 136 137 138 139 140 134 131 149 153 154 156 21 157 158 159 160 150 151 47 55 152 53 57 56 50 63 64 65 46 58 60 61 70 71 62 59 51 48 15 52 22</file>
         </tool>
       </inputs>
     </file>
@@ -1880,457 +414,26 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 107</file>
+          <file> 68</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 114</file>
+          <file> 89</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 27 36 32 147 143 63 155 165 144 28 156 152 12 158 153 25 161 14 154 4 21 68 13 26 61 65 17 33 159 60 1 146 3 62 22 20 31 66 34 2 6 24 7 18 10 157 163 67 35 150 5 16 19 142 151 9 164 29</file>
+          <file> 73 156 132 120 127 118 46 60 61 131 58 121 75 158 70 71 66 62 149 159 153 59 133 51 154 135 160 130 150 136 151 125 47 137 55 129 152 126 138 53 76 57 139 155 56 123 124 50 140 63 64 134 65 157 142 122 52 21 26 22</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 20 21 33 163 161 9 29 146 6 28 143 154 61 12 65 60 62 34 7 35 16 152 63 147 13 157 32 27 36 142 158 4 17 159 1 3 22 31 2 24 10 67 150 5 19 155 156 165 144 153 25 14 68 26 66 18 151 164</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\boards\Bleeper-76\sx1276-board.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 98</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 96</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 27 36 32 147 143 63 155 165 144 28 156 152 12 158 153 25 161 14 154 4 21 68 13 26 61 65 17 33 159 60 1 146 3 62 22 20 31 66 34 2 6 24 7 18 10 157 163 67 35 150 5 16 19 142 151 9 164 137 139 140 141 79</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 147 68 31 156 159 67 143 155 32 4 3 24 5 165 63 139 36 142 158 17 1 22 2 10 150 19 144 153 25 14 26 66 157 140 137 79 12 65 33 60 146 62 20 34 6 7 163 35 16 152 28 154 161 21 13 61 9 27 18 151 164 141</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classC\Bleeper-76\main.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 101</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 117</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 15 143 63 155 165 144 28 156 9 8 148 162 145 27 36 32 147 152 12 158 153 25 161 14 154 4 21 68 13 26 61 65 17 33 159 60 1 146 3 62 22 20 31 66 34 2 6 24 7 18 10 157 163 67 35 150 5 16 19 142 151 164 29 38 75 23</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 4 32 24 143 3 5 154 61 27 162 159 31 67 161 21 157 75 15 38 63 28 36 142 158 17 1 22 2 10 150 19 147 12 13 18 151 148 29 23 9 8 155 156 165 144 145 65 33 60 146 62 20 34 6 7 163 35 16 152 153 25 14 68 26 66 164</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classA\Bleeper-76\main.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 101</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 117</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 4 32 24 143 3 5 154 61 27 162 159 31 67 161 21 157 75 15 38 63 28 36 142 158 17 1 22 2 10 150 19 147 12 13 18 151 148 29 23 9 8 155 156 165 144 145 65 33 60 146 62 20 34 6 7 163 35 16 152 153 25 14 68 26 66 164</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\ClassC\Exe\freertos_blinky.out</name>
-      <outputs>
-        <tool>
-          <name>ILINK</name>
-          <file> 116</file>
-        </tool>
-        <tool>
-          <name>OBJCOPY</name>
-          <file> 103</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ILINK</name>
-          <file> 30 123 53 54 97 105 108 131 95 94 89 120 101 125 127 109 98 104 111 100 107 130 118 160 149 11</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\mac\LoRaMacCrypto.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 120</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 90</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 64 143 63 155 165 144 28 156 9 147 23 27 36 32 152 12 158 153 25 161 14 154 4 21 68 13 26 61 65 17 33 159 60 1 146 3 62 22 20 31 66 34 2 6 24 7 18 10 157 163 67 35 150 5 16 19 142 151 164 56 58 136</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 161 63 142 2 12 147 66 144 1 150 58 27 36 158 17 22 10 19 13 32 23 28 143 155 156 165 4 159 3 31 24 67 5 154 21 61 18 56 136 9 65 33 60 146 62 20 34 6 7 163 35 16 152 153 25 14 68 26 164 64 157 151</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\radio\sx1276\sx1276.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 104</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 126</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 148 143 162 63 155 165 144 28 156 145 15 9 8 27 36 32 147 152 12 158 153 25 161 14 154 4 21 68 13 26 61 65 17 33 159 60 1 146 3 62 22 20 31 66 34 2 6 24 7 18 10 157 163 67 35 150 5 16 19 142 151 164 137 139 140 141 79 29</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 67 164 79 63 159 141 165 31 147 12 161 143 155 156 32 4 3 24 5 13 151 137 29 162 144 36 142 158 17 1 22 2 10 150 19 154 21 61 18 148 15 27 139 145 28 9 8 65 33 60 146 62 20 34 6 7 163 35 16 152 153 25 14 68 26 66 157 140</file>
-        </tool>
-      </inputs>
-    </file>
-    <forcedrebuild>
-      <name>[MULTI_TOOL]</name>
-      <tool>ILINK</tool>
-    </forcedrebuild>
-  </configuration>
-  <configuration>
-    <name>iflash_nxp_lpcxpresso_812</name>
-    <outputs>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\mac\LoRaMac.c</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\pinint_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\wwdt_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\acmp_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\romapi_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\adc_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\sct_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\spi_8xx.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\DLib_Product_string.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\ysizet.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\i2cm_8xx.h</file>
-      <file>$TOOLKIT_DIR$\lib\dl6M_tln.a</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\sys_config.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\rom_i2c_8xx.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\intrinsics.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\string.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\dma_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\clock_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\spi_common_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\inmux_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\mrt_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\iap.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\gpio_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\boards\mcu\stm32\utilities.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\sct_pwm_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\core_cmInstr.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\rom_pwr_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\brd_xpresso824\inc\board.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\xencoding_limits.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\system\timer.h</file>
-      <file>$TOOLKIT_DIR$\config\linker\NXP\LPC824M201.icf</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\uart_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\lpc_types.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\iocon_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\wkt_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\spis_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\chip.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\boards\mcu\stm32\utilities.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\mac\LoRaMac.h</file>
-      <file>$PROJ_DIR$\..\..\..\examples_82x\freertos_blinky\src\freertos_blinky.c</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\startup\iar_startup_lpc82x.s</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\startup\sysinit.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\croutine.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertoslpc\FreeRTOSCommonHooks.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\portable\MemMang\heap_2.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\list.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\portable\IAR\ARM_CM0\port.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\portable\IAR\ARM_CM0\portasm.s</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\queue.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\tasks.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\timers.c</file>
-      <file>$PROJ_DIR$\..\lib_board_lpcxpresso824\iar_output\Exe\board_nxp_lpcxpresso_824.a</file>
-      <file>$PROJ_DIR$\..\lib_chip_8xx\iar_output\Exe\chip_8xx_lib.a</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\system\crypto\aes.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\system\crypto\aes.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\system\crypto\cmac.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\system\crypto\cmac.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\system\timer.c</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\fmc_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\rom_uart_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\crc_8xx.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\yvals.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\stdlib.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\syscon_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\ring_buffer.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\spim_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\error_8xx.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\stddef.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\include\queue.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\include\projdefs.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\portable\IAR\ARM_CM0\portmacro.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\include\portable.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\include\mpu_wrappers.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\boards\Bleeper-76\LoRaMac-board.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\boards\Bleeper-76\sx1276-board.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\include\list.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\include\task.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\boards\Bleeper-76\sx1276-board.h</file>
-      <file>$PROJ_DIR$\..\..\..\examples_82x\freertos_blinky\inc\FreeRTOSConfig.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classA\Bleeper-76\main.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertoslpc\FreeRTOSCommonHooks.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\include\timers.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\include\croutine.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\include\StackMacros.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\include\FreeRTOS.h</file>
-      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\tasks.pbi</file>
-      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\utilities.o</file>
-      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\freertos_blinky.pbi</file>
-      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\freertos_blinky.o</file>
-      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\croutine.o</file>
-      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\utilities.pbi</file>
-      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\portasm.o</file>
-      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\LoRaMac.o</file>
-      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\aes.pbi</file>
-      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Exe\freertos_blinky.hex</file>
-      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\queue.o</file>
-      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\LoRaMacCrypto.o</file>
-      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\LoRaMacCrypto.pbi</file>
-      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\port.pbi</file>
-      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\FreeRTOSCommonHooks.o</file>
-      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\heap_2.pbi</file>
-      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\sysinit.pbi</file>
-      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\FreeRTOSCommonHooks.pbi</file>
-      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\List\freertos_blinky.map</file>
-      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\sx1276-board.o</file>
-      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\LoRaMac.pbi</file>
-      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Exe\freertos_blinky.out</file>
-      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\queue.pbi</file>
-      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\heap_2.o</file>
-      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\list.o</file>
-      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\list.pbi</file>
-      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\port.o</file>
-      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\cmac.o</file>
-      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\main.pbi</file>
-      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\main.o</file>
-      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\sx1276-board.pbi</file>
-      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\iar_startup_lpc82x.o</file>
-      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\sx1276.pbi</file>
-      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\timers.o</file>
-      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\sx1276.o</file>
-      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\sysinit.o</file>
-      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\cmac.pbi</file>
-      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\aes.o</file>
-      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\tasks.o</file>
-      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\timer.pbi</file>
-      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\timer.o</file>
-      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\croutine.pbi</file>
-      <file>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Obj\timers.pbi</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\mac\LoRaMacCrypto.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\mac\LoRaMacCrypto.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\radio\radio.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\radio\sx1276\sx1276.c</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\radio\sx1276\sx1276.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\radio\sx1276\sx1276Regs-Fsk.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\lorawan\radio\sx1276\sx1276Regs-LoRa.h</file>
-      <file>$PROJ_DIR$\..\..\..\brd_xpresso824\inc\board_api.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\ycheck.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\xtgmath.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\pmu_8xx.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\stdint.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\math.h</file>
-      <file>$TOOLKIT_DIR$\lib\m6M_tl.a</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\irc_8xx.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\stdio.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\stdbool.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\core_cm0plus.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\core_cmFunc.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\DLib_Defaults.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\DLib_Threads.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\i2c_common_8xx.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\cmsis.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\swm_8xx.h</file>
-      <file>$TOOLKIT_DIR$\lib\rt6M_tl.a</file>
-      <file>$TOOLKIT_DIR$\inc\c\cmsis_iar.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\ymath.h</file>
-      <file>$PROJ_DIR$\..\..\..\chip_82x\inc\i2cs_8xx.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\ystdio.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\DLib_Config_Normal.h</file>
-    </outputs>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\mac\LoRaMac.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 92</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 105</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 27 36 32 140 136 61 148 158 137 28 149 145 12 151 146 25 154 14 147 4 21 66 13 26 59 63 17 33 152 58 1 139 3 60 22 20 31 64 34 2 6 24 7 18 10 150 156 65 35 143 5 16 19 135 144 9 157 29 129 38 73 130 132 133 134 23</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 65 25 152 137 26 18 130 31 136 23 32 4 3 24 5 146 14 61 27 36 135 151 17 1 22 2 10 143 19 140 148 149 158 66 73 133 29 129 38 132 12 63 33 58 139 60 20 34 6 7 156 35 16 145 28 147 154 21 13 59 64 157 150 144 9 134</file>
+          <file> 121 133 138 136 140 75 135 137 139 134 118 120 66 127 26 130 125 129 76 124 131 149 153 154 126 123 21 156 157 132 158 159 160 150 151 47 55 152 53 57 56 50 63 64 65 46 58 60 61 70 71 62 59 51 122 73 155 142 52 22</file>
         </tool>
       </inputs>
     </file>
     <file>
       <name>$PROJ_DIR$\..\..\..\..\lorawan\boards\mcu\stm32\utilities.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 86</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 90</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 62 136 61 148 158 137 28 149 9 144 157 23 27 36 32 140 145 12 151 146 25 154 14 147 4 21 66 13 26 59 63 17 33 152 58 1 139 3 60 22 20 31 64 34 2 6 24 7 18 10 150 156 65 35 143 5 16 19 135</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 35 14 146 27 58 61 157 34 145 137 12 63 60 7 16 25 136 26 144 23 28 148 149 158 33 139 20 6 156 32 66 9 36 135 151 4 17 152 1 3 22 31 2 24 10 65 143 5 19 140 147 154 21 13 59 18 62 64 150</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>[ROOT_NODE]</name>
-      <outputs>
-        <tool>
-          <name>ILINK</name>
-          <file> 103 106</file>
-        </tool>
-      </outputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\examples_82x\freertos_blinky\src\freertos_blinky.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 88</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 87</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 27 36 32 140 136 61 148 158 137 28 149 145 12 151 146 25 154 14 147 4 21 66 13 26 59 63 17 33 152 58 1 139 3 60 22 20 31 64 34 2 6 24 7 18 10 150 156 65 35 143 5 16 19 135 144 9 157 84 67 69 78 71 70 72 76 75</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 3 32 5 158 4 24 136 61 152 31 65 140 148 149 66 67 76 36 135 151 17 1 22 2 10 143 19 137 146 25 14 26 64 150 72 75 84 12 63 33 58 139 60 20 34 6 7 156 35 16 145 28 147 154 21 13 59 9 27 18 144 157 69 78 71 70</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\chip_82x\startup\iar_startup_lpc82x.s</name>
-      <outputs>
-        <tool>
-          <name>AARM</name>
-          <file> 116</file>
-        </tool>
-      </outputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\chip_82x\startup\sysinit.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 120</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 101</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 27 36 32 140 136 61 148 158 137 28 149 145 12 151 146 25 154 14 147 4 21 66 13 26 59 63 17 33 152 58 1 139 3 60 22 20 31 64 34 2 6 24 7 18 10 150 156 65 35 143 5 16 19 135 144 9 157</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 32 3 5 158 4 24 136 61 152 31 65 140 148 149 66 150 36 135 151 17 1 22 2 10 143 19 137 146 25 14 26 9 12 63 33 58 139 60 20 34 6 7 156 35 16 145 28 147 154 21 13 59 64 27 18 144 157</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\croutine.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 89</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 126</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 84 67 136 61 148 158 137 28 149 9 140 69 78 27 36 32 145 12 151 146 25 154 14 147 4 21 66 13 26 59 63 17 33 152 58 1 139 3 60 22 20 31 64 34 2 6 24 7 18 10 150 156 65 35 143 5 16 19 135 144 157 71 70 72 76 75 82</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 17 18 28 151 10 154 136 36 22 19 21 72 78 135 1 2 143 147 59 75 82 69 71 9 32 4 152 3 31 24 65 5 140 12 13 61 84 76 67 148 149 158 137 27 63 33 58 139 60 20 34 6 7 156 35 16 145 146 25 14 66 26 144 157 64 150 70</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\freertos\freertoslpc\FreeRTOSCommonHooks.c</name>
       <outputs>
         <tool>
           <name>ICCARM</name>
@@ -2344,127 +447,39 @@
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 84 67 136 61 148 158 137 28 149 9 140 69 78 27 36 32 145 12 151 146 25 154 14 147 4 21 66 13 26 59 63 17 33 152 58 1 139 3 60 22 20 31 64 34 2 6 24 7 18 10 150 156 65 35 143 5 16 19 135 144 157 71 70 72 76 75 80</file>
+          <file> 49 127 118 46 60 61 131 58 122 142 52 73 156 132 120 121 75 158 70 71 66 62 149 159 153 59 133 51 154 135 160 130 150 136 151 125 47 137 55 129 152 126 138 53 76 57 139 155 56 123 124 50 140 63 64 134 65 157 26 22</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 19 136 21 36 22 28 151 17 10 154 9 78 135 1 2 143 147 59 80 69 71 32 4 152 3 31 24 65 5 140 12 13 150 76 67 61 148 149 158 137 27 63 33 58 139 60 20 34 6 7 156 35 16 145 146 25 14 66 26 64 70 84 18 144 157 72 75</file>
+          <file> 122 131 76 127 125 118 71 51 22 130 129 124 121 70 62 123 155 142 73 75 135 136 137 138 139 140 134 132 59 26 46 58 60 61 52 156 157 158 159 160 150 151 47 55 152 53 57 56 50 63 64 65 120 149 66 153 133 154 126 49</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\portable\MemMang\heap_2.c</name>
+      <name>$PROJ_DIR$\..\..\..\..\lorawan\mac\region\RegionCommon.c</name>
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 108</file>
+          <file> 114</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 100</file>
+          <file> 80</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 62 136 61 148 158 137 28 149 9 84 67 140 69 78 27 36 32 145 12 151 146 25 154 14 147 4 21 66 13 26 59 63 17 33 152 58 1 139 3 60 22 20 31 64 34 2 6 24 7 18 10 150 156 65 35 143 5 16 19 135 144 157 71 70 72 76 75</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 18 58 32 35 136 62 9 34 145 25 59 61 69 71 27 12 63 60 7 16 146 14 84 28 78 33 139 20 6 156 21 72 75 76 148 149 158 137 67 140 36 135 151 4 17 152 1 3 22 31 2 24 10 65 143 5 19 147 154 13 144 157 66 26 64 150 70</file>
+          <file> 121 119 127 118 46 60 61 131 58 122 48 120 117 116 115 21 26 22 32 40</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\list.c</name>
+      <name>$PROJ_DIR$\..\..\..\..\lorawan\system\crypto\aes.c</name>
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 109</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 110</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 62 136 61 148 158 137 28 149 9 84 67 140 69 78 27 36 32 145 12 151 146 25 154 14 147 4 21 66 13 26 59 63 17 33 152 58 1 139 3 60 22 20 31 64 34 2 6 24 7 18 10 150 156 65 35 143 5 16 19 135 144 157 71 70 72 75</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 4 28 158 32 24 61 3 5 12 140 9 136 148 149 152 31 65 75 137 67 36 135 151 17 1 22 2 10 143 19 147 154 66 150 84 69 78 71 27 63 33 58 139 60 20 34 6 7 156 35 16 145 146 25 14 26 64 70 62 21 13 59 18 144 157 72</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\portable\IAR\ARM_CM0\port.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 111</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 98</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 14 136 84 67 61 148 158 137 28 149 9 140 69 78 27 36 32 145 12 151 146 25 154 147 4 21 66 13 26 59 63 17 33 152 58 1 139 3 60 22 20 31 64 34 2 6 24 7 18 10 150 156 65 35 143 5 16 19 135 144 157 71 70 72 76 75</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 145 18 32 9 61 34 25 58 35 69 71 137 27 12 63 60 7 16 146 14 66 76 136 78 148 149 158 33 139 20 6 156 26 72 75 84 67 140 28 36 135 151 4 17 152 1 3 22 31 2 24 10 65 143 5 19 147 154 21 13 59 144 157 64 150 70</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\portable\IAR\ARM_CM0\portasm.s</name>
-      <outputs>
-        <tool>
-          <name>AARM</name>
-          <file> 91</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>AARM</name>
-          <file> 78</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\queue.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 95</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 107</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 62 136 61 148 158 137 28 149 9 15 8 84 67 140 69 78 27 36 32 145 12 151 146 25 154 14 147 4 21 66 13 26 59 63 17 33 152 58 1 139 3 60 22 20 31 64 34 2 6 24 7 18 10 150 156 65 35 143 5 16 19 135 144 157 71 70 72 76 75 68</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 12 136 137 3 140 61 5 154 8 32 4 24 157 68 28 148 149 158 9 152 31 65 13 144 62 15 84 76 67 36 135 151 17 1 22 2 10 143 19 147 21 59 18 72 75 69 78 71 27 63 33 58 139 60 20 34 6 7 156 35 16 145 146 25 14 66 26 64 150 70</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\tasks.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 123</file>
+          <file> 103</file>
         </tool>
         <tool>
           <name>BICOMP</name>
@@ -2474,57 +489,11 @@
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 62 136 61 148 158 137 28 149 9 15 8 84 67 140 69 78 27 36 32 145 12 151 146 25 154 14 147 4 21 66 13 26 59 63 17 33 152 58 1 139 3 60 22 20 31 64 34 2 6 24 7 18 10 150 156 65 35 143 5 16 19 135 144 157 71 70 72 76 75 81 83</file>
+          <file> 49 127 118 46 60 61 131 58 122 120 25</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 71 16 27 150 60 61 137 69 12 63 7 146 14 64 70 62 15 81 28 136 148 149 158 9 58 34 35 145 25 26 76 84 83 8 78 33 139 20 6 156 32 66 67 140 36 135 151 4 17 152 1 3 22 31 2 24 10 65 143 5 19 147 154 21 13 59 18 144 157 72 75</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\timers.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 118</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 127</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 62 136 61 148 158 137 28 149 9 84 67 140 69 78 27 36 32 145 12 151 146 25 154 14 147 4 21 66 13 26 59 63 17 33 152 58 1 139 3 60 22 20 31 64 34 2 6 24 7 18 10 150 156 65 35 143 5 16 19 135 144 157 71 70 72 76 75 68 81</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 9 28 6 136 139 32 68 78 61 33 20 156 59 18 84 69 71 27 12 63 58 60 34 7 35 16 145 146 25 14 21 72 75 76 81 148 149 158 137 67 140 36 135 151 4 17 152 1 3 22 31 2 24 10 65 143 5 19 147 154 13 144 157 62 66 26 64 150 70</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\system\crypto\aes.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 122</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 93</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 62 136 61 148 158 137 28 149 9 140 54</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 61 54 158 28 149 140 136 9 137 62 148</file>
+          <file> 25 131 49 118 61 120 127 122 46 58 60</file>
         </tool>
       </inputs>
     </file>
@@ -2533,109 +502,40 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 112</file>
+          <file> 105</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 121</file>
+          <file> 88</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 140 136 61 148 158 137 28 149 54 56 23 27 36 32 145 12 151 146 25 154 14 147 4 21 66 13 26 59 63 17 33 152 58 1 139 3 60 22 20 31 64 34 2 6 24 7 18 10 150 156 65 35 143 5 16 19 135 144 9 157</file>
+          <file> 120 127 118 46 60 61 131 58 25 30 26 22</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 16 60 54 12 63 7 146 14 28 136 27 58 34 35 145 25 26 150 32 56 61 33 139 20 6 156 66 9 23 148 149 158 137 36 135 151 4 17 152 1 3 22 31 2 24 10 65 143 5 19 140 147 154 21 13 59 64 18 144 157</file>
+          <file> 61 127 30 25 26 118 46 58 60 120 131 22</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\system\timer.c</name>
+      <name>$PROJ_DIR$\..\..\..\..\lorawan\mac\LoRaMac.c</name>
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 125</file>
+          <file> 79</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 124</file>
+          <file> 95</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 27 36 32 140 136 61 148 158 137 28 149 145 12 151 146 25 154 14 147 4 21 66 13 26 59 63 17 33 152 58 1 139 3 60 22 20 31 64 34 2 6 24 7 18 10 150 156 65 35 143 5 16 19 135 144 9 157 29</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 20 21 33 156 154 9 29 139 6 28 136 147 59 12 63 58 60 34 7 35 16 145 61 140 13 150 32 27 36 135 151 4 17 152 1 3 22 31 2 24 10 65 143 5 19 148 149 158 137 146 25 14 66 26 64 18 144 157</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\boards\Bleeper-76\sx1276-board.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 104</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 115</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 27 36 32 140 136 61 148 158 137 28 149 145 12 151 146 25 154 14 147 4 21 66 13 26 59 63 17 33 152 58 1 139 3 60 22 20 31 64 34 2 6 24 7 18 10 150 156 65 35 143 5 16 19 135 144 9 157 130 132 133 134 77</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 140 66 31 149 152 65 136 148 32 4 3 24 5 158 61 132 36 135 151 17 1 22 2 10 143 19 137 146 25 14 26 64 150 133 130 77 12 63 33 58 139 60 20 34 6 7 156 35 16 145 28 147 154 21 13 59 9 27 18 144 157 134</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classA\Bleeper-76\main.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 114</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 113</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 15 136 61 148 158 137 28 149 9 8 141 155 138 27 36 32 140 145 12 151 146 25 154 14 147 4 21 66 13 26 59 63 17 33 152 58 1 139 3 60 22 20 31 64 34 2 6 24 7 18 10 150 156 65 35 143 5 16 19 135 144 157 29 38 73 23</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 4 32 24 136 3 5 147 59 27 155 152 31 65 154 21 150 73 15 38 61 28 36 135 151 17 1 22 2 10 143 19 140 12 13 18 144 141 29 23 9 8 148 149 158 137 138 63 33 58 139 60 20 34 6 7 156 35 16 145 146 25 14 66 26 64 157</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Exe\freertos_blinky.out</name>
-      <outputs>
-        <tool>
-          <name>ILINK</name>
-          <file> 103</file>
-        </tool>
-        <tool>
-          <name>OBJCOPY</name>
-          <file> 94</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ILINK</name>
-          <file> 30 122 51 52 112 89 99 108 116 109 92 96 114 111 91 95 104 119 120 123 125 118 86 153 142 11</file>
+          <file> 73 156 132 120 127 118 46 60 61 131 58 121 75 158 70 71 66 62 149 159 153 59 133 51 154 135 160 130 150 136 151 125 47 137 55 129 152 126 138 53 76 57 139 155 56 123 124 50 140 63 64 134 65 157 142 122 52 41 32 21 37 34 35 26 22 15 119 48</file>
         </tool>
       </inputs>
     </file>
@@ -2644,21 +544,55 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 96</file>
+          <file> 97</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 97</file>
+          <file> 84</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 62 136 61 148 158 137 28 149 9 140 23 27 36 32 145 12 151 146 25 154 14 147 4 21 66 13 26 59 63 17 33 152 58 1 139 3 60 22 20 31 64 34 2 6 24 7 18 10 150 156 65 35 143 5 16 19 135 144 157 54 56 129</file>
+          <file> 49 127 118 46 60 61 131 58 122 120 26 22 25 30 34</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\lorawan\mac\region\Region.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 108</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 154 61 135 2 12 140 64 137 1 143 56 27 36 151 17 22 10 19 13 32 23 28 136 148 149 158 4 152 3 31 24 65 5 147 21 59 18 54 129 9 63 33 58 139 60 20 34 6 7 156 35 16 145 146 25 14 66 26 157 62 150 144</file>
+          <file> 94</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 121 119 127 118 46 60 61 131 58 122 48 120 21 32 37 54</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\lorawan\mac\region\RegionCN470.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 90</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 86</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 121 119 127 118 46 60 61 131 58 122 48 120 117 116 115 43 41 44 45 73 156 132 75 158 70 71 66 62 149 159 153 59 133 51 154 135 160 130 150 136 151 125 47 137 55 129 152 126 138 53 76 57 139 155 56 123 124 50 140 63 64 134 65 157 142 52 32 21 26 22 37 40 39</file>
         </tool>
       </inputs>
     </file>
@@ -2667,21 +601,68 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 119</file>
+          <file> 69</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 117</file>
+          <file> 82</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 141 136 155 61 148 158 137 28 149 138 15 9 8 27 36 32 140 145 12 151 146 25 154 14 147 4 21 66 13 26 59 63 17 33 152 58 1 139 3 60 22 20 31 64 34 2 6 24 7 18 10 150 156 65 35 143 5 16 19 135 144 157 130 132 133 134 77 29</file>
+          <file> 117 127 116 118 46 60 61 131 58 115 119 122 48 73 156 132 120 121 75 158 70 71 66 62 149 159 153 59 133 51 154 135 160 130 150 136 151 125 47 137 55 129 152 126 138 53 76 57 139 155 56 123 124 50 140 63 64 134 65 157 142 52 41 43 44 45 20 21 26 22</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 65 157 77 61 152 134 158 31 140 12 154 136 148 149 32 4 3 24 5 13 144 130 29 155 137 36 135 151 17 1 22 2 10 143 19 147 21 59 18 141 15 27 132 138 28 9 8 63 33 58 139 60 20 34 6 7 156 35 16 145 146 25 14 66 26 64 150 133</file>
+          <file> 133 46 57 118 127 159 117 58 132 47 64 142 73 20 60 150 152 50 120 75 66 52 41 116 61 156 157 158 160 151 55 53 56 63 65 149 153 154 155 45 119 43 21 26 115 131 122 48 135 130 136 125 137 129 138 76 139 124 140 134 121 70 71 62 59 51 126 123 44 22</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>ILINK</name>
+          <file> 91 128</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\iflash_nxp_lpcxpresso_812\Exe\freertos_blinky.out</name>
+      <outputs>
+        <tool>
+          <name>ILINK</name>
+          <file> 128</file>
+        </tool>
+        <tool>
+          <name>OBJCOPY</name>
+          <file> 148</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ILINK</name>
+          <file> 144 103 5 110 7 105 96 109 74 72 83 98 77 69 87 68 104 99 143 145 147</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\lorawan\apps\LoRaMac\classA\SensorNode\main.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 83</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 112</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 119 127 118 46 60 61 131 58 122 48 117 116 115 73 156 132 120 121 75 158 70 71 66 62 149 159 153 59 133 51 154 135 160 130 150 136 151 125 47 137 55 129 152 126 138 53 76 57 139 155 56 123 124 50 140 63 64 134 65 157 142 52 26 22 32 21 37 146 15</file>
         </tool>
       </inputs>
     </file>
@@ -2690,8 +671,48 @@
       <tool>ICCARM</tool>
     </forcedrebuild>
     <forcedrebuild>
-      <name>[MULTI_TOOL]</name>
-      <tool>ILINK</tool>
+      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\croutine.c</name>
+      <tool>ICCARM</tool>
+    </forcedrebuild>
+    <forcedrebuild>
+      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\timers.c</name>
+      <tool>ICCARM</tool>
+    </forcedrebuild>
+    <forcedrebuild>
+      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\portable\MemMang\heap_2.c</name>
+      <tool>ICCARM</tool>
+    </forcedrebuild>
+    <forcedrebuild>
+      <name>$PROJ_DIR$\..\..\..\..\freertos\freertoslpc\FreeRTOSCommonHooks.c</name>
+      <tool>ICCARM</tool>
+    </forcedrebuild>
+    <forcedrebuild>
+      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\list.c</name>
+      <tool>ICCARM</tool>
+    </forcedrebuild>
+    <forcedrebuild>
+      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\portable\IAR\ARM_CM0\port.c</name>
+      <tool>ICCARM</tool>
+    </forcedrebuild>
+    <forcedrebuild>
+      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\queue.c</name>
+      <tool>ICCARM</tool>
+    </forcedrebuild>
+    <forcedrebuild>
+      <name>$PROJ_DIR$\..\..\..\..\freertos\freertos\Source\tasks.c</name>
+      <tool>ICCARM</tool>
+    </forcedrebuild>
+    <forcedrebuild>
+      <name>$PROJ_DIR$\..\..\..\..\lorawan\atcmd\eeprom.c</name>
+      <tool>ICCARM</tool>
+    </forcedrebuild>
+    <forcedrebuild>
+      <name>$PROJ_DIR$\..\..\..\..\lorawan\atcmd\queue_IBM.c</name>
+      <tool>ICCARM</tool>
+    </forcedrebuild>
+    <forcedrebuild>
+      <name>$PROJ_DIR$\..\..\..\..\lorawan\system\delay.c</name>
+      <tool>ICCARM</tool>
     </forcedrebuild>
   </configuration>
 </project>

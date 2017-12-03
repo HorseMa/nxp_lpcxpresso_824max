@@ -22,6 +22,7 @@ Maintainer: Miguel Luis and Gregory Cristian
 #include "LoRaMac.h"
 #include "Region.h"
 #include "Commissioning.h"
+#include "modem.h"
 
 /*!
  * Defines the application data transmission duty cycle. 5s, value in [ms].
@@ -157,24 +158,11 @@ static TimerEvent_t TxNextPacketTimer;
 static bool AppLedStateOn = false;
 
 /*!
- * Timer to handle the state of LED1
- */
-static TimerEvent_t Led1Timer;
-
-/*!
- * Timer to handle the state of LED2
- */
-static TimerEvent_t Led2Timer;
-
-/*!
- * Timer to handle the state of LED4
- */
-static TimerEvent_t Led4Timer;
-
-/*!
  * Indicates if a new packet can be sent
  */
 static bool NextTx = true;
+
+extern RINGBUFF_T txring, rxring;
 
 /*!
  * Device states
@@ -375,36 +363,6 @@ static void OnTxNextPacketTimerEvent( void )
 }
 
 /*!
- * \brief Function executed on Led 1 Timeout event
- */
-static void OnLed1TimerEvent( void )
-{
-    TimerStop( &Led1Timer );
-    // Switch LED 1 OFF
-    //GpioWrite( &Led1, 1 );
-}
-
-/*!
- * \brief Function executed on Led 2 Timeout event
- */
-static void OnLed2TimerEvent( void )
-{
-    TimerStop( &Led2Timer );
-    // Switch LED 2 OFF
-    //GpioWrite( &Led2, 1 );
-}
-
-/*!
- * \brief Function executed on Led 4 Timeout event
- */
-static void OnLed4TimerEvent( void )
-{
-    TimerStop( &Led4Timer );
-    // Switch LED 4 OFF
-    //GpioWrite( &Led4, 1 );
-}
-
-/*!
  * \brief   MCPS-Confirm event function
  *
  * \param   [IN] mcpsConfirm - Pointer to the confirm structure,
@@ -437,10 +395,6 @@ static void McpsConfirm( McpsConfirm_t *mcpsConfirm )
             default:
                 break;
         }
-
-        // Switch LED 1 ON
-        //GpioWrite( &Led1, 0 );
-        TimerStart( &Led1Timer );
     }
     NextTx = true;
 }
@@ -647,10 +601,6 @@ static void McpsIndication( McpsIndication_t *mcpsIndication )
             break;
         }
     }
-
-    // Switch LED 2 ON for each received downlink
-    //GpioWrite( &Led2, 0 );
-    TimerStart( &Led2Timer );
 }
 
 /*!
@@ -706,8 +656,8 @@ uint8_t BoardGetBatteryLevel(void)
 /* Sets up system hardware */
 static void prvSetupHardware(void)
 {
-    SystemCoreClockUpdate();
-    Board_Init();
+	SystemCoreClockUpdate();
+	Board_Init();
 }
 
 /**
@@ -718,20 +668,30 @@ int main( void )
     LoRaMacPrimitives_t LoRaMacPrimitives;
     LoRaMacCallback_t LoRaMacCallbacks;
     MibRequestConfirm_t mibReq;
-
+    int bytes;
+    uint8_t byte;
     //BoardInitMcu( );
     //BoardInitPeriph( );
-    /* Sets up system hardware */
-    void prvSetupHardware();
+    
     /* Enable SysTick Timer */
     SystemCoreClockUpdate();
     Chip_Clock_EnablePeriphClock(SYSCTL_CLOCK_SYS);
     SysTick_Config(SystemCoreClock / 1000);
-
+    prvSetupHardware();
+    modem_init();
     DeviceState = DEVICE_STATE_INIT;
-
     while( 1 )
     {
+        bytes = Chip_UART_ReadRB(LPC_USART0, &rxring, &byte, 1);
+        if(bytes > 0)
+        {
+            //Chip_UART_SendRB(LPC_USART0, &txring, &byte, 1);
+            frame_rx(byte);
+            //if(frame_rx(byte) == 0) {
+                //Chip_UART_IntDisable(LPC_USART0, UART_INTEN_RXRDY);
+            //}
+        }
+        //Chip_UART_SendRB(LPC_USART0, &txring, &byte, 1);
         switch( DeviceState )
         {
             case DEVICE_STATE_INIT:
@@ -764,15 +724,6 @@ int main( void )
     #error "Please define a region in the compiler options."
 #endif
                 TimerInit( &TxNextPacketTimer, OnTxNextPacketTimerEvent );
-
-                TimerInit( &Led1Timer, OnLed1TimerEvent );
-                TimerSetValue( &Led1Timer, 25 );
-
-                TimerInit( &Led2Timer, OnLed2TimerEvent );
-                TimerSetValue( &Led2Timer, 25 );
-
-                TimerInit( &Led4Timer, OnLed4TimerEvent );
-                TimerSetValue( &Led4Timer, 25 );
 
                 mibReq.Type = MIB_ADR;
                 mibReq.Param.AdrEnable = LORAWAN_ADR_ON;

@@ -27,9 +27,7 @@
 
 #include "modem.h"
 #include "board.h"
-#include "FreeRTOS.h"
-#include "timers.h"
-#include "task.h"
+#include "utilities.h"
 
 #define NUMQ 5
 
@@ -47,34 +45,34 @@ void queue_init () {
 
 void queue_add (uint8_t* buf, uint16_t len) {
     uint8_t i, j;
-    taskENTER_CRITICAL();
+    hal_disableIRQs();
     for(i=0, j=qhead; i<NUMQ; i++, j++) {
-	if(j == NUMQ) {
-	    j = 0;
-	}
-	if(queue[j].buf == NULL) {
-	    queue[j].buf = buf;
-	    queue[j].len = len;
-	    break;
-	}
+    if(j == NUMQ) {
+        j = 0;
+    }
+    if(queue[j].buf == NULL) {
+        queue[j].buf = buf;
+        queue[j].len = len;
+        break;
+    }
     }
     if(i == NUMQ) {
-	while(1);//hal_failed();
+    hal_failed();
     }
-    taskEXIT_CRITICAL();
+    hal_enableIRQs();
 }
 
 uint8_t queue_shift (FRAME* f) {
     uint8_t r = 0;
-    taskENTER_CRITICAL();
+    hal_disableIRQs();
     if(queue[qhead].buf) {
-	frame_init(f, queue[qhead].buf, queue[qhead].len);
-	queue[qhead].buf = NULL;
-	if(++qhead == NUMQ) {
-	    qhead = 0;
-	}
-	r = 1;
+    frame_init(f, queue[qhead].buf, queue[qhead].len);
+    queue[qhead].buf = NULL;
+    if(++qhead == NUMQ) {
+        qhead = 0;
     }
-    taskEXIT_CRITICAL();
+    r = 1;
+    }
+    hal_enableIRQs();
     return r;
 }

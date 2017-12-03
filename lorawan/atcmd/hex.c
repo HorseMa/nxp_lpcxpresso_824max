@@ -41,18 +41,18 @@ static const int8_t hexval[] = {
 uint8_t gethex (uint8_t* dst, const uint8_t* src, uint16_t len) {
     uint8_t n = 0;
     if(len & 1) { // odd number of digits
-	return 0;
+    return 0;
     }
     while(len--) {
-	int8_t v = hexval[*src++];
-	if(v < 0) { // bad hex digit
-	    return 0;
-	}
-	*dst = (*dst << 4) | v; // shift nibble
-	if((len & 1) == 0) { // advance at every second digit
-	    dst++;
-	    n++;
-	}
+    int8_t v = hexval[*src++];
+    if(v < 0) { // bad hex digit
+        return 0;
+    }
+    *dst = (*dst << 4) | v; // shift nibble
+    if((len & 1) == 0) { // advance at every second digit
+        dst++;
+        n++;
+    }
     }
     return n;
 }
@@ -60,9 +60,9 @@ uint8_t gethex (uint8_t* dst, const uint8_t* src, uint16_t len) {
 uint8_t puthex (uint8_t* dst, const uint8_t* src, uint8_t len) {
     uint8_t l = len;
     while(len--) {
-	*dst++ = "0123456789ABCDEF"[*src >> 4];
-	*dst++ = "0123456789ABCDEF"[*src & 0xF];
-	src++;
+    *dst++ = "0123456789ABCDEF"[*src >> 4];
+    *dst++ = "0123456789ABCDEF"[*src & 0xF];
+    src++;
     }
     return 2*l;
 }
@@ -80,11 +80,11 @@ uint8_t int2hex (uint8_t* dst, uint32_t v) {
 uint8_t hex2int (uint32_t* n, const uint8_t* src, uint8_t len) {
     *n = 0;
     while(len--) {
-	int8_t v = hexval[*src++];
-	if(v < 0) { // bad hex digit
-	    return 0;
-	}
-	*n = (*n << 4) | v; // shift nibble
+    int8_t v = hexval[*src++];
+    if(v < 0) { // bad hex digit
+        return 0;
+    }
+    *n = (*n << 4) | v; // shift nibble
     }
     return 1;
 }
@@ -92,11 +92,11 @@ uint8_t hex2int (uint32_t* n, const uint8_t* src, uint8_t len) {
 uint8_t dec2int (uint32_t* n, const uint8_t* src, uint8_t len) {
     *n = 0;
     while(len--) {
-	uint8_t v = *src++;
-	if(v < '0' || v > '9') { // bad decimal digit
-	    return 0;
-	}
-	*n = (*n * 10) + v; // shift digit
+    uint8_t v = *src++;
+    if(v < '0' || v > '9') { // bad decimal digit
+        return 0;
+    }
+    *n = (*n * 10) + v; // shift digit
     }
     return 1;
 }
@@ -104,22 +104,22 @@ uint8_t dec2int (uint32_t* n, const uint8_t* src, uint8_t len) {
 void reverse (uint8_t* dst, const uint8_t* src, uint8_t len) {
     // works in-place (but not arbitrarily overlapping)
     for(uint8_t i=0, j=len-1; i < j; i++, j--) {
-	uint8_t x = src[i];
-	dst[i] = src[j];
-	dst[j] = x;
+    uint8_t x = src[i];
+    dst[i] = src[j];
+    dst[j] = x;
     }
 }
 
 uint8_t tolower (uint8_t c) {
     if(c >= 'A' && c <= 'Z') {
-	c += 'a' - 'A'; // make lower case
+    c += 'a' - 'A'; // make lower case
     }
     return c;
 }
 
 uint8_t toupper (uint8_t c) {
     if(c >= 'a' && c <= 'z') {
-	c -= 'a' - 'A'; // make upper case
+    c -= 'a' - 'A'; // make upper case
     }
     return c;
 }
@@ -133,9 +133,10 @@ uint8_t cpystr (uint8_t* dst, const char* src) {
 // compare buffer with nul-terminated string (case-insensitive)
 uint8_t cmpstr (uint8_t* buf, uint8_t len, char* str) {
     while(len--) {
-	if(tolower(*buf++) != tolower(*str++)) {
-	    return 0;
-	}
+    if(tolower(*buf++) != tolower(*str++)) {
+        return 0;
+    }
     }
     return (*str == 0);
 }
+

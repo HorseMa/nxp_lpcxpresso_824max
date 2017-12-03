@@ -14,7 +14,7 @@ Maintainer: Miguel Luis and Gregory Cristian
 */
 #include "board.h"
 #include "timer.h"
-#include "rtc-board.h"
+//#include "rtc-board.h"
 #include "utilities.h"
 uint32_t systicks = 0;
 /*!
@@ -100,7 +100,7 @@ void TimerStart( TimerEvent_t *obj )
         BoardEnableIrq( );
         return;
     }
-
+    obj->Next = NULL;
     if(TimerListHead == NULL)
     {
         TimerListHead = obj;
@@ -172,11 +172,6 @@ void TimerSetValue( TimerEvent_t *obj, uint32_t value )
     TimerStop( obj );
     obj->Timestamp = value;
     obj->ReloadValue = value;
-}
-
-uint32_t TimerGetCur(void)
-{
-    return systicks;
 }
 #if 0
 TimerTime_t TimerGetValue( void )

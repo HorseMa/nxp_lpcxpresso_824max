@@ -37,8 +37,8 @@
  * Private types/enumerations/variables
  ****************************************************************************/
 #define	UART_CLOCK_DIV	1
-#define LEDSAVAIL 2
-static const uint8_t ledBits[LEDSAVAIL] = {6, 7};
+#define LEDSAVAIL 1
+static const uint8_t ledBits[LEDSAVAIL] = {11};
 
 /*****************************************************************************
  * Public types/enumerations/variables
@@ -68,17 +68,14 @@ STATIC void Board_UART_Init(void)
 {
 	/* Enable the clock to the Switch Matrix */
 	Chip_Clock_EnablePeriphClock(SYSCTL_CLOCK_SWM);
-        Chip_Clock_EnablePeriphClock(SYSCTL_CLOCK_UART0);
+
 	Chip_Clock_SetUARTClockDiv(UART_CLOCK_DIV);
 
 #if (defined(BOARD_NXP_LPCXPRESSO_812) || defined(BOARD_LPC812MAX) || defined(BOARD_NXP_LPCXPRESSO_824))
 	/* Connect the U0_TXD_O and U0_RXD_I signals to port pins(P0.4, P0.0) */
 	Chip_SWM_DisableFixedPin(SWM_FIXED_ACMP_I1);
-        Chip_SWM_DisableFixedPin(SWM_FIXED_ADC11);
 	Chip_SWM_MovablePinAssign(SWM_U0_TXD_O, 4);
 	Chip_SWM_MovablePinAssign(SWM_U0_RXD_I, 0);
-        Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,4,TRUE); // SSEL
-        Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,0,FALSE); // SSEL
 #else
 	/* Configure your own UART pin muxing here if needed */
 #warning "No UART pin muxing defined"
@@ -179,17 +176,17 @@ void Board_Debug_Init(void)
 {
 #if defined(DEBUG_UART)
 	Board_UART_Init();
-	Chip_UART_Init(DEBUG_UART);
-	Chip_UART_ConfigData(DEBUG_UART, UART_CFG_DATALEN_8 | UART_CFG_PARITY_NONE | UART_CFG_STOPLEN_1);
-	Chip_Clock_SetUSARTNBaseClockRate((115200 * 16), true);
-	Chip_UART_SetBaud(DEBUG_UART, 115200);
-	Chip_UART_Enable(DEBUG_UART);
-	Chip_UART_TXEnable(DEBUG_UART);
+	//Chip_UART_Init(DEBUG_UART);
+	//Chip_UART_ConfigData(DEBUG_UART, UART_CFG_DATALEN_8 | UART_CFG_PARITY_NONE | UART_CFG_STOPLEN_1);
+	//Chip_Clock_SetUSARTNBaseClockRate((115200 * 16), true);
+	//Chip_UART_SetBaud(DEBUG_UART, 115200);
+	//Chip_UART_Enable(DEBUG_UART);
+	//Chip_UART_TXEnable(DEBUG_UART);
         /* Enable receive data and line status interrupt */
-	Chip_UART_IntEnable(DEBUG_UART, UART_INTEN_RXRDY);
+	//Chip_UART_IntEnable(DEBUG_UART, UART_INTEN_RXRDY);
 	//Chip_UART_IntEnable(DEBUG_UART, UART_INTEN_TXRDY);	/* May not be needed */
-	/* Enable the IRQ for the UART */
-	NVIC_EnableIRQ(UART0_IRQn);
+        //NVIC_EnableIRQ(UART0_IRQn);
+        //Chip_UART_ClearStatus(DEBUG_UART,UART_STAT_RXRDY | UART_INTEN_TXRDY | UART_INTEN_TXIDLE);
 
 #endif
 }
@@ -202,17 +199,17 @@ void Board_GPIO_Init(void)
 	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO1,PIN_MODE_INACTIVE);
 	//Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO2,PIN_MODE_INACTIVE);
 	//Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO3,PIN_MODE_INACTIVE);
-	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO4,PIN_MODE_REPEATER);
+	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO4,PIN_MODE_PULLUP);
 	//Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO5,PIN_MODE_INACTIVE);
 	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO6,PIN_MODE_PULLUP);
-	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO7,PIN_MODE_PULLUP);
+	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO7,PIN_MODE_INACTIVE);
 	//Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO8,PIN_MODE_INACTIVE);
 	//Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO9,PIN_MODE_INACTIVE);
 	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO10,PIN_MODE_INACTIVE);
 	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO11,PIN_MODE_INACTIVE);
 	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO12,PIN_MODE_INACTIVE);
 	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO13,PIN_MODE_INACTIVE);
-	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO14,PIN_MODE_INACTIVE);
+	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO14,PIN_MODE_PULLUP);
 	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO15,PIN_MODE_INACTIVE);
 	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO16,PIN_MODE_INACTIVE);
 	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO17,PIN_MODE_PULLUP);
@@ -221,22 +218,22 @@ void Board_GPIO_Init(void)
 	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO20,PIN_MODE_PULLUP);
 	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO21,PIN_MODE_PULLUP);
 	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO22,PIN_MODE_PULLUP);
-	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO23,PIN_MODE_INACTIVE);
+	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO23,PIN_MODE_PULLUP);
 	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO24,PIN_MODE_INACTIVE);
-	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO25,PIN_MODE_REPEATER);
+	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO25,PIN_MODE_PULLUP);
 	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO26,PIN_MODE_INACTIVE);
 	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO27,PIN_MODE_INACTIVE);
 	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO28,PIN_MODE_INACTIVE);
-
+        
         Chip_Clock_EnablePeriphClock(SYSCTL_CLOCK_SWM);
         //Chip_Clock_DisablePeriphClock(SYSCTL_CLOCK_SWM);
-
+        
 	Chip_SWM_DisableFixedPin(SWM_FIXED_ACMP_I1);
 	Chip_SWM_DisableFixedPin(SWM_FIXED_ACMP_I2);
 	Chip_SWM_DisableFixedPin(SWM_FIXED_ACMP_I3);
 	Chip_SWM_DisableFixedPin(SWM_FIXED_ACMP_I4);
-	Chip_SWM_EnableFixedPin(SWM_FIXED_SWCLK);
-	Chip_SWM_EnableFixedPin(SWM_FIXED_SWDIO);
+	//Chip_SWM_EnableFixedPin(SWM_FIXED_SWCLK);
+	//Chip_SWM_EnableFixedPin(SWM_FIXED_SWDIO);
 	//Chip_SWM_EnableFixedPin(SWM_FIXED_XTALIN);
 	//Chip_SWM_EnableFixedPin(SWM_FIXED_XTALOUT);
 	//Chip_SWM_DisableFixedPin(SWM_FIXED_RST);
