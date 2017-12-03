@@ -79,343 +79,97 @@ static const char* evnames[] = {
     [EV_LINK_ALIVE]     = "LINK_ALIVE",
 };
 
-static const char* evnameLoRaMacEventInfoStatus[] = {
-    /*!
-     * Service performed successfully
-     */
-    [LORAMAC_EVENT_INFO_STATUS_OK]                              = "LORAMAC_EVENT_INFO_STATUS_OK",
-    /*!
-     * An error occurred during the execution of the service
-     */
-    [LORAMAC_EVENT_INFO_STATUS_ERROR]                           = "LORAMAC_EVENT_INFO_STATUS_ERROR",
-    /*!
-     * A Tx timeout occurred
-     */
-    [LORAMAC_EVENT_INFO_STATUS_TX_TIMEOUT]                      = "LORAMAC_EVENT_INFO_STATUS_TX_TIMEOUT",
-    /*!
-     * An Rx timeout occurred on receive window 1
-     */
-    [LORAMAC_EVENT_INFO_STATUS_RX1_TIMEOUT]                     = "LORAMAC_EVENT_INFO_STATUS_RX1_TIMEOUT",
-    /*!
-     * An Rx timeout occurred on receive window 2
-     */
-    [LORAMAC_EVENT_INFO_STATUS_RX2_TIMEOUT]                     = "LORAMAC_EVENT_INFO_STATUS_RX2_TIMEOUT",
-    /*!
-     * An Rx error occurred on receive window 1
-     */
-    [LORAMAC_EVENT_INFO_STATUS_RX1_ERROR]                       = "LORAMAC_EVENT_INFO_STATUS_RX1_ERROR",
-    /*!
-     * An Rx error occurred on receive window 2
-     */
-    [LORAMAC_EVENT_INFO_STATUS_RX2_ERROR]                       = "LORAMAC_EVENT_INFO_STATUS_RX2_ERROR",
-    /*!
-     * An error occurred in the join procedure
-     */
-    [LORAMAC_EVENT_INFO_STATUS_JOIN_FAIL]                       = "LORAMAC_EVENT_INFO_STATUS_JOIN_FAIL",
-    /*!
-     * A frame with an invalid downlink counter was received. The
-     * downlink counter of the frame was equal to the local copy
-     * of the downlink counter of the node.
-     */
-    [LORAMAC_EVENT_INFO_STATUS_DOWNLINK_REPEATED]               = "LORAMAC_EVENT_INFO_STATUS_DOWNLINK_REPEATED",
-    /*!
-     * The MAC could not retransmit a frame since the MAC decreased the datarate. The
-     * payload size is not applicable for the datarate.
-     */
-    [LORAMAC_EVENT_INFO_STATUS_TX_DR_PAYLOAD_SIZE_ERROR]        = "LORAMAC_EVENT_INFO_STATUS_TX_DR_PAYLOAD_SIZE_ERROR",
-    /*!
-     * The node has lost MAX_FCNT_GAP or more frames.
-     */
-    [LORAMAC_EVENT_INFO_STATUS_DOWNLINK_TOO_MANY_FRAMES_LOSS]   = "LORAMAC_EVENT_INFO_STATUS_DOWNLINK_TOO_MANY_FRAMES_LOSS",
-    /*!
-     * An address error occurred
-     */
-    [LORAMAC_EVENT_INFO_STATUS_ADDRESS_FAIL]                    = "LORAMAC_EVENT_INFO_STATUS_ADDRESS_FAIL",
-    /*!
-     * message integrity check failure
-     */
-    [LORAMAC_EVENT_INFO_STATUS_MIC_FAIL]                        = "LORAMAC_EVENT_INFO_STATUS_MIC_FAIL",
-};
-
-static const char* nameLoRaMacStatus[] = {
-    /*!
-     * Service started successfully
-     */
-    [LORAMAC_STATUS_OK]                     = "LORAMAC_STATUS_OK",
-    /*!
-     * Service not started - LoRaMAC is busy
-     */
-    [LORAMAC_STATUS_BUSY]                   = "LORAMAC_STATUS_BUSY",
-    /*!
-     * Service unknown
-     */
-    [LORAMAC_STATUS_SERVICE_UNKNOWN]        = "LORAMAC_STATUS_SERVICE_UNKNOWN",
-    /*!
-     * Service not started - invalid parameter
-     */
-    [LORAMAC_STATUS_PARAMETER_INVALID]      = "LORAMAC_STATUS_PARAMETER_INVALID",
-    /*!
-     * Service not started - invalid frequency
-     */
-    [LORAMAC_STATUS_FREQUENCY_INVALID]      = "LORAMAC_STATUS_FREQUENCY_INVALID",
-    /*!
-     * Service not started - invalid datarate
-     */
-    [LORAMAC_STATUS_DATARATE_INVALID]       = "LORAMAC_STATUS_DATARATE_INVALID",
-    /*!
-     * Service not started - invalid frequency and datarate
-     */
-    [LORAMAC_STATUS_FREQ_AND_DR_INVALID]    = "LORAMAC_STATUS_FREQ_AND_DR_INVALID",
-    /*!
-     * Service not started - the device is not in a LoRaWAN
-     */
-    [LORAMAC_STATUS_NO_NETWORK_JOINED]      = "LORAMAC_STATUS_NO_NETWORK_JOINED",
-    /*!
-     * Service not started - payload length error
-     */
-    [LORAMAC_STATUS_LENGTH_ERROR]           = "LORAMAC_STATUS_LENGTH_ERROR",
-    /*!
-     * Service not started - the device is switched off
-     */
-    [LORAMAC_STATUS_DEVICE_OFF]             = "LORAMAC_STATUS_DEVICE_OFF",
-    /*!
-     * Service not started - the specified region is not supported
-     * or not activated with preprocessor definitions.
-     */
-    [LORAMAC_STATUS_REGION_NOT_SUPPORTED]   = "LORAMAC_STATUS_REGION_NOT_SUPPORTED",
-};
-
-static const char* nameMib[] = {
-    /*!
-     * LoRaWAN device class
-     *
-     * LoRaWAN Specification V1.0.2
-     */
-    [MIB_DEVICE_CLASS] = "MIB_DEVICE_CLASS",
-    /*!
-     * LoRaWAN Network joined attribute
-     *
-     * LoRaWAN Specification V1.0.2
-     */
-    [MIB_NETWORK_JOINED] = "MIB_NETWORK_JOINED",
-    /*!
-     * Adaptive data rate
-     *
-     * LoRaWAN Specification V1.0.2, chapter 4.3.1.1
-     *
-     * [true: ADR enabled, false: ADR disabled]
-     */
-    [MIB_ADR] = "MIB_ADR",
-    /*!
-     * Network identifier
-     *
-     * LoRaWAN Specification V1.0.2, chapter 6.1.1
-     */
-    [MIB_NET_ID] = "MIB_NET_ID",
-    /*!
-     * End-device address
-     *
-     * LoRaWAN Specification V1.0.2, chapter 6.1.1
-     */
-    [MIB_DEV_ADDR] = "MIB_DEV_ADDR",
-    /*!
-     * Network session key
-     *
-     * LoRaWAN Specification V1.0.2, chapter 6.1.3
-     */
-    [MIB_NWK_SKEY] = "MIB_NWK_SKEY",
-    /*!
-     * Application session key
-     *
-     * LoRaWAN Specification V1.0.2, chapter 6.1.4
-     */
-    [MIB_APP_SKEY] = "MIB_APP_SKEY",
-    /*!
-     * Set the network type to public or private
-     *
-     * LoRaWAN Regional Parameters V1.0.2rB
-     *
-     * [true: public network, false: private network]
-     */
-    [MIB_PUBLIC_NETWORK] = "MIB_PUBLIC_NETWORK",
-    /*!
-     * Support the operation with repeaters
-     *
-     * LoRaWAN Regional Parameters V1.0.2rB
-     *
-     * [true: repeater support enabled, false: repeater support disabled]
-     */
-    [MIB_REPEATER_SUPPORT] = "MIB_REPEATER_SUPPORT",
-    /*!
-     * Communication channels. A get request will return a
-     * pointer which references the first entry of the channel list. The
-     * list is of size LORA_MAX_NB_CHANNELS
-     *
-     * LoRaWAN Regional Parameters V1.0.2rB
-     */
-    [MIB_CHANNELS] = "MIB_CHANNELS",
-    /*!
-     * Set receive window 2 channel
-     *
-     * LoRaWAN Specification V1.0.2, chapter 3.3.1
-     */
-    [MIB_RX2_CHANNEL] = "MIB_RX2_CHANNEL",
-    /*!
-     * Set receive window 2 channel
-     *
-     * LoRaWAN Specification V1.0.2, chapter 3.3.2
-     */
-    [MIB_RX2_DEFAULT_CHANNEL] = "MIB_RX2_DEFAULT_CHANNEL",
-    /*!
-     * LoRaWAN channels mask
-     *
-     * LoRaWAN Regional Parameters V1.0.2rB
-     */
-    [MIB_CHANNELS_MASK] = "MIB_CHANNELS_MASK",
-    /*!
-     * LoRaWAN default channels mask
-     *
-     * LoRaWAN Regional Parameters V1.0.2rB
-     */
-    [MIB_CHANNELS_DEFAULT_MASK] = "MIB_CHANNELS_DEFAULT_MASK",
-    /*!
-     * Set the number of repetitions on a channel
-     *
-     * LoRaWAN Specification V1.0.2, chapter 5.2
-     */
-    [MIB_CHANNELS_NB_REP] = "MIB_CHANNELS_NB_REP",
-    /*!
-     * Maximum receive window duration in [ms]
-     *
-     * LoRaWAN Specification V1.0.2, chapter 3.3.3
-     */
-    [MIB_MAX_RX_WINDOW_DURATION] = "MIB_MAX_RX_WINDOW_DURATION",
-    /*!
-     * Receive delay 1 in [ms]
-     *
-     * LoRaWAN Regional Parameters V1.0.2rB
-     */
-    [MIB_RECEIVE_DELAY_1] = "MIB_RECEIVE_DELAY_1",
-    /*!
-     * Receive delay 2 in [ms]
-     *
-     * LoRaWAN Regional Parameters V1.0.2rB
-     */
-    [MIB_RECEIVE_DELAY_2] = "MIB_RECEIVE_DELAY_2",
-    /*!
-     * Join accept delay 1 in [ms]
-     *
-     * LoRaWAN Regional Parameters V1.0.2rB
-     */
-    [MIB_JOIN_ACCEPT_DELAY_1] = "MIB_JOIN_ACCEPT_DELAY_1",
-    /*!
-     * Join accept delay 2 in [ms]
-     *
-     * LoRaWAN Regional Parameters V1.0.2rB
-     */
-    [MIB_JOIN_ACCEPT_DELAY_2] = "MIB_JOIN_ACCEPT_DELAY_2",
-    /*!
-     * Default Data rate of a channel
-     *
-     * LoRaWAN Regional Parameters V1.0.2rB
-     *
-     * The allowed ranges are region specific. Please refer to \ref DR_0 to \ref DR_15 for details.
-     */
-    [MIB_CHANNELS_DEFAULT_DATARATE] = "MIB_CHANNELS_DEFAULT_DATARATE",
-    /*!
-     * Data rate of a channel
-     *
-     * LoRaWAN Regional Parameters V1.0.2rB
-     *
-     * The allowed ranges are region specific. Please refer to \ref DR_0 to \ref DR_15 for details.
-     */
-    [MIB_CHANNELS_DATARATE] = "MIB_CHANNELS_DATARATE",
-    /*!
-     * Transmission power of a channel
-     *
-     * LoRaWAN Regional Parameters V1.0.2rB
-     *
-     * The allowed ranges are region specific. Please refer to \ref TX_POWER_0 to \ref TX_POWER_15 for details.
-     */
-    [MIB_CHANNELS_TX_POWER] = "MIB_CHANNELS_TX_POWER",
-    /*!
-     * Transmission power of a channel
-     *
-     * LoRaWAN Regional Parameters V1.0.2rB
-     *
-     * The allowed ranges are region specific. Please refer to \ref TX_POWER_0 to \ref TX_POWER_15 for details.
-     */
-    [MIB_CHANNELS_DEFAULT_TX_POWER] = "MIB_CHANNELS_DEFAULT_TX_POWER",
-    /*!
-     * LoRaWAN Up-link counter
-     *
-     * LoRaWAN Specification V1.0.2, chapter 4.3.1.5
-     */
-    [MIB_UPLINK_COUNTER] = "MIB_UPLINK_COUNTER",
-    /*!
-     * LoRaWAN Down-link counter
-     *
-     * LoRaWAN Specification V1.0.2, chapter 4.3.1.5
-     */
-    [MIB_DOWNLINK_COUNTER] = "MIB_DOWNLINK_COUNTER",
-    /*!
-     * Multicast channels. A get request will return a pointer to the first
-     * entry of the multicast channel linked list. If the pointer is equal to
-     * NULL, the list is empty.
-     */
-    [MIB_MULTICAST_CHANNEL] = "MIB_MULTICAST_CHANNEL",
-    /*!
-     * System overall timing error in milliseconds.
-     * [-SystemMaxRxError : +SystemMaxRxError]
-     * Default: +/-10 ms
-     */
-    [MIB_SYSTEM_MAX_RX_ERROR] = "MIB_SYSTEM_MAX_RX_ERROR",
-    /*!
-     * Minimum required number of symbols to detect an Rx frame
-     * Default: 6 symbols
-     */
-    [MIB_MIN_RX_SYMBOLS] = "MIB_MIN_RX_SYMBOLS",
-    /*!
-     * Antenna gain of the node. Default value is region specific.
-     * The antenna gain is used to calculate the TX power of the node.
-     * The formula is:
-     * radioTxPower = ( int8_t )floor( maxEirp - antennaGain )
-     */
-    [MIB_ANTENNA_GAIN] = "MIB_ANTENNA_GAIN",
-};
-
-static const char* nameMlme[] = {
-    /*!
-     * Initiates the Over-the-Air activation
-     *
-     * LoRaWAN Specification V1.0.2, chapter 6.2
-     */
-    [MLME_JOIN] = "MLME_JOIN",
-    /*!
-     * LinkCheckReq - Connectivity validation
-     *
-     * LoRaWAN Specification V1.0.2, chapter 5, table 4
-     */
-    [MLME_LINK_CHECK] = "MLME_LINK_CHECK",
-    /*!
-     * Sets Tx continuous wave mode
-     *
-     * LoRaWAN end-device certification
-     */
-    [MLME_TXCW] = "MLME_TXCW",
-    /*!
-     * Sets Tx continuous wave mode (new LoRa-Alliance CC definition)
-     *
-     * LoRaWAN end-device certification
-     */
-    [MLME_TXCW_1] = "MLME_TXCW_1",
-};
-
 extern uint8_t DevEui[];
 extern uint8_t AppEui[];
 extern uint8_t AppKey[];
 extern RINGBUFF_T txring, rxring;
 
+/* Last sector address */
+#define START_ADDR_LAST_SECTOR  0x00003C00
+
+/* Size of each sector */
+#define SECTOR_SIZE             1024
+
+/* LAST SECTOR */
+#define IAP_LAST_SECTOR         15
+
+/* Number of bytes to be written to the last sector */
+#define IAP_NUM_BYTES_TO_WRITE  64
+
+/* Number elements in array */
+#define ARRAY_ELEMENTS          (IAP_NUM_BYTES_TO_WRITE / sizeof(uint32_t))
+
+/* Data array to write to flash */
+static uint32_t src_iap_array_data[ARRAY_ELEMENTS];
+
+void eeprom_write (uint32_t* addr, uint32_t val) {
+}
+void eeprom_copy (void* dst, const void* src, uint16_t len) {
+}
+void eeprom_init(void){
+    int i;
+    uint8_t ret_code;
+    uint32_t part_id;
+    uint32_t unique_id[4];
+    /* Read Part Identification Number*/
+    part_id = Chip_IAP_ReadPID();
+    //Print_Val("Part ID is: 0x", part_id);
+
+    /* Read Part Unique Identification Number*/
+    Chip_IAP_ReadUID(unique_id);
+    //DEBUGSTR("Unique Part ID is:\r\n");
+    //for (i=0; i<4; i++) {
+        //Print_Val("0x", unique_id[i]);
+    //}
+
+    /* Disable interrupt mode so it doesn't fire during FLASH updates */
+    hal_disableIRQs();
+
+    /* IAP Flash programming */
+    /* Prepare to write/erase the last sector */
+    ret_code = Chip_IAP_PreSectorForReadWrite(IAP_LAST_SECTOR, IAP_LAST_SECTOR);
+
+    /* Error checking */
+    if (ret_code != IAP_CMD_SUCCESS) {
+        //Print_Val("Command failed to execute, return code is: ", ret_code);
+    }
+
+    /* Erase the last sector */
+    ret_code = Chip_IAP_EraseSector(IAP_LAST_SECTOR, IAP_LAST_SECTOR);
+
+    /* Error checking */
+    if (ret_code != IAP_CMD_SUCCESS) {
+        //Print_Val("Command failed to execute, return code is: ", ret_code);
+    }
+
+    /* Prepare to write/erase the last sector */
+    ret_code = Chip_IAP_PreSectorForReadWrite(IAP_LAST_SECTOR, IAP_LAST_SECTOR);
+
+    /* Error checking */
+    if (ret_code != IAP_CMD_SUCCESS) {
+        //Print_Val("Command failed to execute, return code is: ", ret_code);
+    }
+
+    /* Write to the last sector */
+    ret_code = Chip_IAP_CopyRamToFlash(START_ADDR_LAST_SECTOR, src_iap_array_data, IAP_NUM_BYTES_TO_WRITE);
+
+    /* Error checking */
+    if (ret_code != IAP_CMD_SUCCESS) {
+        //Print_Val("Command failed to execute, return code is: ", ret_code);
+    }
+
+    /* Re-enable interrupt mode */
+    hal_enableIRQs();
+
+	/* Start the signature generator for the last sector */
+    Chip_FMC_ComputeSignatureBlocks(START_ADDR_LAST_SECTOR, (SECTOR_SIZE / 16));
+
+    /* Check for signature geenration completion */
+    while (Chip_FMC_IsSignatureBusy()) {}
+
+    /* Get the generated FLASH signature value */
+    //Print_Val("Generated signature for the last sector is: 0x", Chip_FMC_GetSignature(0));
+}
 #if 0
 // return mask of all events matching given string prefix
 static uint32_t evmatch (uint8_t* name, uint8_t len) {
@@ -693,8 +447,8 @@ void onEvent (ev_t ev) {
     }
 
     // report events (selected by eventmask)
-    //if(PERSIST->eventmask & (1 << ev)) {
-    {uint8_t len = strlen(evnames[ev]);
+    if(PERSIST->eventmask & (1 << ev)) {
+    uint8_t len = strlen(evnames[ev]);
     uint8_t* buf;
     switch(ev) {
     case EV_TXCOMPLETE:
@@ -761,24 +515,56 @@ static void modem_reset () {
     }
 }
 
+typedef              uint8_t* xref2u1_t;
+typedef unsigned int       uint;
+uint16_t os_crc16 (xref2u1_t data, uint len) {
+    uint16_t remainder = 0;
+    uint16_t polynomial = 0x1021;
+    for( uint i = 0; i < len; i++ ) {
+        remainder ^= data[i] << 8;
+        for( uint8_t bit = 8; bit > 0; bit--) {
+            if( (remainder & 0x8000) )
+                remainder = (remainder << 1) ^ polynomial;
+            else 
+                remainder <<= 1;
+        }
+    }
+    return remainder;
+}
+
+static const union {
+    joinparam_t param;
+    uint8_t pattern[sizeof(joinparam_t)];
+} joincfg = {
+    .pattern = { PATTERN_JOINCFG_STR }
+};
+
+static const union {
+    sessparam_t param;
+    uint8_t pattern[sizeof(sessparam_t)];
+} sesscfg = {
+    .pattern = { PATTERN_SESSCFG_STR }
+};
+
 // initialize persistent state (factory reset)
 static void persist_init (uint8_t factory) {
-#if 0
+#if 1
+    eeprom_init();
     // check if stored state matches firmware config
-    //uint16_t joincfgcrc = os_crc16((uint8_t*)&joincfg, sizeof(joincfg));
-    //uint16_t sesscfgcrc = os_crc16((uint8_t*)&sesscfg, sizeof(sesscfg));
-    //uint32_t cfghash = (joincfgcrc << 16) | sesscfgcrc;
+    uint16_t joincfgcrc = os_crc16((uint8_t*)&joincfg, sizeof(joincfg));
+    uint16_t sesscfgcrc = os_crc16((uint8_t*)&sesscfg, sizeof(sesscfg));
+    uint32_t cfghash = (joincfgcrc << 16) | sesscfgcrc;
     if(PERSIST->cfghash != cfghash || factory) {
     uint32_t flags = 0;
     if(joincfgcrc != PATTERN_JOINCFG_CRC) { // patched
-        //eeprom_copy(&PERSIST->joinpar, &joincfg, sizeof(joincfg));
+        eeprom_copy(&PERSIST->joinpar, &joincfg, sizeof(joincfg));
         flags |= FLAGS_JOINPAR;
     }
     if(sesscfgcrc != PATTERN_SESSCFG_CRC) { // patched
-        //eeprom_copy(&PERSIST->sesspar, &sesscfg, sizeof(sesscfg));
-        //eeprom_write(&PERSIST->seqnoDn, 0);
-        //eeprom_write(&PERSIST->seqnoUp, 0);
-        //flags |= FLAGS_SESSPAR;
+        eeprom_copy(&PERSIST->sesspar, &sesscfg, sizeof(sesscfg));
+        eeprom_write(&PERSIST->seqnoDn, 0);
+        eeprom_write(&PERSIST->seqnoUp, 0);
+        flags |= FLAGS_SESSPAR;
     }
     eeprom_write(&PERSIST->flags, flags);
     eeprom_write(&PERSIST->eventmask, ~0); // report ALL events
@@ -792,7 +578,7 @@ void modem_init () {
     // clear modem state
     memset(&MODEM, 0, sizeof(MODEM));
 
-    persist_init(0);
+    //persist_init(0);
 
     //leds_init();
 
