@@ -654,7 +654,7 @@ void modem_rxdone () {
         ok = 1;
         }
     }
-    }*/ else if(cmd == 's' && len >= 2) { // SESSION parameters
+    }*/ /*else if(cmd == 's' && len >= 2) { // SESSION parameters
     if(MODEM.cmdbuf[1] == '?' && len == 2) { // ATS? query (netid,devaddr,seqnoup,seqnodn)
         if(PERSIST->flags & FLAGS_SESSPAR) {
         rspbuf += cpystr(rspbuf, "OK,");
@@ -689,7 +689,7 @@ void modem_rxdone () {
         ok = 1;
         }
     }
-    } else if(cmd == 'j' && len >= 2) { // JOIN parameters
+    } */else if(cmd == 'j' && len >= 2) { // JOIN parameters
     if(MODEM.cmdbuf[1] == '?' && len == 2) { // ATJ? query (deveui,appeui)
         if(PERSIST->flags & FLAGS_JOINPAR) {
         uint8_t tmp[8];

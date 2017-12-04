@@ -27,12 +27,16 @@
 
 #include "debug.h"
 #include "board.h"
+#include "modem.h"
 
 #define LED_PORT        GPIOA // use GPIO PA8 (LED4 on IMST, P11/PPS/EXT1_10/GPS6 on Blipper)
 #define LED_PIN         8
 #define USART_TX_PORT   GPIOA
 #define USART_TX_PIN    9
 #define GPIO_AF_USART1  0x07
+
+extern RINGBUFF_T txring, rxring;
+extern uint32_t systicks;
 
 void debug_init () {
 #if 0
@@ -58,7 +62,8 @@ void debug_led (int val) {
 void debug_char (char c) {
     //while( !(USART1->SR & USART_SR_TXE) );    
     //USART1->DR = c;
-    Board_UARTPutChar(c);
+    //Board_UARTPutChar(c);
+    Chip_UART_SendRB(LPC_USART0, &txring, &c, 1);
 }
 
 void debug_hex (uint8_t b) {
@@ -83,7 +88,7 @@ void debug_uint (uint32_t v) {
 
 void debug_int (int32_t v) {
     char buf[10], *p = buf;
-    int n = debug_fmt(buf, sizeof(buf), v, 10, 0, 0);
+    int n = debug_fmt(buf, sizeof(buf), v, 10, 10, ' ');
     while(n--)
         debug_char(*p++);
 }
@@ -133,7 +138,7 @@ int debug_fmt (char* buf, int max, int32_t val, int base, int width, char pad) {
 }
 
 void debug_event (int ev) {
-#if 0
+#if 1
     static const char* evnames[] = {
         [EV_SCAN_TIMEOUT]   = "SCAN_TIMEOUT",
         [EV_BEACON_FOUND]   = "BEACON_FOUND",
@@ -152,7 +157,13 @@ void debug_event (int ev) {
         [EV_LINK_ALIVE]     = "LINK_ALIVE",
         [EV_SCAN_FOUND]     = "SCAN_FOUND",
         [EV_TXSTART]        = "EV_TXSTART",
+        [EV_RXSTARTWIN1]    = "EV_RXSTARTWIN1",
+        [EV_RXSTARTWIN2]    = "EV_RXSTARTWIN2",
+        [EV_RXTIMEOUT]      = "EV_RXTIMEOUT"
     };
+    debug_char('[');
+    debug_int(systicks);
+    debug_str("] ");
     debug_str((ev < sizeof(evnames)/sizeof(evnames[0])) ? evnames[ev] : "EV_UNKNOWN" );
     debug_char('\r');
     debug_char('\n');

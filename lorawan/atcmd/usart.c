@@ -98,7 +98,7 @@ void usart_startrx () {
 }
 
 void USART_IRQHANDLER (void) {
-    int bytes;
+    //int bytes;
     //hal_disableIRQs();
     Chip_UART_IRQRBHandler(LPC_USART0, &rxring, &txring);
 #if 0

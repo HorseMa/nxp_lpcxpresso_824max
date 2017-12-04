@@ -29,6 +29,8 @@
 #include "board.h"
 #include "timer.h"
 #include <string.h>
+#include "debug.h"
+
 // Device address
 typedef uint32_t devaddr_t;
 
@@ -181,7 +183,7 @@ enum _ev_t { EV_SCAN_TIMEOUT=1, EV_BEACON_FOUND,
              EV_JOINED, EV_RFU1, EV_JOIN_FAILED, EV_REJOIN_FAILED,
              EV_TXCOMPLETE, EV_LOST_TSYNC, EV_RESET,
              EV_RXCOMPLETE, EV_LINK_DEAD, EV_LINK_ALIVE, EV_SCAN_FOUND,
-             EV_TXSTART };
+             EV_TXSTART, EV_RXSTARTWIN1, EV_RXSTARTWIN2, EV_RXTIMEOUT };
 typedef enum _ev_t ev_t;
 
 typedef enum eLedSension
@@ -262,4 +264,5 @@ uint8_t toupper (uint8_t c);
 
 uint8_t cpystr (uint8_t* dst, const char* src);
 uint8_t cmpstr (uint8_t* buf, uint8_t len, char* str);
+void onEvent (ev_t ev);
 #endif
