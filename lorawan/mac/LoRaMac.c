@@ -753,7 +753,7 @@ static void OnRadioRxDone( uint8_t *payload, uint16_t size, int16_t rssi, int8_t
                 return;
             }
             LoRaMacJoinDecrypt( payload + 1, size - 1, LoRaMacAppKey, LoRaMacRxPayload + 1 );
-
+            //LoRaMacJoinDecrypt( LoRaMacRxPayload + 1, size - 1, LoRaMacAppKey, payload + 1 );
             LoRaMacRxPayload[0] = macHdr.Value;
 
             LoRaMacJoinComputeMic( LoRaMacRxPayload, size - LORAMAC_MFR_LEN, LoRaMacAppKey, &mic );
@@ -803,7 +803,6 @@ static void OnRadioRxDone( uint8_t *payload, uint16_t size, int16_t rssi, int8_t
             }
             else
             {
-                onEvent(EV_JOINED);
                 MlmeConfirm.Status = LORAMAC_EVENT_INFO_STATUS_JOIN_FAIL;
             }
             break;
