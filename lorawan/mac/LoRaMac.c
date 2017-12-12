@@ -607,7 +607,7 @@ static void OnRadioTxDone( void )
     PhyParam_t phyParam;
     SetBandTxDoneParams_t txDone;
     TimerTime_t curTime = TimerGetCurrentTime( );
-    debug_event(EV_TXCOMPLETE);
+    onEvent(EV_TXCOMPLETE);
     LedIndication(EN_LED_SENSSION_TX);
     LMIC.txrxFlags = 0;
     if( LoRaMacDeviceClass != CLASS_C )
@@ -723,7 +723,7 @@ static void OnRadioRxDone( uint8_t *payload, uint16_t size, int16_t rssi, int8_t
 
     bool isMicOk = false;
     LedIndication(EN_LED_SENSSION_RX);
-    debug_event(EV_RXCOMPLETE);
+    onEvent(EV_RXCOMPLETE);
     McpsConfirm.AckReceived = false;
     McpsIndication.Rssi = rssi;
     McpsIndication.Snr = snr;
@@ -1173,7 +1173,7 @@ static void OnRadioRxError( void )
 static void OnRadioRxTimeout( void )
 {
     LMIC.txrxFlags = TXRX_NOPORT;
-    debug_event(EV_RXTIMEOUT);
+    onEvent(EV_RXTIMEOUT);
     if( LoRaMacDeviceClass != CLASS_C )
     {
         Radio.Sleep( );
@@ -1467,7 +1467,7 @@ static void OnRxWindow1TimerEvent( void )
     RegionRxConfig( LoRaMacRegion, &RxWindow1Config, ( int8_t* )&McpsIndication.RxDatarate );
     RxWindowSetup( RxWindow1Config.RxContinuous, LoRaMacParams.MaxRxWindow );
     LMIC.txrxFlags = TXRX_DNW1;
-    debug_event(EV_RXSTARTWIN1);
+    onEvent(EV_RXSTARTWIN1);
 }
 
 static void OnRxWindow2TimerEvent( void )
@@ -1494,7 +1494,7 @@ static void OnRxWindow2TimerEvent( void )
         RxWindowSetup( RxWindow2Config.RxContinuous, LoRaMacParams.MaxRxWindow );
         RxSlot = RxWindow2Config.Window;
         LMIC.txrxFlags = TXRX_DNW2;
-        debug_event(EV_RXSTARTWIN2);
+        onEvent(EV_RXSTARTWIN2);
     }
 }
 

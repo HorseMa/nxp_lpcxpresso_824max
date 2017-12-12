@@ -43,14 +43,14 @@ void frame_init (FRAME* f, uint8_t* buf, uint16_t max) {
 }
 
 // called by usart irq handler (return next char to send 0x00XX, or 0x0100)
-uint16_t frame_tx (uint8_t next) {
+/*uint16_t frame_tx (uint8_t next) {
     if(next) {
 	return (txframe.len < txframe.max) ? txframe.buf[txframe.len++] : 0x100;
     } else { // complete
 	//os_setCallback(&txjob, modem_txdone); // run job
 	return 0;
     }
-}
+}*/
 
 // called by usart irq handler (pass received char, return 1 to continue rx, 0 to stop)
 // ASCII format:  ATxxxxxxx\r

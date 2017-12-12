@@ -62,9 +62,19 @@ RINGBUFF_T txring, rxring;
 
 /* Transmit and receive buffers */
 static uint8_t rxbuff[UART_RB_SIZE], txbuff[UART_RB_SIZE];
-
+#define	UART_CLOCK_DIV	1
 void usart_init () {
     hal_disableIRQs();
+    /* Enable the clock to the Switch Matrix */
+    Chip_Clock_EnablePeriphClock(SYSCTL_CLOCK_SWM);
+
+    Chip_Clock_SetUARTClockDiv(UART_CLOCK_DIV);
+
+    /* Connect the U0_TXD_O and U0_RXD_I signals to port pins(P0.4, P0.0) */
+    Chip_SWM_DisableFixedPin(SWM_FIXED_ACMP_I1);
+    Chip_SWM_MovablePinAssign(SWM_U0_TXD_O, 4);
+    Chip_SWM_MovablePinAssign(SWM_U0_RXD_I, 0);
+    Chip_Clock_DisablePeriphClock(SYSCTL_CLOCK_SWM);
     /* Setup UART */
     Chip_UART_Init(LPC_USART);
     Chip_UART_ConfigData(LPC_USART, UART_CFG_DATALEN_8 | UART_CFG_PARITY_NONE | UART_CFG_STOPLEN_1);

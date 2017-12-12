@@ -419,7 +419,8 @@ static void modem_starttx () {
 // LRSC MAC event handler
 // encode and queue event for output
 void onEvent (ev_t ev) {
-#if 1
+    static uint8_t buf[64];
+#if 0
   /*
     // update sequence counters for session
     if(PERSIST->flags & FLAGS_SESSPAR) {
@@ -454,7 +455,7 @@ void onEvent (ev_t ev) {
     case EV_TXCOMPLETE:
     case EV_RXCOMPLETE: { // report EV_XXCOMPLETE,<flags>[,<port>[,<downstream data>]]
         uint8_t f = LMIC.txrxFlags; // EV_XXCOMPLETE,FF[,PP[,DDDDDDDD...]]
-        buf = buffer_alloc(3 + len + 1 + 2 + ((f & TXRX_PORT) ? 3 : 0) + (LMIC.dataLen ? 1+2*LMIC.dataLen:0) + 2);
+        //buf = buffer_alloc(3 + len + 1 + 2 + ((f & TXRX_PORT) ? 3 : 0) + (LMIC.dataLen ? 1+2*LMIC.dataLen:0) + 2);
         memcpy(buf, "EV_", 3);
         memcpy(buf+3, evnames[ev], len);
         len += 3;
@@ -473,7 +474,7 @@ void onEvent (ev_t ev) {
         break;
     }
     default: // just report event name
-        buf = buffer_alloc(3+len+2);
+        //buf = buffer_alloc(3+len+2);
         memcpy(buf, "EV_", 3);
         memcpy(buf+3, evnames[ev], len);
         len += 3;
@@ -482,7 +483,7 @@ void onEvent (ev_t ev) {
     buf[len++] = '\r';
     buf[len++] = '\n';
     Chip_UART_SendRB(LPC_USART0, &txring, buf, len);
-    buffer_free(buf,len);
+    //buffer_free(buf,len);
     //queue_add(buf, len);
     //modem_starttx();
     }
@@ -584,7 +585,7 @@ void modem_init () {
 
     modem_reset();
 
-    buffer_init();
+    //buffer_init();
     //queue_init();
 
     // initialize USART
