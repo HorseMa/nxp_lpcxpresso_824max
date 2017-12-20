@@ -88,6 +88,46 @@ extern uint8_t AppEui[];
 extern uint8_t AppKey[];
 extern RINGBUFF_T txring, rxring;
 
+void WDT_IRQHandler(void)
+{
+}
+
+void modem_wwdt_init(void)
+{
+    uint32_t wdtFreq;
+    
+    /* Freq = 0.6Mhz, divided by 64. WDT_OSC should be 9.375khz */
+    Chip_Clock_SetWDTOSC(WDTLFO_OSC_0_60, 64);
+
+    /* Enable the power to the WDT */
+    Chip_SYSCTL_PowerUp(SYSCTL_SLPWAKE_WDTOSC_PD);
+
+    /* The WDT divides the input frequency into it by 4 */
+    wdtFreq = Chip_Clock_GetWDTOSCRate() / 4;
+
+    /* Initialize WWDT (also enables WWDT clock) */
+    Chip_WWDT_Init(LPC_WWDT);
+
+    /* Set watchdog feed time constant to approximately 2s
+    Set watchdog warning time to 512 ticks after feed time constant
+    Set watchdog window time to 3s */
+    Chip_WWDT_SetTimeOut(LPC_WWDT, wdtFreq / 2);//* 2);
+    Chip_WWDT_SetWarning(LPC_WWDT, 512);
+    Chip_WWDT_SetWindow(LPC_WWDT, wdtFreq / 2);//* 3);
+
+    /* Configure WWDT to reset on timeout */
+    Chip_WWDT_SetOption(LPC_WWDT, WWDT_WDMOD_WDRESET);
+
+    /* Clear watchdog warning and timeout interrupts */
+    Chip_WWDT_ClearStatusFlag(LPC_WWDT, WWDT_WDMOD_WDTOF | WWDT_WDMOD_WDINT);
+
+    /* Clear and enable watchdog interrupt */
+    NVIC_ClearPendingIRQ(WDT_IRQn);
+    NVIC_EnableIRQ(WDT_IRQn);
+
+    /* Start watchdog */
+    Chip_WWDT_Start(LPC_WWDT);
+}
 #if 0
 // return mask of all events matching given string prefix
 static uint32_t evmatch (uint8_t* name, uint8_t len) {
@@ -721,8 +761,8 @@ void modem_rxdone () {
     Chip_UART_SendRB(LPC_USART0, &txring, MODEM.cmdbuf, MODEM.rsplen);
     if(rst == true)
     {
-        DelayMs(10);
-        Reset_Handler();
+        while(1);//Delay(100);
+        //Reset_Handler();
     }
     frame_init(&rxframe, MODEM.cmdbuf, sizeof(MODEM.cmdbuf));
     //modem_starttx();

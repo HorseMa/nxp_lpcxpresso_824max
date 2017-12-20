@@ -680,8 +680,10 @@ int main( void )
     prvSetupHardware();
     modem_init();
     DeviceState = DEVICE_STATE_INIT;
+    modem_wwdt_init();
     while( 1 )
     {
+        Chip_WWDT_Feed(LPC_WWDT);
         bytes = Chip_UART_ReadRB(LPC_USART0, &rxring, &byte, 1);
         if(bytes > 0)
         {
