@@ -607,9 +607,9 @@ static void OnRadioTxDone( void )
     PhyParam_t phyParam;
     SetBandTxDoneParams_t txDone;
     TimerTime_t curTime = TimerGetCurrentTime( );
-    onEvent(EV_TXCOMPLETE);
+    //onEvent(EV_TXCOMPLETE);
     LedIndication(EN_LED_SENSSION_TX);
-    LMIC.txrxFlags = 0;
+    //LMIC.txrxFlags = 0;
     if( LoRaMacDeviceClass != CLASS_C )
     {
         Radio.Sleep( );
@@ -723,7 +723,7 @@ static void OnRadioRxDone( uint8_t *payload, uint16_t size, int16_t rssi, int8_t
 
     bool isMicOk = false;
     LedIndication(EN_LED_SENSSION_RX);
-    onEvent(EV_RXCOMPLETE);
+    //onEvent(EV_RXCOMPLETE);
     McpsConfirm.AckReceived = false;
     McpsIndication.Rssi = rssi;
     McpsIndication.Snr = snr;
@@ -798,7 +798,7 @@ static void OnRadioRxDone( uint8_t *payload, uint16_t size, int16_t rssi, int8_t
 
                 MlmeConfirm.Status = LORAMAC_EVENT_INFO_STATUS_OK;
                 IsLoRaMacNetworkJoined = true;
-                onEvent(EV_JOINED);
+                //onEvent(EV_JOINED);
                 LoRaMacParams.ChannelsDatarate = LoRaMacParamsDefaults.ChannelsDatarate;
             }
             else
@@ -864,7 +864,7 @@ static void OnRadioRxDone( uint8_t *payload, uint16_t size, int16_t rssi, int8_t
                 }
 
                 fCtrl.Value = payload[pktHeaderLen++];
-                LMIC.txrxFlags |= fCtrl.Bits.Ack ? TXRX_ACK : TXRX_NACK;
+                //LMIC.txrxFlags |= fCtrl.Bits.Ack ? TXRX_ACK : TXRX_NACK;
                 sequenceCounter = ( uint16_t )payload[pktHeaderLen++];
                 sequenceCounter |= ( uint16_t )payload[pktHeaderLen++] << 8;
 
@@ -994,11 +994,12 @@ static void OnRadioRxDone( uint8_t *payload, uint16_t size, int16_t rssi, int8_t
                     if( ( ( size - 4 ) - appPayloadStartIndex ) > 0 )
                     {
                         port = payload[appPayloadStartIndex++];
+                        /*
                         if( port < 0 ) {
                             LMIC.txrxFlags |= TXRX_NOPORT;
                         } else {
                             LMIC.txrxFlags |= TXRX_PORT;
-                        }
+                        }*/
                         frameLen = ( size - 4 ) - appPayloadStartIndex;
 
                         McpsIndication.Port = port;
@@ -1112,7 +1113,7 @@ static void OnRadioRxDone( uint8_t *payload, uint16_t size, int16_t rssi, int8_t
             PrepareRxDoneAbort( );
             break;
     }
-    onEvent(EV_TXCOMPLETE);
+    //onEvent(EV_TXCOMPLETE);
     LoRaMacFlags.Bits.MacDone = 1;
     // Trig OnMacCheckTimerEvent call as soon as possible
     TimerSetValue( &MacStateCheckTimer, 1 );
@@ -1172,8 +1173,8 @@ static void OnRadioRxError( void )
 
 static void OnRadioRxTimeout( void )
 {
-    LMIC.txrxFlags = TXRX_NOPORT;
-    onEvent(EV_RXTIMEOUT);
+    //LMIC.txrxFlags = TXRX_NOPORT;
+    //onEvent(EV_RXTIMEOUT);
     if( LoRaMacDeviceClass != CLASS_C )
     {
         Radio.Sleep( );
@@ -1187,7 +1188,7 @@ static void OnRadioRxTimeout( void )
     {
         if( NodeAckRequested == true )
         {
-            LMIC.txrxFlags = TXRX_NACK | TXRX_NOPORT;
+            //LMIC.txrxFlags = TXRX_NACK | TXRX_NOPORT;
             McpsConfirm.Status = LORAMAC_EVENT_INFO_STATUS_RX1_TIMEOUT;
         }
         MlmeConfirm.Status = LORAMAC_EVENT_INFO_STATUS_RX1_TIMEOUT;
@@ -1201,11 +1202,11 @@ static void OnRadioRxTimeout( void )
     {
         if( NodeAckRequested == true )
         {
-            LMIC.txrxFlags = TXRX_NACK | TXRX_NOPORT;
+            //LMIC.txrxFlags = TXRX_NACK | TXRX_NOPORT;
             McpsConfirm.Status = LORAMAC_EVENT_INFO_STATUS_RX2_TIMEOUT;
         }
         MlmeConfirm.Status = LORAMAC_EVENT_INFO_STATUS_RX2_TIMEOUT;
-        onEvent(EV_TXCOMPLETE);
+        //onEvent(EV_TXCOMPLETE);
         if( LoRaMacDeviceClass != CLASS_C )
         {
             LoRaMacFlags.Bits.MacDone = 1;
@@ -1466,8 +1467,8 @@ static void OnRxWindow1TimerEvent( void )
 
     RegionRxConfig( LoRaMacRegion, &RxWindow1Config, ( int8_t* )&McpsIndication.RxDatarate );
     RxWindowSetup( RxWindow1Config.RxContinuous, LoRaMacParams.MaxRxWindow );
-    LMIC.txrxFlags = TXRX_DNW1;
-    onEvent(EV_RXSTARTWIN1);
+    //LMIC.txrxFlags = TXRX_DNW1;
+    //onEvent(EV_RXSTARTWIN1);
 }
 
 static void OnRxWindow2TimerEvent( void )
@@ -1493,8 +1494,8 @@ static void OnRxWindow2TimerEvent( void )
     {
         RxWindowSetup( RxWindow2Config.RxContinuous, LoRaMacParams.MaxRxWindow );
         RxSlot = RxWindow2Config.Window;
-        LMIC.txrxFlags = TXRX_DNW2;
-        onEvent(EV_RXSTARTWIN2);
+        //LMIC.txrxFlags = TXRX_DNW2;
+        //onEvent(EV_RXSTARTWIN2);
     }
 }
 
@@ -1716,7 +1717,7 @@ static void ProcessMacCommands( uint8_t *payload, uint8_t macIndex, uint8_t comm
         switch( payload[macIndex++] )
         {
             case SRV_MAC_LINK_CHECK_ANS:
-                LMIC.txrxFlags = TXRX_PING;
+                //LMIC.txrxFlags = TXRX_PING;
                 MlmeConfirm.Status = LORAMAC_EVENT_INFO_STATUS_OK;
                 MlmeConfirm.DemodMargin = payload[macIndex++];
                 MlmeConfirm.NbGateways = payload[macIndex++];
@@ -3184,7 +3185,7 @@ LoRaMacStatus_t LoRaMacMlmeRequest( MlmeReq_t *mlmeRequest )
             LoRaMacParams.ChannelsDatarate = RegionAlternateDr( LoRaMacRegion, &altDr );
 
             status = Send( &macHdr, 0, NULL, 0 );
-            onEvent(EV_JOINING);
+            //onEvent(EV_JOINING);
             break;
         }
         case MLME_LINK_CHECK:

@@ -1052,9 +1052,6 @@
       </file>
       <file>
         <name>$PROJ_DIR$\..\..\..\..\lorawan\atcmd\eeprom.c</name>
-        <excluded>
-          <configuration>iflash_nxp_lpcxpresso_812</configuration>
-        </excluded>
       </file>
       <file>
         <name>$PROJ_DIR$\..\..\..\..\lorawan\atcmd\frame.c</name>

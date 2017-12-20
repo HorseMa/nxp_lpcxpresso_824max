@@ -101,9 +101,9 @@ Maintainer: Miguel Luis and Gregory Cristian
 
 #endif
 
-static uint8_t DevEui[] = LORAWAN_DEVICE_EUI;
-static uint8_t AppEui[] = LORAWAN_APPLICATION_EUI;
-static uint8_t AppKey[] = LORAWAN_APPLICATION_KEY;
+uint8_t DevEui[] = LORAWAN_DEVICE_EUI;
+uint8_t AppEui[] = LORAWAN_APPLICATION_EUI;
+uint8_t AppKey[] = LORAWAN_APPLICATION_KEY;
 
 #if( OVER_THE_AIR_ACTIVATION == 0 )
 

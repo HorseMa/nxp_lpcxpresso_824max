@@ -26,43 +26,121 @@
  */
 #include <stdlib.h>
 #include <stdint.h>
+#include "board.h"
+#include "chip.h"
+#include "utilities.h"
+#include "modem.h"
 
-// write 32-bit word to EEPROM memory
-void eeprom_write (uint32_t* addr, uint32_t val) {
+uint32_t src_iap_array_data[ARRAY_ELEMENTS];
 #if 0
-    // check previous value
-    if( *addr != val ) {
-        // unlock data eeprom memory and registers
-        FLASH->PEKEYR = 0x89ABCDEF; // FLASH_PEKEY1
-        FLASH->PEKEYR = 0x02030405; // FLASH_PEKEY2
+void eeprom_erase (void) {
+    uint8_t ret_code;
+    hal_disableIRQs();
+    /* IAP Flash programming */
+    /* Prepare to write/erase the last sector */
+    ret_code = Chip_IAP_PreSectorForReadWrite(IAP_LAST_SECTOR, IAP_LAST_SECTOR);
 
-        // only auto-erase if neccessary (when content is non-zero)
-        FLASH->PECR &= ~FLASH_PECR_FTDW; // clear FTDW
+    /* Error checking */
+    if (ret_code != IAP_CMD_SUCCESS) {
+        //Print_Val("Command failed to execute, return code is: ", ret_code);
+    }
 
-        // write value
-        *addr = val;
+    /* Erase the last sector */
+    ret_code = Chip_IAP_EraseSector(IAP_LAST_SECTOR, IAP_LAST_SECTOR);
+    //ret_code = Chip_IAP_ErasePage(498,499);
 
-        // check for end of programming
-        while(FLASH->SR & FLASH_SR_BSY); // loop while busy
+    /* Error checking */
+    if (ret_code != IAP_CMD_SUCCESS) {
+        //Print_Val("Command failed to execute, return code is: ", ret_code);
+    }
+    /* Re-enable interrupt mode */
+    hal_enableIRQs();
 
-        // lock data eeprom memory and registers
-        FLASH->PECR |= FLASH_PECR_PELOCK;
+	/* Start the signature generator for the last sector */
+    Chip_FMC_ComputeSignatureBlocks(START_ADDR_LAST_SECTOR, (SECTOR_SIZE / 16));
 
-        // verify value
-        while( *(volatile u4_t*)addr != val ); // halt on mismatch
+    /* Check for signature geenration completion */
+    while (Chip_FMC_IsSignatureBusy()) {}
+}
+#endif
+// write 32-bit word to EEPROM memory
+void eeprom_write (void) {
+    //int i;
+    uint8_t ret_code;
+    uint32_t part_id;
+    uint32_t unique_id[4];
+    
+    memset(src_iap_array_data,0,IAP_NUM_BYTES_TO_WRITE);
+    memcpy(src_iap_array_data,&persist,sizeof(persist));
+    /* Read Part Identification Number*/
+    part_id = Chip_IAP_ReadPID();
+    //Print_Val("Part ID is: 0x", part_id);
+
+    /* Read Part Unique Identification Number*/
+    Chip_IAP_ReadUID(unique_id);
+    //DEBUGSTR("Unique Part ID is:\r\n");
+    //for (i=0; i<4; i++) {
+        //Print_Val("0x", unique_id[i]);
+    //}
+
+    /* Disable interrupt mode so it doesn't fire during FLASH updates */
+    hal_disableIRQs();
+#if 1
+    /* IAP Flash programming */
+    /* Prepare to write/erase the last sector */
+    ret_code = Chip_IAP_PreSectorForReadWrite(IAP_LAST_SECTOR, IAP_LAST_SECTOR);
+
+    /* Error checking */
+    if (ret_code != IAP_CMD_SUCCESS) {
+        //Print_Val("Command failed to execute, return code is: ", ret_code);
+    }
+
+    /* Erase the last sector */
+    //ret_code = Chip_IAP_EraseSector(IAP_LAST_SECTOR, IAP_LAST_SECTOR);
+    ret_code = Chip_IAP_ErasePage(EEPROM_BASE / 64,EEPROM_BASE / 64 + 1);
+    /* Error checking */
+    if (ret_code != IAP_CMD_SUCCESS) {
+        //Print_Val("Command failed to execute, return code is: ", ret_code);
     }
 #endif
+#if 1
+    /* Prepare to write/erase the last sector */
+    ret_code = Chip_IAP_PreSectorForReadWrite(IAP_LAST_SECTOR, IAP_LAST_SECTOR);
+
+    /* Error checking */
+    if (ret_code != IAP_CMD_SUCCESS) {
+        //Print_Val("Command failed to execute, return code is: ", ret_code);
+    }
+
+    /* Write to the last sector */
+    //ret_code = Chip_IAP_CopyRamToFlash(START_ADDR_LAST_SECTOR, &val, 4);
+    ret_code = Chip_IAP_CopyRamToFlash(EEPROM_BASE, src_iap_array_data, IAP_NUM_BYTES_TO_WRITE);
+
+    /* Error checking */
+    if (ret_code != IAP_CMD_SUCCESS) {
+        //Print_Val("Command failed to execute, return code is: ", ret_code);
+    }
+#endif
+    /* Re-enable interrupt mode */
+    hal_enableIRQs();
+
+	/* Start the signature generator for the last sector */
+    Chip_FMC_ComputeSignatureBlocks(START_ADDR_LAST_SECTOR, (SECTOR_SIZE / 16));
+
+    /* Check for signature geenration completion */
+    while (Chip_FMC_IsSignatureBusy()) {}
+
+    /* Get the generated FLASH signature value */
+    //Print_Val("Generated signature for the last sector is: 0x", Chip_FMC_GetSignature(0));
 }
 
-void eeprom_copy (void* dst, const void* src, uint16_t len) {
-#if 0
-    while(((u4_t)dst & 3) || ((u4_t)src & 3) || (len & 3)); // halt if not multiples of 4
-    u4_t* d = (u4_t*)dst;
-    u4_t* s = (u4_t*)src;
-    u2_t  l = len/4;
+/*void eeprom_copy (void* dst, const void* src, uint16_t len) {
+    while(((uint32_t)dst & 3) || ((uint32_t)src & 3) || (len & 3)); // halt if not multiples of 4
+    uint32_t* d = (uint32_t*)dst;
+    uint32_t* s = (uint32_t*)src;
+    uint16_t  l = len/4;
 
     while(l--) {
         eeprom_write(d++, *s++);
     }
-#endif
-}
+}*/

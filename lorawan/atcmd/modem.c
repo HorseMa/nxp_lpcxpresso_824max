@@ -30,26 +30,30 @@
 #include "LoRaMac.h"
 #include "utilities.h"
 #include "timer.h"
+#include "radio.h"
 
 //////////////////////////////////////////////////
 // CONFIGURATION (WILL BE PATCHED)
 //////////////////////////////////////////////////
-#if 0
-static const union {
+
+static union {
     joinparam_t param;
     uint8_t pattern[sizeof(joinparam_t)];
-} joincfg = {
-    .pattern = { PATTERN_JOINCFG_STR }
-};
+} joincfg;// = {
+    //.pattern = { PATTERN_JOINCFG_STR }
+//};
 
 static const union {
     sessparam_t param;
     uint8_t pattern[sizeof(sessparam_t)];
-} sesscfg = {
-    .pattern = { PATTERN_SESSCFG_STR }
-};
-#endif
-
+} sesscfg;// = {
+    //.pattern = { PATTERN_SESSCFG_STR }
+//};
+//joinparam_t joincfg;
+//sessparam_t sesscfg;
+uint16_t PATTERN_JOINCFG_CRC;
+uint16_t PATTERN_SESSCFG_CRC;
+persist_t persist;
 /*!
  * Timer to handle the state of LED1
  */
@@ -84,92 +88,6 @@ extern uint8_t AppEui[];
 extern uint8_t AppKey[];
 extern RINGBUFF_T txring, rxring;
 
-/* Last sector address */
-#define START_ADDR_LAST_SECTOR  0x00003C00
-
-/* Size of each sector */
-#define SECTOR_SIZE             1024
-
-/* LAST SECTOR */
-#define IAP_LAST_SECTOR         15
-
-/* Number of bytes to be written to the last sector */
-#define IAP_NUM_BYTES_TO_WRITE  64
-
-/* Number elements in array */
-#define ARRAY_ELEMENTS          (IAP_NUM_BYTES_TO_WRITE / sizeof(uint32_t))
-
-/* Data array to write to flash */
-static uint32_t src_iap_array_data[ARRAY_ELEMENTS];
-
-void eeprom_write (uint32_t* addr, uint32_t val) {
-}
-void eeprom_copy (void* dst, const void* src, uint16_t len) {
-}
-void eeprom_init(void){
-    int i;
-    uint8_t ret_code;
-    uint32_t part_id;
-    uint32_t unique_id[4];
-    /* Read Part Identification Number*/
-    part_id = Chip_IAP_ReadPID();
-    //Print_Val("Part ID is: 0x", part_id);
-
-    /* Read Part Unique Identification Number*/
-    Chip_IAP_ReadUID(unique_id);
-    //DEBUGSTR("Unique Part ID is:\r\n");
-    //for (i=0; i<4; i++) {
-        //Print_Val("0x", unique_id[i]);
-    //}
-
-    /* Disable interrupt mode so it doesn't fire during FLASH updates */
-    hal_disableIRQs();
-
-    /* IAP Flash programming */
-    /* Prepare to write/erase the last sector */
-    ret_code = Chip_IAP_PreSectorForReadWrite(IAP_LAST_SECTOR, IAP_LAST_SECTOR);
-
-    /* Error checking */
-    if (ret_code != IAP_CMD_SUCCESS) {
-        //Print_Val("Command failed to execute, return code is: ", ret_code);
-    }
-
-    /* Erase the last sector */
-    ret_code = Chip_IAP_EraseSector(IAP_LAST_SECTOR, IAP_LAST_SECTOR);
-
-    /* Error checking */
-    if (ret_code != IAP_CMD_SUCCESS) {
-        //Print_Val("Command failed to execute, return code is: ", ret_code);
-    }
-
-    /* Prepare to write/erase the last sector */
-    ret_code = Chip_IAP_PreSectorForReadWrite(IAP_LAST_SECTOR, IAP_LAST_SECTOR);
-
-    /* Error checking */
-    if (ret_code != IAP_CMD_SUCCESS) {
-        //Print_Val("Command failed to execute, return code is: ", ret_code);
-    }
-
-    /* Write to the last sector */
-    ret_code = Chip_IAP_CopyRamToFlash(START_ADDR_LAST_SECTOR, src_iap_array_data, IAP_NUM_BYTES_TO_WRITE);
-
-    /* Error checking */
-    if (ret_code != IAP_CMD_SUCCESS) {
-        //Print_Val("Command failed to execute, return code is: ", ret_code);
-    }
-
-    /* Re-enable interrupt mode */
-    hal_enableIRQs();
-
-	/* Start the signature generator for the last sector */
-    Chip_FMC_ComputeSignatureBlocks(START_ADDR_LAST_SECTOR, (SECTOR_SIZE / 16));
-
-    /* Check for signature geenration completion */
-    while (Chip_FMC_IsSignatureBusy()) {}
-
-    /* Get the generated FLASH signature value */
-    //Print_Val("Generated signature for the last sector is: 0x", Chip_FMC_GetSignature(0));
-}
 #if 0
 // return mask of all events matching given string prefix
 static uint32_t evmatch (uint8_t* name, uint8_t len) {
@@ -397,7 +315,7 @@ void LedIndication(LedSension_t senssion)
         break;
     }
 }
-
+/*
 // start transmission of prepared response or queued event message
 static void modem_starttx () {
     hal_disableIRQs();
@@ -414,10 +332,11 @@ static void modem_starttx () {
     }
     }
     hal_enableIRQs();
-}
+}*/
 
 // LRSC MAC event handler
 // encode and queue event for output
+#if 0
 void onEvent (ev_t ev) {
     static uint8_t buf[64];
 #if 0
@@ -489,7 +408,7 @@ void onEvent (ev_t ev) {
     }
 #endif
 }
-
+#endif
 static void onAlarm (void) {
     queue_add("EV_ALARM\r\n", 10);
     modem_starttx();
@@ -533,54 +452,63 @@ uint16_t os_crc16 (xref2u1_t data, uint len) {
     return remainder;
 }
 
-static const union {
-    joinparam_t param;
-    uint8_t pattern[sizeof(joinparam_t)];
-} joincfg = {
-    .pattern = { PATTERN_JOINCFG_STR }
-};
-
-static const union {
-    sessparam_t param;
-    uint8_t pattern[sizeof(sessparam_t)];
-} sesscfg = {
-    .pattern = { PATTERN_SESSCFG_STR }
-};
-
 // initialize persistent state (factory reset)
 static void persist_init (uint8_t factory) {
-#if 1
-    eeprom_init();
     // check if stored state matches firmware config
     uint16_t joincfgcrc = os_crc16((uint8_t*)&joincfg, sizeof(joincfg));
     uint16_t sesscfgcrc = os_crc16((uint8_t*)&sesscfg, sizeof(sesscfg));
+    
     uint32_t cfghash = (joincfgcrc << 16) | sesscfgcrc;
     if(PERSIST->cfghash != cfghash || factory) {
-    uint32_t flags = 0;
-    if(joincfgcrc != PATTERN_JOINCFG_CRC) { // patched
-        eeprom_copy(&PERSIST->joinpar, &joincfg, sizeof(joincfg));
-        flags |= FLAGS_JOINPAR;
+	uint32_t flags = 0;
+        //eeprom_erase();
+	//if(joincfgcrc != PATTERN_JOINCFG_CRC) { // patched
+            memcpy(&persist.joinpar,&joincfg,sizeof(joinparam_t));
+	    //eeprom_copy(&PERSIST->joinpar, &joincfg, sizeof(joincfg));
+	    flags |= FLAGS_JOINPAR;
+	//}
+	//if(sesscfgcrc != PATTERN_SESSCFG_CRC) { // patched
+            memcpy(&persist.joinpar,&joincfg,sizeof(joinparam_t));
+            persist.seqnoDn = 0;
+            persist.seqnoUp = 0;
+	    //eeprom_copy(&PERSIST->sesspar, &sesscfg, sizeof(sesscfg));
+	    //eeprom_write(&PERSIST->seqnoDn, 0);
+	    //eeprom_write(&PERSIST->seqnoUp, 0);
+	    //flags |= FLAGS_SESSPAR;
+	//}
+        persist.flags = flags;
+        persist.eventmask = ~0;
+        persist.cfghash = cfghash;
+	//eeprom_write(&PERSIST->flags, flags);
+	//eeprom_write(&PERSIST->eventmask, ~0); // report ALL events
+	//eeprom_write(&PERSIST->cfghash, cfghash);
+        //memset(src_iap_array_data,0,IAP_NUM_BYTES_TO_WRITE);
+        //memcpy(src_iap_array_data,&persist,sizeof(persist));
+        eeprom_write();
     }
-    if(sesscfgcrc != PATTERN_SESSCFG_CRC) { // patched
-        eeprom_copy(&PERSIST->sesspar, &sesscfg, sizeof(sesscfg));
-        eeprom_write(&PERSIST->seqnoDn, 0);
-        eeprom_write(&PERSIST->seqnoUp, 0);
-        flags |= FLAGS_SESSPAR;
-    }
-    eeprom_write(&PERSIST->flags, flags);
-    eeprom_write(&PERSIST->eventmask, ~0); // report ALL events
-    eeprom_write(&PERSIST->cfghash, cfghash);
-    }
-#endif
 }
 
 // called by initial job
 void modem_init () {
+    uint32_t unique_id[4];
+    Chip_IAP_ReadUID(unique_id);
+    memcpy(&DevEui,&unique_id[2],8);
+    memcpy(joincfg.param.deveui,DevEui,8);
+    memcpy(joincfg.param.appeui,AppEui,8);
+    memcpy(joincfg.param.devkey,AppKey,16);
+    uint16_t joincfgcrc = os_crc16((uint8_t*)&joincfg, sizeof(joincfg));
+    uint16_t sesscfgcrc = os_crc16((uint8_t*)&sesscfg, sizeof(sesscfg));
+    PATTERN_JOINCFG_CRC = joincfgcrc;
+    PATTERN_SESSCFG_CRC = sesscfgcrc;
+    persist.cfghash = (joincfgcrc << 16) | sesscfgcrc;
+    
     // clear modem state
     memset(&MODEM, 0, sizeof(MODEM));
 
-    //persist_init(0);
-
+    persist_init(0);
+    memcpy(DevEui,PERSIST->joinpar.deveui,8);
+    memcpy(AppEui,PERSIST->joinpar.appeui,8);
+    memcpy(AppKey,PERSIST->joinpar.devkey,16);
     //leds_init();
 
     modem_reset();
@@ -609,6 +537,7 @@ void modem_rxdone () {
     uint8_t cmd = tolower(MODEM.cmdbuf[0]);
     uint8_t len = rxframe.len;
     uint8_t* rspbuf = MODEM.cmdbuf;
+    uint8_t rst = false;
     if(len == 0) { // AT
     ok = 1;
     } else if(cmd == 'v' && len == 2 && MODEM.cmdbuf[1] == '?') { // ATV? query version
@@ -616,11 +545,12 @@ void modem_rxdone () {
     rspbuf += cpystr(rspbuf, VERSION_STR);
     ok = 1;
     } else if(cmd == 'z' && len == 1) { // ATZ reset
-    modem_reset();
+    Radio.Sleep( );
+    rst = true;
     ok = 1;
     } else if(cmd == '&' && len == 2 && tolower(MODEM.cmdbuf[1]) == 'f') { // AT&F factory reset
     persist_init(1);
-    modem_reset();
+    rst = true;
     ok = 1;
     }/* else if(cmd == 'e' && len >= 2) { // event mask (query/set/add/remove)
     uint8_t mode = MODEM.cmdbuf[1];
@@ -655,7 +585,7 @@ void modem_rxdone () {
         ok = 1;
         }
     }
-    }*/ /*else if(cmd == 's' && len >= 2) { // SESSION parameters
+    }*/ else if(cmd == 's' && len >= 2) { // SESSION parameters
     if(MODEM.cmdbuf[1] == '?' && len == 2) { // ATS? query (netid,devaddr,seqnoup,seqnodn)
         if(PERSIST->flags & FLAGS_SESSPAR) {
         rspbuf += cpystr(rspbuf, "OK,");
@@ -683,6 +613,15 @@ void modem_rxdone () {
         // switch on LED
         //leds_set(LED_SESSION, 1);
         // save parameters
+        memcpy(&persist.sesspar,&par,sizeof(par));
+        persist.seqnoUp = LMIC.seqnoUp;
+        persist.seqnoDn = LMIC.seqnoDn;
+        persist.flags = PERSIST->flags | FLAGS_SESSPAR;
+        
+        //eeprom_erase();
+        eeprom_write();
+        Radio.Sleep( );
+        rst = true;
         //eeprom_copy(&PERSIST->sesspar, &par, sizeof(par));
         //eeprom_write(&PERSIST->seqnoUp, LMIC.seqnoUp);
         //eeprom_write(&PERSIST->seqnoDn, LMIC.seqnoDn);
@@ -690,7 +629,7 @@ void modem_rxdone () {
         ok = 1;
         }
     }
-    } */else if(cmd == 'j' && len >= 2) { // JOIN parameters
+    }else if(cmd == 'j' && len >= 2) { // JOIN parameters
     if(MODEM.cmdbuf[1] == '?' && len == 2) { // ATJ? query (deveui,appeui)
         if(PERSIST->flags & FLAGS_JOINPAR) {
         uint8_t tmp[8];
@@ -711,18 +650,26 @@ void modem_rxdone () {
         gethex(par.devkey, MODEM.cmdbuf+2+16+1+16+1, 32) == 16 ) {
         reverse(par.deveui, par.deveui, 8);
         reverse(par.appeui, par.appeui, 8);
-        /*eeprom_copy(&PERSIST->joinpar, &par, sizeof(par));
-        eeprom_write(&PERSIST->flags, PERSIST->flags | FLAGS_JOINPAR);*/
+        
+        memcpy(&persist.joinpar,&par,sizeof(par));
+        persist.flags = PERSIST->flags | FLAGS_JOINPAR;
+        
+        //eeprom_erase();
+        eeprom_write();
+        Radio.Sleep( );
+        rst = true;
+        //eeprom_copy(&PERSIST->joinpar, &par, sizeof(par));
+        //eeprom_write(&PERSIST->flags, PERSIST->flags | FLAGS_JOINPAR);
         ok = 1;
         }
     }
-    } else if(cmd == 'j' && len == 1) { // ATJ join network
+    }/* else if(cmd == 'j' && len == 1) { // ATJ join network
     if(PERSIST->flags & FLAGS_JOINPAR) {
         //LMIC_reset(); // force join
         //LMIC_startJoining();
         ok = 1;
     }
-    } /*else if(cmd == 't' && len >= 1) { // ATT transmit
+    } *//*else if(cmd == 't' && len >= 1) { // ATT transmit
     if(len == 1) { // no conf, no port, no data
         if(LMIC.devaddr || (PERSIST->flags & FLAGS_JOINPAR)) { // implicitely join!
         //LMIC_sendAlive(); // send empty frame
@@ -744,21 +691,21 @@ void modem_rxdone () {
         }
         }
     }
-}*/ else if(cmd == 'p' && len == 2) { // ATP set ping mode
-    /*if(LMIC.devaddr) { // requires a session
+}*/ /*else if(cmd == 'p' && len == 2) { // ATP set ping mode
+    if(LMIC.devaddr) { // requires a session
         uint8_t n = MODEM.cmdbuf[1];
         if(n>='0' && n<='7') {
         //LMIC_setPingable(n-'0');
         ok = 1;
         }
-    }*/
-    } else if(cmd == 'a' && len >= 2) { // ATA set alarm timer
+    }
+    }*//* else if(cmd == 'a' && len >= 2) { // ATA set alarm timer
     uint32_t secs;
     if(hex2int(&secs, MODEM.cmdbuf+1, len-1)) {
         //os_setTimedCallback(&MODEM.alarmjob, os_getTime()+sec2osticks(secs), onAlarm);
         ok = 1;
     }
-    }
+    }*/
 
     // send response
     if(ok) {
@@ -772,12 +719,17 @@ void modem_rxdone () {
     *rspbuf++ = '\n';
     MODEM.rsplen = rspbuf - MODEM.cmdbuf;
     Chip_UART_SendRB(LPC_USART0, &txring, MODEM.cmdbuf, MODEM.rsplen);
+    if(rst == true)
+    {
+        DelayMs(10);
+        Reset_Handler();
+    }
     frame_init(&rxframe, MODEM.cmdbuf, sizeof(MODEM.cmdbuf));
     //modem_starttx();
 }
 
 // called by frame job
-void modem_txdone () {
+/*void modem_txdone () {
     MODEM.txpending = 0;
     // free events (static buffers ignored)
     buffer_free(txframe.buf, txframe.len);
@@ -788,4 +740,4 @@ void modem_txdone () {
     }
     // start transmission of next output message
     modem_starttx();
-}
+}*/

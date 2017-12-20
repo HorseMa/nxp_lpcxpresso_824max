@@ -300,7 +300,7 @@ void RegionCN470InitDefaults( InitType_t type )
             }
 
             // Initialize the channels default mask
-            ChannelsDefaultMask[0] = 0x0003;
+            ChannelsDefaultMask[0] = 0x0007;
             ChannelsDefaultMask[1] = 0x0000;
             ChannelsDefaultMask[2] = 0x0000;
             ChannelsDefaultMask[3] = 0x0000;

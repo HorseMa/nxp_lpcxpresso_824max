@@ -43,15 +43,33 @@ typedef uint32_t devaddr_t;
 #define LED_SESSION 1  // (IMST: yellow, LRSC: green)
 #define LED_POWER   2  // (IMST: green,  LRSC: red)
 
-#define EEPROM_BASE (0x8000 - 0x400)
+/* Last sector address */
+#define START_ADDR_LAST_SECTOR  0x00007C00
+
+/* Size of each sector */
+#define SECTOR_SIZE             1024
+
+/* LAST SECTOR */
+#define IAP_LAST_SECTOR         31
+
+/* Number of bytes to be written to the last sector */
+#define IAP_NUM_BYTES_TO_WRITE  (64 * 2)
+
+/* Number elements in array */
+#define ARRAY_ELEMENTS          (IAP_NUM_BYTES_TO_WRITE / sizeof(uint32_t))
+
+/* Data array to write to flash */
+extern uint32_t src_iap_array_data[ARRAY_ELEMENTS];
+
+#define EEPROM_BASE (0x8000 - 64 * 2)//(0x8000 - 0x400)
 
 // patch patterns
-#define PATTERN_JOINCFG_STR "g0CMw49rRbav6HwQN0115g42OpmvTn7q" // (32 bytes)
-#define PATTERN_JOINCFG_HEX "6730434d7734397252626176364877514e303131356734324f706d76546e3771"
-#define PATTERN_JOINCFG_CRC 0x6B3D
-#define PATTERN_SESSCFG_STR "Bmf3quaCJwVKURWWREeGKtm0pqLD0Yhr5cpPkP6s" // (40 bytes)
-#define PATTERN_SESSCFG_HEX "426d6633717561434a77564b55525757524565474b746d3070714c4430596872356370506b503673"
-#define PATTERN_SESSCFG_CRC 0xC9D5
+//#define PATTERN_JOINCFG_STR "g0CMw49rRbav6HwQN0115g42OpmvTn7q" // (32 bytes)
+//#define PATTERN_JOINCFG_HEX "6730434d7734397252626176364877514e303131356734324f706d76546e3771"
+//#define PATTERN_JOINCFG_CRC 0x6B3D
+//#define PATTERN_SESSCFG_STR "Bmf3quaCJwVKURWWREeGKtm0pqLD0Yhr5cpPkP6s" // (40 bytes)
+//#define PATTERN_SESSCFG_HEX "426d6633717561434a77564b55525757524565474b746d3070714c4430596872356370506b503673"
+//#define PATTERN_SESSCFG_CRC 0xC9D5
 
 // layout of join paramters
 typedef struct {
@@ -225,6 +243,7 @@ extern TimerEvent_t Led1Timer_OnLine;
 extern TimerEvent_t Led1Timer_OffLine;
 extern bool IsLoRaMacNetworkJoined;
 extern struct lmic_t LMIC;
+extern persist_t persist;
 
 void modem_init (void);
 //void modem_rxdone (osjob_t* j);
@@ -265,4 +284,8 @@ uint8_t toupper (uint8_t c);
 uint8_t cpystr (uint8_t* dst, const char* src);
 uint8_t cmpstr (uint8_t* buf, uint8_t len, char* str);
 void onEvent (ev_t ev);
+void eeprom_erase (void);
+void eeprom_write (void);
+//void eeprom_copy (void* dst, const void* src, uint16_t len);
+
 #endif
