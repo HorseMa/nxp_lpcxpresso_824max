@@ -199,7 +199,7 @@
 /*!
  * Data rates table definition
  */
-static const uint8_t DataratesCN470[]  = { 7, 7, 7,  7,  7,  7 };
+static const uint8_t DataratesCN470[]  = { 12, 12, 12,  12,  12,  12 };
 /*!
  * Bandwidths table definition in Hz
  */

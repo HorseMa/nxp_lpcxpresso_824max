@@ -61,7 +61,7 @@ typedef uint32_t devaddr_t;
 /* Data array to write to flash */
 extern uint32_t src_iap_array_data[ARRAY_ELEMENTS];
 
-#define EEPROM_BASE (0x8000 - 64 * 2)//(0x8000 - 0x400)
+#define EEPROM_BASE (0x8000 - 64 * 2)//(0x8000 - 0x80)
 
 // patch patterns
 //#define PATTERN_JOINCFG_STR "g0CMw49rRbav6HwQN0115g42OpmvTn7q" // (32 bytes)

@@ -2408,7 +2408,7 @@ LoRaMacStatus_t LoRaMacInitialization( LoRaMacPrimitives_t *primitives, LoRaMacC
 
     // Init parameters which are not set in function ResetMacParameters
     LoRaMacParamsDefaults.ChannelsNbRep = 1;
-    LoRaMacParamsDefaults.SystemMaxRxError = 10;
+    LoRaMacParamsDefaults.SystemMaxRxError = 40;
     LoRaMacParamsDefaults.MinRxSymbols = 6;
 
     LoRaMacParams.SystemMaxRxError = LoRaMacParamsDefaults.SystemMaxRxError;
@@ -3197,6 +3197,7 @@ LoRaMacStatus_t LoRaMacMlmeRequest( MlmeReq_t *mlmeRequest )
             status = AddMacCommand( MOTE_MAC_LINK_CHECK_REQ, 0, 0 );
             break;
         }
+#if 0
         case MLME_TXCW:
         {
             MlmeConfirm.MlmeRequest = mlmeRequest->Type;
@@ -3211,6 +3212,7 @@ LoRaMacStatus_t LoRaMacMlmeRequest( MlmeReq_t *mlmeRequest )
             status = SetTxContinuousWave1( mlmeRequest->Req.TxCw.Timeout, mlmeRequest->Req.TxCw.Frequency, mlmeRequest->Req.TxCw.Power );
             break;
         }
+#endif
         default:
             break;
     }

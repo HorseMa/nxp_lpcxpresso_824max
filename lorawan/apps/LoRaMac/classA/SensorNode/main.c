@@ -196,8 +196,14 @@ struct ComplianceTest_s
 /*!
  * \brief   Prepares the payload of the frame
  */
-static void PrepareTxFrame( uint8_t port )
+static void PrepareTxFrame( uint8_t port ,uint8_t *data ,uint8_t len)
 {
+    if((port > 0) && (port < 224))
+    {
+        memcpy(AppData,data,len);
+        AppDataSize = len;
+    }
+#if 0
     switch( port )
     {
     case 2:
@@ -287,6 +293,7 @@ static void PrepareTxFrame( uint8_t port )
     default:
         break;
     }
+#endif
 }
 
 /*!
@@ -451,6 +458,7 @@ static void McpsIndication( McpsIndication_t *mcpsIndication )
 
     if( mcpsIndication->RxData == true )
     {
+#if 0
         switch( mcpsIndication->Port )
         {
         case 1: // The application LED can be controlled on port 1 or 2
@@ -600,6 +608,7 @@ static void McpsIndication( McpsIndication_t *mcpsIndication )
         default:
             break;
         }
+#endif
     }
 }
 
@@ -680,7 +689,7 @@ int main( void )
     prvSetupHardware();
     modem_init();
     DeviceState = DEVICE_STATE_INIT;
-    modem_wwdt_init();
+    //modem_wwdt_init();
     while( 1 )
     {
         Chip_WWDT_Feed(LPC_WWDT);
@@ -819,10 +828,12 @@ int main( void )
             {
                 if( NextTx == true )
                 {
-                    PrepareTxFrame( AppPort );
+                    uint8_t txcycledata[] = {0x00 ,0x01 ,0x02 ,0x0A ,0x0B};
+                    PrepareTxFrame( AppPort ,txcycledata,5);
 
                     NextTx = SendFrame( );
                 }
+#if 0
                 if( ComplianceTest.Running == true )
                 {
                     // Schedule next packet transmission
@@ -833,6 +844,9 @@ int main( void )
                     // Schedule next packet transmission
                     TxDutyCycleTime = APP_TX_DUTYCYCLE + randr( -APP_TX_DUTYCYCLE_RND, APP_TX_DUTYCYCLE_RND );
                 }
+#endif
+                // Schedule next packet transmission
+                TxDutyCycleTime = APP_TX_DUTYCYCLE + randr( -APP_TX_DUTYCYCLE_RND, APP_TX_DUTYCYCLE_RND );
                 DeviceState = DEVICE_STATE_CYCLE;
                 break;
             }
