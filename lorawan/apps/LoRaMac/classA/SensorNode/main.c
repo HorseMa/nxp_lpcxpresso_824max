@@ -375,7 +375,7 @@ static void OnTxNextPacketTimerEvent( void )
  * \param   [IN] mcpsConfirm - Pointer to the confirm structure,
  *               containing confirm attributes.
  */
-static void McpsConfirm( McpsConfirm_t *mcpsConfirm )
+static void funMcpsConfirm( McpsConfirm_t *mcpsConfirm )
 {
     if( mcpsConfirm->Status == LORAMAC_EVENT_INFO_STATUS_OK )
     {
@@ -412,13 +412,19 @@ static void McpsConfirm( McpsConfirm_t *mcpsConfirm )
  * \param   [IN] mcpsIndication - Pointer to the indication structure,
  *               containing indication attributes.
  */
+extern McpsConfirm_t McpsConfirm;
 static void McpsIndication( McpsIndication_t *mcpsIndication )
 {
     if( mcpsIndication->Status != LORAMAC_EVENT_INFO_STATUS_OK )
     {
         return;
     }
-
+    LMIC.txrxFlags = 0;
+    if(McpsConfirm.McpsRequest == MCPS_CONFIRMED)
+    {
+        LMIC.txrxFlags |= (mcpsIndication->AckReceived ? TXRX_ACK : TXRX_NACK);
+    }
+    mcpsIndication->RxSlot?(LMIC.txrxFlags |= TXRX_DNW2):(LMIC.txrxFlags |= TXRX_DNW1);
     switch( mcpsIndication->McpsIndication )
     {
         case MCPS_UNCONFIRMED:
@@ -450,14 +456,19 @@ static void McpsIndication( McpsIndication_t *mcpsIndication )
     // Check Rssi
     // Check Snr
     // Check RxSlot
-
+#if 0
     if( ComplianceTest.Running == true )
     {
         ComplianceTest.DownLinkCounter++;
     }
-
+#endif
     if( mcpsIndication->RxData == true )
     {
+        LMIC.txrxFlags |= TXRX_PORT;
+        LMIC.dataBeg = 1;
+        LMIC.frame[LMIC.dataBeg - 1] = mcpsIndication->Port;
+        LMIC.dataLen = mcpsIndication->BufferSize;
+        memcpy(LMIC.frame + LMIC.dataBeg,mcpsIndication->Buffer,mcpsIndication->BufferSize);
 #if 0
         switch( mcpsIndication->Port )
         {
@@ -610,6 +621,12 @@ static void McpsIndication( McpsIndication_t *mcpsIndication )
         }
 #endif
     }
+    else
+    {
+        LMIC.dataLen = 0;
+        LMIC.txrxFlags |= TXRX_NOPORT;
+    }
+    onEvent(EV_TXCOMPLETE);
 }
 
 /*!
@@ -628,6 +645,7 @@ static void MlmeConfirm( MlmeConfirm_t *mlmeConfirm )
             {
                 // Status is OK, node has joined the network
                 DeviceState = DEVICE_STATE_SEND;
+                onEvent(EV_JOINED);
             }
             else
             {
@@ -707,7 +725,7 @@ int main( void )
         {
             case DEVICE_STATE_INIT:
             {
-                LoRaMacPrimitives.MacMcpsConfirm = McpsConfirm;
+                LoRaMacPrimitives.MacMcpsConfirm = funMcpsConfirm;
                 LoRaMacPrimitives.MacMcpsIndication = McpsIndication;
                 LoRaMacPrimitives.MacMlmeConfirm = MlmeConfirm;
                 LoRaMacCallbacks.GetBatteryLevel = BoardGetBatteryLevel;

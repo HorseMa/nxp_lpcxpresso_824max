@@ -376,10 +376,8 @@ static void modem_starttx () {
 
 // LRSC MAC event handler
 // encode and queue event for output
-#if 0
 void onEvent (ev_t ev) {
     static uint8_t buf[64];
-#if 0
   /*
     // update sequence counters for session
     if(PERSIST->flags & FLAGS_SESSPAR) {
@@ -392,7 +390,7 @@ void onEvent (ev_t ev) {
     case EV_JOINING:
     break;
     case EV_JOINED: {
-    LedIndication(EN_LED_SENSSION_NET);
+    //LedIndication(EN_LED_SENSSION_NET);
     // save newly established session
     /*sessparam_t newsession;
     newsession.netid = LMIC.netid;
@@ -409,7 +407,6 @@ void onEvent (ev_t ev) {
     // report events (selected by eventmask)
     if(PERSIST->eventmask & (1 << ev)) {
     uint8_t len = strlen(evnames[ev]);
-    uint8_t* buf;
     switch(ev) {
     case EV_TXCOMPLETE:
     case EV_RXCOMPLETE: { // report EV_XXCOMPLETE,<flags>[,<port>[,<downstream data>]]
@@ -446,9 +443,7 @@ void onEvent (ev_t ev) {
     //queue_add(buf, len);
     //modem_starttx();
     }
-#endif
 }
-#endif
 static void onAlarm (void) {
     queue_add("EV_ALARM\r\n", 10);
     modem_starttx();

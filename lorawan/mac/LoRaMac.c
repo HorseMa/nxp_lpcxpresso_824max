@@ -388,7 +388,7 @@ static McpsIndication_t McpsIndication;
 /*!
  * Structure to hold MCPS confirm data.
  */
-static McpsConfirm_t McpsConfirm;
+McpsConfirm_t McpsConfirm;
 
 /*!
  * Structure to hold MLME confirm data.
@@ -1211,6 +1211,9 @@ static void OnRadioRxTimeout( void )
         {
             LoRaMacFlags.Bits.MacDone = 1;
         }
+        LMIC.txrxFlags = 0;
+        LMIC.dataLen = 0;
+        onEvent(EV_TXCOMPLETE);
     }
 }
 
@@ -3185,7 +3188,7 @@ LoRaMacStatus_t LoRaMacMlmeRequest( MlmeReq_t *mlmeRequest )
             LoRaMacParams.ChannelsDatarate = RegionAlternateDr( LoRaMacRegion, &altDr );
 
             status = Send( &macHdr, 0, NULL, 0 );
-            //onEvent(EV_JOINING);
+            onEvent(EV_JOINING);
             break;
         }
         case MLME_LINK_CHECK:
