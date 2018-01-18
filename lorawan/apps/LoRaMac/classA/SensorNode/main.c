@@ -140,7 +140,7 @@ static uint8_t AppData[LORAWAN_APP_DATA_MAX_SIZE];
 /*!
  * Indicates if the node is sending confirmed or unconfirmed messages
  */
-static uint8_t IsTxConfirmed = LORAWAN_CONFIRMED_MSG_ON;
+uint8_t IsTxConfirmed = LORAWAN_CONFIRMED_MSG_ON;
 
 /*!
  * Defines the application data transmission duty cycle
@@ -196,7 +196,7 @@ struct ComplianceTest_s
 /*!
  * \brief   Prepares the payload of the frame
  */
-static void PrepareTxFrame( uint8_t port ,uint8_t *data ,uint8_t len)
+void PrepareTxFrame( uint8_t port ,uint8_t *data ,uint8_t len)
 {
     if((port > 0) && (port < 224))
     {
@@ -301,7 +301,7 @@ static void PrepareTxFrame( uint8_t port ,uint8_t *data ,uint8_t len)
  *
  * \retval  [0: frame could be send, 1: error]
  */
-static bool SendFrame( void )
+bool SendFrame( void )
 {
     McpsReq_t mcpsReq;
     LoRaMacTxInfo_t txInfo;
@@ -403,7 +403,7 @@ static void funMcpsConfirm( McpsConfirm_t *mcpsConfirm )
                 break;
         }
     }
-    NextTx = true;
+    //NextTx = true;
 }
 
 /*!
@@ -644,7 +644,7 @@ static void MlmeConfirm( MlmeConfirm_t *mlmeConfirm )
             if( mlmeConfirm->Status == LORAMAC_EVENT_INFO_STATUS_OK )
             {
                 // Status is OK, node has joined the network
-                DeviceState = DEVICE_STATE_SEND;
+                DeviceState = DEVICE_STATE_SLEEP;
                 onEvent(EV_JOINED);
             }
             else
@@ -752,7 +752,7 @@ int main( void )
 #else
     #error "Please define a region in the compiler options."
 #endif
-                TimerInit( &TxNextPacketTimer, OnTxNextPacketTimerEvent );
+                //TimerInit( &TxNextPacketTimer, OnTxNextPacketTimerEvent );
 
                 mibReq.Type = MIB_ADR;
                 mibReq.Param.AdrEnable = LORAWAN_ADR_ON;
@@ -838,7 +838,7 @@ int main( void )
                 mibReq.Param.IsNetworkJoined = true;
                 LoRaMacMibSetRequestConfirm( &mibReq );
 
-                DeviceState = DEVICE_STATE_SEND;
+                DeviceState = DEVICE_STATE_SLEEP;
 #endif
                 break;
             }
@@ -873,8 +873,8 @@ int main( void )
                 DeviceState = DEVICE_STATE_SLEEP;
 
                 // Schedule next packet transmission
-                TimerSetValue( &TxNextPacketTimer, TxDutyCycleTime );
-                TimerStart( &TxNextPacketTimer );
+                //TimerSetValue( &TxNextPacketTimer, TxDutyCycleTime );
+                //TimerStart( &TxNextPacketTimer );
                 break;
             }
             case DEVICE_STATE_SLEEP:

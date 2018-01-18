@@ -34,6 +34,38 @@
 // Device address
 typedef uint32_t devaddr_t;
 
+// Global maximum frame length
+enum { STD_PREAMBLE_LEN  =  8 };
+enum { MAX_LEN_FRAME     = 64 };
+enum { LEN_DEVNONCE      =  2 };
+enum { LEN_ARTNONCE      =  3 };
+enum { LEN_NETID         =  3 };
+enum { DELAY_JACC1       =  5 }; // in secs
+enum { DELAY_DNW1        =  1 }; // in secs down window #1
+enum { DELAY_EXTDNW2     =  1 }; // in secs
+enum { DELAY_JACC2       =  DELAY_JACC1+(int)DELAY_EXTDNW2 }; // in secs
+enum { DELAY_DNW2        =  DELAY_DNW1 +(int)DELAY_EXTDNW2 }; // in secs down window #1
+enum { BCN_INTV_exp      = 7 };
+enum { BCN_INTV_sec      = 1<<BCN_INTV_exp };
+enum { BCN_INTV_ms       = BCN_INTV_sec*1000L };
+enum { BCN_INTV_us       = BCN_INTV_ms*1000L };
+enum { BCN_RESERVE_ms    = 2120 };   // space reserved for beacon and NWK management
+enum { BCN_GUARD_ms      = 3000 };   // end of beacon period to prevent interference with beacon
+enum { BCN_SLOT_SPAN_ms  =   30 };   // 2^12 reception slots a this span
+enum { BCN_WINDOW_ms     = BCN_INTV_ms-(int)BCN_GUARD_ms-(int)BCN_RESERVE_ms };
+enum { BCN_RESERVE_us    = 2120000 };
+enum { BCN_GUARD_us      = 3000000 };
+enum { BCN_SLOT_SPAN_us  =   30000 };
+enum {
+    // Data frame format
+    OFF_DAT_HDR      = 0,
+    OFF_DAT_ADDR     = 1,
+    OFF_DAT_FCT      = 5,
+    OFF_DAT_SEQNO    = 6,
+    OFF_DAT_OPTS     = 8,
+};
+enum { MAX_LEN_PAYLOAD = MAX_LEN_FRAME-(int)OFF_DAT_OPTS-4 };
+
 // modem version
 #define VERSION_MAJOR 1
 #define VERSION_MINOR 2
@@ -141,7 +173,7 @@ struct lmic_t {
     uint8_t        pendTxPort;
     uint8_t        pendTxConf;   // confirmed data
     uint8_t        pendTxLen;    // +0x80 = confirmed
-    //uint8_t        pendTxData[MAX_LEN_PAYLOAD];
+    uint8_t        pendTxData[MAX_LEN_PAYLOAD];
 
     uint16_t        devNonce;     // last generated nonce
     uint8_t        nwkKey[16];   // network session key
@@ -244,8 +276,11 @@ extern TimerEvent_t Led1Timer_OffLine;
 extern bool IsLoRaMacNetworkJoined;
 extern struct lmic_t LMIC;
 extern persist_t persist;
-
+extern uint8_t IsTxConfirmed;
 void modem_init (void);
+extern void PrepareTxFrame( uint8_t port ,uint8_t *data ,uint8_t len);
+extern bool SendFrame( void );
+
 //void modem_rxdone (osjob_t* j);
 //void modem_txdone (osjob_t* j);
 

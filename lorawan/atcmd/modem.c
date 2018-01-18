@@ -710,7 +710,7 @@ void modem_rxdone () {
         //LMIC_sendAlive(); // send empty frame
         ok = 1;
         }
-    } else if(len >= 5) { // confirm,port[,data]  (0,FF[,112233...])
+    } */else if(cmd == 't' && len >= 5) { // confirm,port[,data]  (0,FF[,112233...])
         if((MODEM.cmdbuf[1]=='0' || MODEM.cmdbuf[1]=='1') && MODEM.cmdbuf[2]==',' && // conf
            gethex(&LMIC.pendTxPort, MODEM.cmdbuf+1+1+1, 2) == 1 && LMIC.pendTxPort) { // port
         LMIC.pendTxConf = MODEM.cmdbuf[1] - '0';
@@ -719,14 +719,20 @@ void modem_rxdone () {
             LMIC.pendTxLen = gethex(LMIC.pendTxData, MODEM.cmdbuf+6, len-6);
         }
         if(len == 5 || LMIC.pendTxLen) {
-            if(LMIC.devaddr || (PERSIST->flags & FLAGS_JOINPAR)) { // implicitely join!
+            //if(LMIC.devaddr || (PERSIST->flags & FLAGS_JOINPAR)) { // implicitely join!
             //LMIC_setTxData();
+            if((LMIC.pendTxPort == 0) || (LMIC.pendTxPort > 223)){
+            ok = 0;
+            }
+            else{
+            IsTxConfirmed = LMIC.pendTxConf;
+            PrepareTxFrame( LMIC.pendTxPort ,LMIC.pendTxData ,LMIC.pendTxLen);
+            SendFrame();
             ok = 1;
             }
         }
         }
-    }
-}*/ /*else if(cmd == 'p' && len == 2) { // ATP set ping mode
+    } /*else if(cmd == 'p' && len == 2) { // ATP set ping mode
     if(LMIC.devaddr) { // requires a session
         uint8_t n = MODEM.cmdbuf[1];
         if(n>='0' && n<='7') {
