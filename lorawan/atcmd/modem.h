@@ -108,6 +108,7 @@ typedef struct {
     uint8_t deveui[8];
     uint8_t appeui[8];
     uint8_t devkey[16];
+    bool isPublic;
 } joinparam_t;
 
 // layout of session parameters
@@ -322,5 +323,7 @@ void onEvent (ev_t ev);
 void eeprom_erase (void);
 void eeprom_write (void);
 //void eeprom_copy (void* dst, const void* src, uint16_t len);
+void modem_wkt_init(void);
+void modem_wwdt_init(void);
 
 #endif

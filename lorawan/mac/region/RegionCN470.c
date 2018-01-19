@@ -31,6 +31,7 @@ Maintainer: Miguel Luis ( Semtech ), Gregory Cristian ( Semtech ) and Daniel Jae
 #include "RegionCommon.h"
 #include "RegionCN470.h"
 #include "radio.h"
+#include "modem.h"
 // Definitions
 #define CHANNELS_MASK_SIZE              6
 
@@ -298,15 +299,25 @@ void RegionCN470InitDefaults( InitType_t type )
                 Channels[i].DrRange.Value = ( DR_5 << 4 ) | DR_0;
                 Channels[i].Band = 0;
             }
-
-            // Initialize the channels default mask
-            ChannelsDefaultMask[0] = 0x0001;
-            ChannelsDefaultMask[1] = 0x0000;
-            ChannelsDefaultMask[2] = 0x0000;
-            ChannelsDefaultMask[3] = 0x0000;
-            ChannelsDefaultMask[4] = 0x0000;
-            ChannelsDefaultMask[5] = 0x0000;
-
+            if(!PERSIST->joinpar.isPublic)
+            {
+                // Initialize the channels default mask
+                ChannelsDefaultMask[0] = 0x0007;
+                ChannelsDefaultMask[1] = 0x0000;
+                ChannelsDefaultMask[2] = 0x0000;
+                ChannelsDefaultMask[3] = 0x0000;
+                ChannelsDefaultMask[4] = 0x0000;
+                ChannelsDefaultMask[5] = 0x0000;
+            }
+            else
+            {
+                ChannelsDefaultMask[0] = 0xFFFF;
+                ChannelsDefaultMask[1] = 0xFFFF;
+                ChannelsDefaultMask[2] = 0xFFFF;
+                ChannelsDefaultMask[3] = 0xFFFF;
+                ChannelsDefaultMask[4] = 0xFFFF;
+                ChannelsDefaultMask[5] = 0xFFFF;
+            }
             // Update the channels mask
             RegionCommonChanMaskCopy( ChannelsMask, ChannelsDefaultMask, 6 );
             break;
@@ -670,30 +681,67 @@ uint8_t RegionCN470DlChannelReq( DlChannelReqParams_t* dlChannelReq )
 int8_t RegionCN470AlternateDr( AlternateDrParams_t* alternateDr )
 {
     int8_t datarate = 0;
-
-    if( ( alternateDr->NbTrials % 48 ) == 0 )
+    uint8_t nbEnabledChannels = 0;
+    uint8_t enabledChannels[CN470_MAX_NB_CHANNELS] = { 0 };
+    uint8_t swap;
+    if(!PERSIST->joinpar.isPublic)
     {
-        datarate = DR_0;
-    }
-    else if( ( alternateDr->NbTrials % 32 ) == 0 )
-    {
-        datarate = DR_1;
-    }
-    else if( ( alternateDr->NbTrials % 24 ) == 0 )
-    {
-        datarate = DR_2;
-    }
-    else if( ( alternateDr->NbTrials % 16 ) == 0 )
-    {
-        datarate = DR_3;
-    }
-    else if( ( alternateDr->NbTrials % 8 ) == 0 )
-    {
-        datarate = DR_4;
+        for( uint8_t i = 0, k = 0; i < CN470_MAX_NB_CHANNELS; i += 16, k++ )
+        {
+            for( uint8_t j = 0; j < 16; j++ )
+            {
+                if( ( ChannelsMask[k] & ( 1 << j ) ) != 0 )
+                {
+                    enabledChannels[nbEnabledChannels++] = i + j;
+                }
+            }
+        }
+        if((enabledChannels[0] % 6) < (enabledChannels[1] % 6))
+        {
+            swap = enabledChannels[0];
+            enabledChannels[0] = enabledChannels[1];
+            enabledChannels[1] = swap;
+        }
+        if((enabledChannels[1] % 6) < (enabledChannels[2] % 6))
+        {
+            swap = enabledChannels[1];
+            enabledChannels[1] = enabledChannels[2];
+            enabledChannels[2] = swap;
+        }
+        if((enabledChannels[0] % 6) < (enabledChannels[1] % 6))
+        {
+            swap = enabledChannels[0];
+            enabledChannels[0] = enabledChannels[1];
+            enabledChannels[1] = swap;
+        }
+        datarate = enabledChannels[(alternateDr->NbTrials - 1) % 3] % 6;
     }
     else
     {
-        datarate = DR_5;
+        if( ( alternateDr->NbTrials % 48 ) == 0 )
+        {
+            datarate = DR_0;
+        }
+        else if( ( alternateDr->NbTrials % 32 ) == 0 )
+        {
+            datarate = DR_1;
+        }
+        else if( ( alternateDr->NbTrials % 24 ) == 0 )
+        {
+            datarate = DR_2;
+        }
+        else if( ( alternateDr->NbTrials % 16 ) == 0 )
+        {
+            datarate = DR_3;
+        }
+        else if( ( alternateDr->NbTrials % 8 ) == 0 )
+        {
+            datarate = DR_4;
+        }
+        else
+        {
+            datarate = DR_5;
+        }
     }
     return datarate;
 }
@@ -720,7 +768,7 @@ bool RegionCN470NextChannel( NextChanParams_t* nextChanParams, uint8_t* channel,
     uint8_t delayTx = 0;
     uint8_t enabledChannels[CN470_MAX_NB_CHANNELS] = { 0 };
     TimerTime_t nextTxDelay = 0;
-
+    uint8_t loop = 0;
     // Count 125kHz channels
     if( RegionCommonCountChannels( ChannelsMask, 0, 6 ) == 0 )
     { // Reactivate default channels
@@ -754,8 +802,21 @@ bool RegionCN470NextChannel( NextChanParams_t* nextChanParams, uint8_t* channel,
     if( nbEnabledChannels > 0 )
     {
         // We found a valid channel
-        *channel = enabledChannels[randr( 0, nbEnabledChannels - 1 )];
-
+        if(PERSIST->joinpar.isPublic)
+        {
+            *channel = enabledChannels[randr( 0, nbEnabledChannels - 1 )];
+        }
+        else
+        {
+            for(loop = 0;loop < nbEnabledChannels;loop ++)
+            {
+                if(enabledChannels[loop] % 6 == nextChanParams->Datarate)
+                {
+                    *channel = enabledChannels[loop];
+                    break;
+                }
+            }
+        }
         *time = 0;
         return true;
     }

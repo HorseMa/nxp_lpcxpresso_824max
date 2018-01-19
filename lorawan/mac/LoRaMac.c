@@ -123,7 +123,7 @@ static DeviceClass_t LoRaMacDeviceClass;
 /*!
  * Indicates if the node is connected to a private or public network
  */
-static bool PublicNetwork;
+bool PublicNetwork;
 
 /*!
  * Indicates if the node supports repeaters
@@ -1211,9 +1211,6 @@ static void OnRadioRxTimeout( void )
         {
             LoRaMacFlags.Bits.MacDone = 1;
         }
-        LMIC.txrxFlags = 0;
-        LMIC.dataLen = 0;
-        onEvent(EV_TXCOMPLETE);
     }
 }
 
@@ -1373,6 +1370,9 @@ static void OnMacStateCheckTimerEvent( void )
                 {
                     UpLinkCounter++;
                 }
+                LMIC.txrxFlags = 0;
+                LMIC.dataLen = 0;
+                onEvent(EV_TXCOMPLETE);
             }
         }
     }

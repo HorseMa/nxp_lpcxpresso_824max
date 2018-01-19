@@ -88,6 +88,88 @@ extern uint8_t AppEui[];
 extern uint8_t AppKey[];
 extern RINGBUFF_T txring, rxring;
 
+/**
+ * @brief	Handle interrupt from Wake-up timer
+ * @return	Nothing
+ */
+void WKT_IRQHandler(void)
+{
+	/* Clear WKT interrupt request */
+	Chip_WKT_ClearIntStatus(LPC_WKT);
+
+	/* LED will toggle state on wakeup event */
+	//Board_LED_Toggle(0);
+}
+
+static void WakeupTest(WKT_CLKSRC_T clkSrc, uint32_t timeoutInSecs, CHIP_PMU_MCUPOWER_T powerTest)
+{
+    /* 10KHz clock source */
+    Chip_WKT_SetClockSource(LPC_WKT, clkSrc);
+
+    /* Setup for wakeup in timeout */
+    Chip_WKT_LoadCount(LPC_WKT, Chip_WKT_GetClockRate(LPC_WKT) * timeoutInSecs);
+
+    /* We can optionally call Chip_SYSCTL_SetDeepSleepPD() to power down the
+    BOD and WDT if we aren't using them in deep sleep modes. */
+    Chip_SYSCTL_SetDeepSleepPD(SYSCTL_DEEPSLP_BOD_PD | SYSCTL_DEEPSLP_WDTOSC_PD);
+
+    /* We should call Chip_SYSCTL_SetWakeup() to setup any peripherals we want
+    to power back up on wakeup. For this example, we'll power back up the IRC,
+    FLASH, the system oscillator, and the PLL */
+    Chip_SYSCTL_SetWakeup(~(SYSCTL_SLPWAKE_IRCOUT_PD | SYSCTL_SLPWAKE_IRC_PD |
+                            SYSCTL_SLPWAKE_FLASH_PD | SYSCTL_SLPWAKE_SYSOSC_PD | SYSCTL_SLPWAKE_SYSPLL_PD));
+
+    /* Tell PMU to go to sleep */
+    Chip_PMU_Sleep(LPC_PMU, powerTest);
+
+    /* Power anything back up here that isn't powered up on wakeup. The example
+    code below powers back up the BOD and WDT oscillator, which weren't setup to
+    pwower up in the Chip_SYSCTL_SetWakeup() function. */
+    Chip_SYSCTL_SetDeepSleepPD(0);
+
+    /* Will return here after wakeup and WKT IRQ, LED should be on */
+    Chip_WKT_Stop(LPC_WKT);
+}
+
+void modem_wkt_init(void)
+{
+    uint32_t regVal;
+    /* Alarm/wake timer as chip wakeup source */
+    Chip_SYSCTL_EnablePeriphWakeup(SYSCTL_WAKEUP_WKTINT);
+
+    /* Enable and reset WKT clock */
+    Chip_Clock_EnablePeriphClock(SYSCTL_CLOCK_WKT);
+    Chip_SYSCTL_PeriphReset(RESET_WKT);
+
+    /* Disable wakeup pad */
+    Chip_PMU_ClearPowerDownControl(LPC_PMU, PMU_DPDCTRL_WAKEPAD | PMU_DPDCTRL_LPOSCDPDEN);
+
+    /* Disable wakeup hysteresis by setting the bit (set to disable),
+    enable 10KHz oscillator for all power down modes including deep
+    power-down */
+    Chip_PMU_SetPowerDownControl(LPC_PMU, PMU_DPDCTRL_WAKEUPPHYS | PMU_DPDCTRL_LPOSCEN |
+                                 PMU_DPDCTRL_LPOSCDPDEN);
+
+    /* Enable WKT interrupt */
+    NVIC_EnableIRQ(WKT_IRQn);
+
+    /*
+     *	Note that deep power down causes a reset when it wakes up.
+     *	If the CPU was in deep power-down before the reset,
+     *	then PCON, DPDFLAG will be set.
+     *
+     *	This code clears DPDFLAG (by writing a one to it)
+     *	then sets the RED LED for about 500ms.
+     */
+    if (LPC_PMU->PCON & PMU_PCON_DPDFLAG) {
+        regVal = LPC_PMU->PCON;
+        regVal |= PMU_PCON_DPDFLAG;
+        LPC_PMU->PCON = regVal;
+        //Board_LED_Set(0, true);
+        //delay(0x100000);
+    }
+}
+
 void WDT_IRQHandler(void)
 {
 }
@@ -522,7 +604,7 @@ static void persist_init (uint8_t factory) {
         eeprom_write();
     }
 }
-
+extern bool PublicNetwork;
 // called by initial job
 void modem_init () {
     uint32_t unique_id[4];
@@ -531,12 +613,14 @@ void modem_init () {
     memcpy(joincfg.param.deveui,DevEui,8);
     memcpy(joincfg.param.appeui,AppEui,8);
     memcpy(joincfg.param.devkey,AppKey,16);
+    joincfg.param.isPublic = false;
     uint16_t joincfgcrc = os_crc16((uint8_t*)&joincfg, sizeof(joincfg));
     uint16_t sesscfgcrc = os_crc16((uint8_t*)&sesscfg, sizeof(sesscfg));
     PATTERN_JOINCFG_CRC = joincfgcrc;
     PATTERN_SESSCFG_CRC = sesscfgcrc;
     persist.cfghash = (joincfgcrc << 16) | sesscfgcrc;
     
+    PublicNetwork = joincfg.param.isPublic;
     // clear modem state
     memset(&MODEM, 0, sizeof(MODEM));
 
@@ -544,6 +628,7 @@ void modem_init () {
     memcpy(DevEui,PERSIST->joinpar.deveui,8);
     memcpy(AppEui,PERSIST->joinpar.appeui,8);
     memcpy(AppKey,PERSIST->joinpar.devkey,16);
+    PublicNetwork = PERSIST->joinpar.isPublic;
     //leds_init();
 
     modem_reset();

@@ -707,6 +707,7 @@ int main( void )
     prvSetupHardware();
     modem_init();
     DeviceState = DEVICE_STATE_INIT;
+    modem_wkt_init();
     //modem_wwdt_init();
     while( 1 )
     {
