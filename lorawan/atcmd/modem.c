@@ -812,8 +812,14 @@ void modem_rxdone () {
             else{
             IsTxConfirmed = LMIC.pendTxConf;
             PrepareTxFrame( LMIC.pendTxPort ,LMIC.pendTxData ,LMIC.pendTxLen);
-            SendFrame();
-            ok = 1;
+            if(SendFrame() == true)
+            {
+                ok = 1;
+            }
+            else
+            {
+                ok = 0;
+            }
             }
         }
         }

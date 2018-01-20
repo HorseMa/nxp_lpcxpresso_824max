@@ -373,7 +373,7 @@ TimerTime_t TxTimeOnAir = 0;
 /*!
  * Number of trials for the Join Request
  */
-static uint8_t JoinRequestTrials;
+uint8_t JoinRequestTrials;
 
 /*!
  * Maximum number of trials for the Join Request
@@ -1204,6 +1204,15 @@ static void OnRadioRxTimeout( void )
         {
             //LMIC.txrxFlags = TXRX_NACK | TXRX_NOPORT;
             McpsConfirm.Status = LORAMAC_EVENT_INFO_STATUS_RX2_TIMEOUT;
+        }
+        else
+        {
+            if(IsLoRaMacNetworkJoined == true)
+            {
+                LMIC.txrxFlags = 0;
+                LMIC.dataLen = 0;
+                onEvent(EV_TXCOMPLETE);
+            }
         }
         MlmeConfirm.Status = LORAMAC_EVENT_INFO_STATUS_RX2_TIMEOUT;
         //onEvent(EV_TXCOMPLETE);

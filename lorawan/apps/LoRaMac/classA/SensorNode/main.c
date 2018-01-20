@@ -201,6 +201,7 @@ void PrepareTxFrame( uint8_t port ,uint8_t *data ,uint8_t len)
     if((port > 0) && (port < 224))
     {
         memcpy(AppData,data,len);
+        AppPort = port;
         AppDataSize = len;
     }
 #if 0
@@ -301,18 +302,23 @@ void PrepareTxFrame( uint8_t port ,uint8_t *data ,uint8_t len)
  *
  * \retval  [0: frame could be send, 1: error]
  */
+extern uint8_t JoinRequestTrials;
+extern LoRaMacParams_t LoRaMacParams;
 bool SendFrame( void )
 {
     McpsReq_t mcpsReq;
     LoRaMacTxInfo_t txInfo;
+    AlternateDrParams_t altDr;
 
+    altDr.NbTrials = JoinRequestTrials;
     if( LoRaMacQueryTxPossible( AppDataSize, &txInfo ) != LORAMAC_STATUS_OK )
     {
         // Send empty frame in order to flush MAC commands
         mcpsReq.Type = MCPS_UNCONFIRMED;
         mcpsReq.Req.Unconfirmed.fBuffer = NULL;
         mcpsReq.Req.Unconfirmed.fBufferSize = 0;
-        mcpsReq.Req.Unconfirmed.Datarate = LORAWAN_DEFAULT_DATARATE;
+        mcpsReq.Req.Unconfirmed.Datarate = RegionAlternateDr( LORAMAC_REGION_CN470, &altDr );
+        LoRaMacParams.ChannelsDatarate = mcpsReq.Req.Unconfirmed.Datarate;
     }
     else
     {
@@ -322,7 +328,8 @@ bool SendFrame( void )
             mcpsReq.Req.Unconfirmed.fPort = AppPort;
             mcpsReq.Req.Unconfirmed.fBuffer = AppData;
             mcpsReq.Req.Unconfirmed.fBufferSize = AppDataSize;
-            mcpsReq.Req.Unconfirmed.Datarate = LORAWAN_DEFAULT_DATARATE;
+            mcpsReq.Req.Unconfirmed.Datarate = RegionAlternateDr( LORAMAC_REGION_CN470, &altDr );
+            LoRaMacParams.ChannelsDatarate = mcpsReq.Req.Unconfirmed.Datarate;
         }
         else
         {
@@ -330,16 +337,20 @@ bool SendFrame( void )
             mcpsReq.Req.Confirmed.fPort = AppPort;
             mcpsReq.Req.Confirmed.fBuffer = AppData;
             mcpsReq.Req.Confirmed.fBufferSize = AppDataSize;
-            mcpsReq.Req.Confirmed.NbTrials = 8;
-            mcpsReq.Req.Confirmed.Datarate = LORAWAN_DEFAULT_DATARATE;
+            mcpsReq.Req.Confirmed.NbTrials = 3;
+            mcpsReq.Req.Confirmed.Datarate = RegionAlternateDr( LORAMAC_REGION_CN470, &altDr );
+            LoRaMacParams.ChannelsDatarate = mcpsReq.Req.Confirmed.Datarate;
         }
     }
 
     if( LoRaMacMcpsRequest( &mcpsReq ) == LORAMAC_STATUS_OK )
     {
+        return true;
+    }
+    else
+    {
         return false;
     }
-    return true;
 }
 
 /*!

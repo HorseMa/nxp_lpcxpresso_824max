@@ -63,14 +63,62 @@ static uint16_t ChannelsDefaultMask[CHANNELS_MASK_SIZE];
 static int8_t GetNextLowerTxDr( int8_t dr, int8_t minDr )
 {
     uint8_t nextLowerDr = 0;
-
-    if( dr == minDr )
+    uint8_t nbEnabledChannels = 0;
+    uint8_t enabledChannels[CN470_MAX_NB_CHANNELS] = { 0 };
+    uint8_t swap;
+    if(!PERSIST->joinpar.isPublic)
     {
-        nextLowerDr = minDr;
+        for( uint8_t i = 0, k = 0; i < CN470_MAX_NB_CHANNELS; i += 16, k++ )
+        {
+            for( uint8_t j = 0; j < 16; j++ )
+            {
+                if( ( ChannelsMask[k] & ( 1 << j ) ) != 0 )
+                {
+                    enabledChannels[nbEnabledChannels++] = (i + j) % 6;
+                }
+            }
+        }
+        if(enabledChannels[0] < enabledChannels[1])
+        {
+            swap = enabledChannels[0];
+            enabledChannels[0] = enabledChannels[1];
+            enabledChannels[1] = swap;
+        }
+        if(enabledChannels[1] < enabledChannels[2])
+        {
+            swap = enabledChannels[1];
+            enabledChannels[1] = enabledChannels[2];
+            enabledChannels[2] = swap;
+        }
+        if(enabledChannels[0] < enabledChannels[1])
+        {
+            swap = enabledChannels[0];
+            enabledChannels[0] = enabledChannels[1];
+            enabledChannels[1] = swap;
+        }
+        if(dr > enabledChannels[0])
+        {
+            nextLowerDr = enabledChannels[0];
+        }
+        else if(dr > enabledChannels[1])
+        {
+            nextLowerDr = enabledChannels[1];
+        }
+        else
+        {
+            nextLowerDr = enabledChannels[2];
+        }
     }
     else
     {
-        nextLowerDr = dr - 1;
+        if( dr == minDr )
+        {
+            nextLowerDr = minDr;
+        }
+        else
+        {
+            nextLowerDr = dr - 1;
+        }
     }
     return nextLowerDr;
 }
@@ -302,7 +350,7 @@ void RegionCN470InitDefaults( InitType_t type )
             if(!PERSIST->joinpar.isPublic)
             {
                 // Initialize the channels default mask
-                ChannelsDefaultMask[0] = 0x0007;
+                ChannelsDefaultMask[0] = 0x000d;
                 ChannelsDefaultMask[1] = 0x0000;
                 ChannelsDefaultMask[2] = 0x0000;
                 ChannelsDefaultMask[3] = 0x0000;
@@ -815,6 +863,10 @@ bool RegionCN470NextChannel( NextChanParams_t* nextChanParams, uint8_t* channel,
                     *channel = enabledChannels[loop];
                     break;
                 }
+            }
+            if(loop >= nbEnabledChannels)
+            {
+                *channel = 0;
             }
         }
         *time = 0;
