@@ -637,7 +637,14 @@ static void McpsIndication( McpsIndication_t *mcpsIndication )
         LMIC.dataLen = 0;
         LMIC.txrxFlags |= TXRX_NOPORT;
     }
-    onEvent(EV_TXCOMPLETE);
+    if(isAlarmDuty() == true)
+    {
+        onEvent(EV_RXCOMPLETE);
+    }
+    else
+    {
+        onEvent(EV_TXCOMPLETE);
+    }
 }
 
 /*!
