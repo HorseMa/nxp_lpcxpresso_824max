@@ -109,7 +109,6 @@ typedef struct {
     uint8_t appeui[8];
     uint8_t devkey[16];
     bool isPublic;
-    uint32_t alarm;
 } joinparam_t;
 
 // layout of session parameters
@@ -118,6 +117,8 @@ typedef struct {
     devaddr_t devaddr;
     uint8_t nwkkey[16];
     uint8_t artkey[16];
+    uint32_t alarm;
+    uint32_t JoinRequestTrials;
 } sessparam_t;
 
 // persistent state
@@ -130,6 +131,10 @@ typedef struct {
     uint32_t seqnoUp;
     uint32_t eventmask;
 } persist_t;
+
+typedef              uint8_t* xref2u1_t;
+typedef unsigned int       uint;
+uint16_t os_crc16 (xref2u1_t data, uint len);
 
 struct lmic_t {
     // Radio settings TX/RX (also accessed by HAL)

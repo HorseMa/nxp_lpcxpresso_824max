@@ -69,7 +69,12 @@ void eeprom_write (void) {
     uint8_t ret_code;
     uint32_t part_id;
     uint32_t unique_id[4];
-    
+    uint16_t joincfgcrc;
+    uint16_t sesscfgcrc;
+
+    joincfgcrc = os_crc16((uint8_t*)&persist.joinpar, sizeof(joinparam_t));
+    sesscfgcrc = os_crc16((uint8_t*)&persist.sesspar, sizeof(sessparam_t));
+    persist.cfghash = (joincfgcrc << 16) | sesscfgcrc;
     memset(src_iap_array_data,0,IAP_NUM_BYTES_TO_WRITE);
     memcpy(src_iap_array_data,&persist,sizeof(persist));
     /* Read Part Identification Number*/

@@ -43,7 +43,7 @@ static union {
     //.pattern = { PATTERN_JOINCFG_STR }
 //};
 
-static const union {
+static union {
     sessparam_t param;
     uint8_t pattern[sizeof(sessparam_t)];
 } sesscfg;// = {
@@ -409,7 +409,7 @@ static void OnLed1TimerEventNetOffline( void )
     }
 }
 
-static void OnLed1TimerEventNetOnline( void )
+/*static void OnLed1TimerEventNetOnline( void )
 {
     static uint8_t state = 0;
     switch(state)
@@ -434,7 +434,7 @@ static void OnLed1TimerEventNetOnline( void )
         state = 0;
         break;
     }
-}
+}*/
 
 void LedIndication(LedSension_t senssion)
 {
@@ -461,10 +461,12 @@ void LedIndication(LedSension_t senssion)
         TimerStart( &Led1Timer_Rx );
         break;
         case EN_LED_SENSSION_NET:
+        // Switch LED 1 OFF
+        Board_LED_Set(0,0);
         if(IsLoRaMacNetworkJoined)
         {
-            TimerSetValue( &Led1Timer_OnLine, 1000 );
-            TimerStart( &Led1Timer_OnLine );
+            //TimerSetValue( &Led1Timer_OnLine, 1000 );
+            //TimerStart( &Led1Timer_OnLine );
         }
         else
         {
@@ -608,8 +610,6 @@ static void modem_reset () {
     }
 }
 
-typedef              uint8_t* xref2u1_t;
-typedef unsigned int       uint;
 uint16_t os_crc16 (xref2u1_t data, uint len) {
     uint16_t remainder = 0;
     uint16_t polynomial = 0x1021;
@@ -628,56 +628,39 @@ uint16_t os_crc16 (xref2u1_t data, uint len) {
 // initialize persistent state (factory reset)
 static void persist_init (uint8_t factory) {
     // check if stored state matches firmware config
-    uint16_t joincfgcrc = os_crc16((uint8_t*)&joincfg, sizeof(joincfg));
-    uint16_t sesscfgcrc = os_crc16((uint8_t*)&sesscfg, sizeof(sesscfg));
+    uint16_t joincfgcrc;
+    uint16_t sesscfgcrc;
+    memcpy(&persist,PERSIST,sizeof(persist_t));
+    joincfgcrc = os_crc16((uint8_t*)&persist.joinpar, sizeof(joincfg));
+    sesscfgcrc = os_crc16((uint8_t*)&persist.sesspar, sizeof(sesscfg));
     
     uint32_t cfghash = (joincfgcrc << 16) | sesscfgcrc;
     if(PERSIST->cfghash != cfghash || factory) {
-	uint32_t flags = 0;
-        //eeprom_erase();
-	//if(joincfgcrc != PATTERN_JOINCFG_CRC) { // patched
-            memcpy(&persist.joinpar,&joincfg,sizeof(joinparam_t));
-	    //eeprom_copy(&PERSIST->joinpar, &joincfg, sizeof(joincfg));
-	    flags |= FLAGS_JOINPAR;
-	//}
-	//if(sesscfgcrc != PATTERN_SESSCFG_CRC) { // patched
-            memcpy(&persist.joinpar,&joincfg,sizeof(joinparam_t));
-            persist.seqnoDn = 0;
-            persist.seqnoUp = 0;
-	    //eeprom_copy(&PERSIST->sesspar, &sesscfg, sizeof(sesscfg));
-	    //eeprom_write(&PERSIST->seqnoDn, 0);
-	    //eeprom_write(&PERSIST->seqnoUp, 0);
-	    //flags |= FLAGS_SESSPAR;
-	//}
-        persist.flags = flags;
+        uint32_t unique_id[4];
+        Chip_IAP_ReadUID(unique_id);
+        memcpy(&DevEui,&unique_id[2],8);
+        memcpy(joincfg.param.deveui,DevEui,8);
+        memcpy(joincfg.param.appeui,AppEui,8);
+        memcpy(joincfg.param.devkey,AppKey,16);
+        joincfg.param.isPublic = false;
+        sesscfg.param.alarm = 60;//seconds
+    
+        memcpy(&persist.joinpar,&joincfg,sizeof(joinparam_t));
+	persist.flags = FLAGS_JOINPAR;
+        memcpy(&persist.sesspar,&sesscfg,sizeof(sessparam_t));
+        persist.seqnoDn = 0;
+        persist.seqnoUp = 0;
         persist.eventmask = ~0;
-        persist.cfghash = cfghash;
-	//eeprom_write(&PERSIST->flags, flags);
-	//eeprom_write(&PERSIST->eventmask, ~0); // report ALL events
-	//eeprom_write(&PERSIST->cfghash, cfghash);
-        //memset(src_iap_array_data,0,IAP_NUM_BYTES_TO_WRITE);
-        //memcpy(src_iap_array_data,&persist,sizeof(persist));
         eeprom_write();
+    }
+    else
+    {
+        memcpy(&persist,PERSIST,sizeof(persist_t));
     }
 }
 extern bool PublicNetwork;
 // called by initial job
 void modem_init () {
-    uint32_t unique_id[4];
-    Chip_IAP_ReadUID(unique_id);
-    memcpy(&DevEui,&unique_id[2],8);
-    memcpy(joincfg.param.deveui,DevEui,8);
-    memcpy(joincfg.param.appeui,AppEui,8);
-    memcpy(joincfg.param.devkey,AppKey,16);
-    joincfg.param.isPublic = false;
-    joincfg.param.alarm = 60;//seconds
-    uint16_t joincfgcrc = os_crc16((uint8_t*)&joincfg, sizeof(joincfg));
-    uint16_t sesscfgcrc = os_crc16((uint8_t*)&sesscfg, sizeof(sesscfg));
-    PATTERN_JOINCFG_CRC = joincfgcrc;
-    PATTERN_SESSCFG_CRC = sesscfgcrc;
-    persist.cfghash = (joincfgcrc << 16) | sesscfgcrc;
-    
-    PublicNetwork = joincfg.param.isPublic;
     // clear modem state
     memset(&MODEM, 0, sizeof(MODEM));
 
@@ -688,7 +671,7 @@ void modem_init () {
     PublicNetwork = PERSIST->joinpar.isPublic;
     //leds_init();
 
-    modem_reset();
+    //modem_reset();
 
     //buffer_init();
     //queue_init();
@@ -700,7 +683,7 @@ void modem_init () {
     frame_init(&rxframe, MODEM.cmdbuf, sizeof(MODEM.cmdbuf));
     TimerInit( &Led1Timer_Tx,OnLed1TimerEventTx);
     TimerInit( &Led1Timer_Rx,OnLed1TimerEventRx);
-    TimerInit( &Led1Timer_OnLine, OnLed1TimerEventNetOnline );
+    //TimerInit( &Led1Timer_OnLine, OnLed1TimerEventNetOnline );
     TimerInit( &Led1Timer_OffLine, OnLed1TimerEventNetOffline );
     //TimerSetValue(&Led1Timer,1000);
     //TimerStart( &Led1Timer );
@@ -829,8 +812,8 @@ void modem_rxdone () {
         reverse(par.appeui, par.appeui, 8);
         
         memcpy(&persist.joinpar,&par,sizeof(par));
-        persist.flags = PERSIST->flags | FLAGS_JOINPAR;
-        
+        persist.flags |= FLAGS_JOINPAR;
+        persist.flags &= FLAGS_SESSPAR;
         //eeprom_erase();
         eeprom_write();
         Radio.Sleep( );
@@ -891,7 +874,7 @@ void modem_rxdone () {
     }*/ else if(cmd == 'a' && len >= 2) { // ATA set alarm timer
     uint32_t secs;
     if(hex2int(&secs, MODEM.cmdbuf+1, len-1)) {
-        persist.joinpar.alarm = secs;
+        persist.sesspar.alarm = secs;
         eeprom_write();
         //os_setTimedCallback(&MODEM.alarmjob, os_getTime()+sec2osticks(secs), onAlarm);
         ok = 1;

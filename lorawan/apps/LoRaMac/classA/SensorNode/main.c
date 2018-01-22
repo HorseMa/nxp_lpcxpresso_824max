@@ -310,7 +310,7 @@ bool SendFrame( void )
     LoRaMacTxInfo_t txInfo;
     AlternateDrParams_t altDr;
 
-    altDr.NbTrials = JoinRequestTrials;
+    altDr.NbTrials = persist.sesspar.JoinRequestTrials;//JoinRequestTrials;
     if( LoRaMacQueryTxPossible( AppDataSize, &txInfo ) != LORAMAC_STATUS_OK )
     {
         // Send empty frame in order to flush MAC commands
@@ -664,6 +664,7 @@ static void MlmeConfirm( MlmeConfirm_t *mlmeConfirm )
                 // Status is OK, node has joined the network
                 DeviceState = DEVICE_STATE_SLEEP;
                 onEvent(EV_JOINED);
+                Board_LED_Set(0,0);
             }
             else
             {
@@ -731,8 +732,10 @@ int main( void )
     SysTick_Config(SystemCoreClock / 1000);
     prvSetupHardware();
     modem_init();
+    Chip_UART_SendRB(LPC_USART0, &txring, "PIN4 WAKEUP\r\n", 13);
     DeviceState = DEVICE_STATE_INIT;
     modem_wkt_init();
+    uartflashtimer = TimerGetCurrentTime();
     //modem_wwdt_init();
     while( 1 )
     {
@@ -817,57 +820,60 @@ int main( void )
             }
             case DEVICE_STATE_JOIN:
             {
-#if( OVER_THE_AIR_ACTIVATION != 0 )
-                MlmeReq_t mlmeReq;
-
-                // Initialize LoRaMac device unique ID
-                //BoardGetUniqueId( DevEui );
-
-                mlmeReq.Type = MLME_JOIN;
-
-                mlmeReq.Req.Join.DevEui = DevEui;
-                mlmeReq.Req.Join.AppEui = AppEui;
-                mlmeReq.Req.Join.AppKey = AppKey;
-                mlmeReq.Req.Join.NbTrials = 3;
-
-                if( NextTx == true )
+                if( persist.flags & FLAGS_JOINPAR )
                 {
-                    LoRaMacMlmeRequest( &mlmeReq );
+                    MlmeReq_t mlmeReq;
+
+                    // Initialize LoRaMac device unique ID
+                    //BoardGetUniqueId( DevEui );
+
+                    mlmeReq.Type = MLME_JOIN;
+
+                    mlmeReq.Req.Join.DevEui = DevEui;
+                    mlmeReq.Req.Join.AppEui = AppEui;
+                    mlmeReq.Req.Join.AppKey = AppKey;
+                    mlmeReq.Req.Join.NbTrials = 3;
+
+                    if( NextTx == true )
+                    {
+                        LoRaMacMlmeRequest( &mlmeReq );
+                    }
+                    DeviceState = DEVICE_STATE_SLEEP;
                 }
-                DeviceState = DEVICE_STATE_SLEEP;
-#else
-                // Choose a random device address if not already defined in Commissioning.h
-                if( DevAddr == 0 )
+                else
                 {
-                    // Random seed initialization
-                    srand1(0x55aa);//( BoardGetRandomSeed( ) );
+                    // Choose a random device address if not already defined in Commissioning.h
+                    /*if( DevAddr == 0 )
+                    {
+                        // Random seed initialization
+                        srand1(0x55aa);//( BoardGetRandomSeed( ) );
 
-                    // Choose a random device address
-                    DevAddr = randr( 0, 0x01FFFFFF );
+                        // Choose a random device address
+                        DevAddr = randr( 0, 0x01FFFFFF );
+                    }*/
+
+                    mibReq.Type = MIB_NET_ID;
+                    mibReq.Param.NetID = persist.sesspar.netid;
+                    LoRaMacMibSetRequestConfirm( &mibReq );
+
+                    mibReq.Type = MIB_DEV_ADDR;
+                    mibReq.Param.DevAddr = persist.sesspar.devaddr;
+                    LoRaMacMibSetRequestConfirm( &mibReq );
+
+                    mibReq.Type = MIB_NWK_SKEY;
+                    mibReq.Param.NwkSKey = persist.sesspar.nwkkey;
+                    LoRaMacMibSetRequestConfirm( &mibReq );
+
+                    mibReq.Type = MIB_APP_SKEY;
+                    mibReq.Param.AppSKey = persist.sesspar.artkey;
+                    LoRaMacMibSetRequestConfirm( &mibReq );
+
+                    mibReq.Type = MIB_NETWORK_JOINED;
+                    mibReq.Param.IsNetworkJoined = true;
+                    LoRaMacMibSetRequestConfirm( &mibReq );
+
+                    DeviceState = DEVICE_STATE_SLEEP;
                 }
-
-                mibReq.Type = MIB_NET_ID;
-                mibReq.Param.NetID = LORAWAN_NETWORK_ID;
-                LoRaMacMibSetRequestConfirm( &mibReq );
-
-                mibReq.Type = MIB_DEV_ADDR;
-                mibReq.Param.DevAddr = DevAddr;
-                LoRaMacMibSetRequestConfirm( &mibReq );
-
-                mibReq.Type = MIB_NWK_SKEY;
-                mibReq.Param.NwkSKey = NwkSKey;
-                LoRaMacMibSetRequestConfirm( &mibReq );
-
-                mibReq.Type = MIB_APP_SKEY;
-                mibReq.Param.AppSKey = AppSKey;
-                LoRaMacMibSetRequestConfirm( &mibReq );
-
-                mibReq.Type = MIB_NETWORK_JOINED;
-                mibReq.Param.IsNetworkJoined = true;
-                LoRaMacMibSetRequestConfirm( &mibReq );
-
-                DeviceState = DEVICE_STATE_SLEEP;
-#endif
                 break;
             }
 #if 0
@@ -914,9 +920,10 @@ int main( void )
                 {
                     if((TimerGetElapsedTime(uartflashtimer) > 10) && (RingBuffer_IsEmpty(&txring)))
                     {
-                        enablePio4IntToWakeup();
-                        WakeupTest(WKT_CLKSRC_10KHZ,persist.joinpar.alarm,PMU_MCU_POWER_DOWN);
-                        enableUart();
+                        Chip_PMU_SetPowerDownControl(LPC_PMU, PMU_DPDCTRL_WAKEUPPHYS | PMU_DPDCTRL_LPOSCDPDEN);
+                        //enablePio4IntToWakeup();
+                        WakeupTest(WKT_CLKSRC_10KHZ,persist.sesspar.alarm,PMU_MCU_DEEP_PWRDOWN);
+                        //enableUart();
                         //Chip_UART_SendRB(LPC_USART0, &txring, "PIN4 WAKEUP\r\n", 13);
                     }
                     else
