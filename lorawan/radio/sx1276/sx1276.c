@@ -1117,6 +1117,7 @@ void SX1276SetTx( uint32_t timeout )
 
 void SX1276StartCad( void )
 {
+#if 0
     switch( SX1276.Settings.Modem )
     {
     case MODEM_FSK:
@@ -1146,6 +1147,7 @@ void SX1276StartCad( void )
     default:
         break;
     }
+#endif
 }
 
 void SX1276SetTxContinuousWave( uint32_t freq, int8_t power, uint16_t time )
@@ -1805,7 +1807,7 @@ void PININT2_IRQHandler( void )
             break;
     }
 }
-
+#if 0
 void PININT3_IRQHandler( void )
 {
     Chip_PININT_ClearIntStatus(LPC_PININT, PININTCH3);
@@ -1873,3 +1875,4 @@ void PININT5_IRQHandler( void )
         break;
     }
 }
+#endif

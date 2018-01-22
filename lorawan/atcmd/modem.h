@@ -109,6 +109,7 @@ typedef struct {
     uint8_t appeui[8];
     uint8_t devkey[16];
     bool isPublic;
+    uint32_t alarm;
 } joinparam_t;
 
 // layout of session parameters
@@ -251,6 +252,10 @@ typedef enum eLedSension
 
 
 // frame rx/tx state
+#define FRAME_PREAMBLE_FF   0xA5
+#define FRAME_PREAMBLE_55   0xA6
+#define FRAME_PREAMBLE_AA   0xA7
+#define FRAME_PREAMBLE_END   0xA8
 #define FRAME_INIT   0x00
 #define FRAME_A_A    0xA1
 #define FRAME_A_T    0xA2
@@ -325,5 +330,10 @@ void eeprom_write (void);
 //void eeprom_copy (void* dst, const void* src, uint16_t len);
 void modem_wkt_init(void);
 void modem_wwdt_init(void);
+void WakeupTest(WKT_CLKSRC_T clkSrc, uint32_t timeoutInSecs, CHIP_PMU_MCUPOWER_T powerTest);
+void AlarmStart(void);
+void AlarmEnd(void);
+uint8_t isAlarmDuty(void);
+void enablePio4IntToWakeup(void);
 
 #endif

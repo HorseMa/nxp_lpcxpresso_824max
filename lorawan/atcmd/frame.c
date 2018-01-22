@@ -58,6 +58,20 @@ void frame_init (FRAME* f, uint8_t* buf, uint16_t max) {
 uint8_t frame_rx (uint8_t c) {
     switch(rxframe.state) {
     case FRAME_INIT:
+        rxframe.state = FRAME_PREAMBLE_FF;
+    case FRAME_PREAMBLE_FF:
+        if(c == 0xff)
+        {
+            rxframe.state = FRAME_PREAMBLE_55;
+        }
+        break;
+    case FRAME_PREAMBLE_55:
+        if(c == 0x55)
+        {
+            rxframe.state = FRAME_PREAMBLE_END;
+        }
+        break;
+    case FRAME_PREAMBLE_END:
 	if(c == 'a' || c == 'A') {
 	    rxframe.state = FRAME_A_A;
 	} else if(c == 'B') {

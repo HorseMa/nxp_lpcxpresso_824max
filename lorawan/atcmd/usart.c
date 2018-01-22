@@ -72,8 +72,8 @@ void usart_init () {
 
     /* Connect the U0_TXD_O and U0_RXD_I signals to port pins(P0.4, P0.0) */
     Chip_SWM_DisableFixedPin(SWM_FIXED_ACMP_I1);
-    Chip_SWM_MovablePinAssign(SWM_U0_TXD_O, 4);
-    Chip_SWM_MovablePinAssign(SWM_U0_RXD_I, 0);
+    Chip_SWM_MovablePinAssign(SWM_U0_TXD_O, 0);
+    Chip_SWM_MovablePinAssign(SWM_U0_RXD_I, 4);
     Chip_Clock_DisablePeriphClock(SYSCTL_CLOCK_SWM);
     /* Setup UART */
     Chip_UART_Init(LPC_USART);

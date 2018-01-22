@@ -88,20 +88,59 @@ extern uint8_t AppEui[];
 extern uint8_t AppKey[];
 extern RINGBUFF_T txring, rxring;
 
+uint8_t wktType = 0;
+
+void enablePio4IntToWakeup(void)
+{
+    Chip_Clock_EnablePeriphClock(SYSCTL_CLOCK_SWM);
+    Chip_SWM_DisableFixedPin(SWM_FIXED_ADC11);
+    Chip_SWM_MovablePinAssign(SWM_SCT_IN1_I, 4);
+    Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, 0, 4);
+    Chip_SYSCTL_SetPinInterrupt(7, 4);
+    Chip_SYSCTL_EnablePINTWakeup(7);
+    Chip_SYSCTL_SetWakeup(~(SYSCTL_SLPWAKE_IRCOUT_PD | SYSCTL_SLPWAKE_IRC_PD |
+                            SYSCTL_SLPWAKE_FLASH_PD | SYSCTL_SLPWAKE_SYSOSC_PD | SYSCTL_SLPWAKE_SYSOSC_PD |
+                            SYSCTL_SLPWAKE_SYSPLL_PD));
+    Chip_Clock_DisablePeriphClock(SYSCTL_CLOCK_SWM);
+    /* Configure channel 7 interrupt as edge sensitive and falling edge interrupt */
+    Chip_PININT_SetPinModeEdge(LPC_PININT, PININTCH7);
+    Chip_PININT_EnableIntLow(LPC_PININT, PININTCH7);
+
+    /* Enable interrupt in the NVIC */
+    NVIC_EnableIRQ(PININT7_IRQn);
+}
+static void funWktAlarm(void)
+{
+    uint8_t txcycledata[] = {0x00 ,0x01 ,0x02 ,0x0A ,0x0B};
+    wktType = 0;
+    IsTxConfirmed = false;
+    AlarmStart();
+    PrepareTxFrame( 2 ,txcycledata,5);
+    SendFrame();
+    return;
+}
+
 /**
  * @brief	Handle interrupt from Wake-up timer
  * @return	Nothing
  */
+extern void enableUart(void);
 void WKT_IRQHandler(void)
 {
 	/* Clear WKT interrupt request */
 	Chip_WKT_ClearIntStatus(LPC_WKT);
 
+        funWktAlarm();
 	/* LED will toggle state on wakeup event */
 	//Board_LED_Toggle(0);
 }
 
-static void WakeupTest(WKT_CLKSRC_T clkSrc, uint32_t timeoutInSecs, CHIP_PMU_MCUPOWER_T powerTest)
+void PININT7_IRQHandler( void )
+{
+    Chip_PININT_ClearIntStatus(LPC_PININT, PININTCH7);
+}
+
+void WakeupTest(WKT_CLKSRC_T clkSrc, uint32_t timeoutInSecs, CHIP_PMU_MCUPOWER_T powerTest)
 {
     /* 10KHz clock source */
     Chip_WKT_SetClockSource(LPC_WKT, clkSrc);
@@ -531,6 +570,23 @@ static void onAlarm (void) {
     modem_starttx();
 }
 
+static uint8_t isAlarm = false;
+void AlarmStart(void)
+{
+    isAlarm = true;
+    wktType = 0;
+}
+                            
+void AlarmEnd(void)
+{
+    isAlarm = false;
+    Chip_UART_SendRB(LPC_USART0, &txring, "EV_ALARM\r\n", 10);
+}
+
+uint8_t isAlarmDuty(void)
+{
+    return isAlarm;
+}
 static void modem_reset () {
     //os_clearCallback(&MODEM.alarmjob); // cancel alarm job
     //os_clearCallback(&MODEM.blinkjob); // cancel blink job
@@ -614,6 +670,7 @@ void modem_init () {
     memcpy(joincfg.param.appeui,AppEui,8);
     memcpy(joincfg.param.devkey,AppKey,16);
     joincfg.param.isPublic = false;
+    joincfg.param.alarm = 60;//seconds
     uint16_t joincfgcrc = os_crc16((uint8_t*)&joincfg, sizeof(joincfg));
     uint16_t sesscfgcrc = os_crc16((uint8_t*)&sesscfg, sizeof(sesscfg));
     PATTERN_JOINCFG_CRC = joincfgcrc;
@@ -831,13 +888,15 @@ void modem_rxdone () {
         ok = 1;
         }
     }
-    }*//* else if(cmd == 'a' && len >= 2) { // ATA set alarm timer
+    }*/ else if(cmd == 'a' && len >= 2) { // ATA set alarm timer
     uint32_t secs;
     if(hex2int(&secs, MODEM.cmdbuf+1, len-1)) {
+        persist.joinpar.alarm = secs;
+        eeprom_write();
         //os_setTimedCallback(&MODEM.alarmjob, os_getTime()+sec2osticks(secs), onAlarm);
         ok = 1;
     }
-    }*/
+    }
 
     // send response
     if(ok) {

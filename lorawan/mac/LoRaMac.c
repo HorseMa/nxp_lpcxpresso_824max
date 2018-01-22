@@ -1209,9 +1209,16 @@ static void OnRadioRxTimeout( void )
         {
             if(IsLoRaMacNetworkJoined == true)
             {
-                LMIC.txrxFlags = 0;
-                LMIC.dataLen = 0;
-                onEvent(EV_TXCOMPLETE);
+                if(isAlarmDuty() == true)
+                {
+                    AlarmEnd();
+                }
+                else
+                {
+                    LMIC.txrxFlags = 0;
+                    LMIC.dataLen = 0;
+                    onEvent(EV_TXCOMPLETE);
+                }
             }
         }
         MlmeConfirm.Status = LORAMAC_EVENT_INFO_STATUS_RX2_TIMEOUT;
@@ -3349,6 +3356,7 @@ LoRaMacStatus_t LoRaMacMcpsRequest( McpsReq_t *mcpsRequest )
     return status;
 }
 
+#if 0
 void LoRaMacTestRxWindowsOn( bool enable )
 {
     IsRxWindowsEnabled = enable;
@@ -3376,3 +3384,4 @@ void LoRaMacTestSetChannel( uint8_t channel )
 {
     Channel = channel;
 }
+#endif

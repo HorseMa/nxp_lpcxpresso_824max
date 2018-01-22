@@ -78,24 +78,18 @@ static int8_t GetNextLowerTxDr( int8_t dr, int8_t minDr )
                 }
             }
         }
-        if(enabledChannels[0] < enabledChannels[1])
-        {
-            swap = enabledChannels[0];
-            enabledChannels[0] = enabledChannels[1];
-            enabledChannels[1] = swap;
+
+        for (uint8_t i = 0; i < nbEnabledChannels - 1; i++) // 10个数，10 - 1轮冒泡，每一轮都将当前最大的数推到最后   
+        {   
+            for (uint8_t j = 0; j < (nbEnabledChannels - 1 - i); j++) // 9 - i，意思是每当经过一轮冒泡后，就减少一次比较   
+            if (enabledChannels[j] < enabledChannels[j+1])   
+            {   
+                  swap = enabledChannels[j];   
+                  enabledChannels[j] = enabledChannels[j+1];   
+                  enabledChannels[j+1] = swap;   
+            }   
         }
-        if(enabledChannels[1] < enabledChannels[2])
-        {
-            swap = enabledChannels[1];
-            enabledChannels[1] = enabledChannels[2];
-            enabledChannels[2] = swap;
-        }
-        if(enabledChannels[0] < enabledChannels[1])
-        {
-            swap = enabledChannels[0];
-            enabledChannels[0] = enabledChannels[1];
-            enabledChannels[1] = swap;
-        }
+
         if(dr > enabledChannels[0])
         {
             nextLowerDr = enabledChannels[0];
@@ -350,7 +344,7 @@ void RegionCN470InitDefaults( InitType_t type )
             if(!PERSIST->joinpar.isPublic)
             {
                 // Initialize the channels default mask
-                ChannelsDefaultMask[0] = 0x000d;
+                ChannelsDefaultMask[0] = 0x0007;
                 ChannelsDefaultMask[1] = 0x0000;
                 ChannelsDefaultMask[2] = 0x0000;
                 ChannelsDefaultMask[3] = 0x0000;
@@ -740,29 +734,21 @@ int8_t RegionCN470AlternateDr( AlternateDrParams_t* alternateDr )
             {
                 if( ( ChannelsMask[k] & ( 1 << j ) ) != 0 )
                 {
-                    enabledChannels[nbEnabledChannels++] = i + j;
+                    enabledChannels[nbEnabledChannels++] = (i + j) % 6;
                 }
             }
         }
-        if((enabledChannels[0] % 6) < (enabledChannels[1] % 6))
-        {
-            swap = enabledChannels[0];
-            enabledChannels[0] = enabledChannels[1];
-            enabledChannels[1] = swap;
+        for (uint8_t i = 0; i < nbEnabledChannels - 1; i++)
+        {   
+            for (uint8_t j = 0; j < (nbEnabledChannels - 1 - i); j++)
+            if (enabledChannels[j] < enabledChannels[j+1])   
+            {   
+                  swap = enabledChannels[j];   
+                  enabledChannels[j] = enabledChannels[j+1];   
+                  enabledChannels[j+1] = swap;   
+            }   
         }
-        if((enabledChannels[1] % 6) < (enabledChannels[2] % 6))
-        {
-            swap = enabledChannels[1];
-            enabledChannels[1] = enabledChannels[2];
-            enabledChannels[2] = swap;
-        }
-        if((enabledChannels[0] % 6) < (enabledChannels[1] % 6))
-        {
-            swap = enabledChannels[0];
-            enabledChannels[0] = enabledChannels[1];
-            enabledChannels[1] = swap;
-        }
-        datarate = enabledChannels[(alternateDr->NbTrials - 1) % 3] % 6;
+        datarate = enabledChannels[(alternateDr->NbTrials - 1) % 3];
     }
     else
     {

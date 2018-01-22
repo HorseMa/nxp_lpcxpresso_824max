@@ -698,6 +698,13 @@ static void prvSetupHardware(void)
 	Board_Init();
 }
 
+static uint32_t uartflashtimer = 0;
+void enableUart(void)
+{
+    usart_init();
+    //Chip_UART_SendRB(LPC_USART0, &txring, "PIN4 WAKEUP\r\n", 13);
+    uartflashtimer = TimerGetCurrentTime();// this is need , if not the mcu will go to powerdown again
+}
 /**
  * Main application entry point.
  */
@@ -726,8 +733,10 @@ int main( void )
         bytes = Chip_UART_ReadRB(LPC_USART0, &rxring, &byte, 1);
         if(bytes > 0)
         {
+            uartflashtimer = TimerGetCurrentTime();
             //Chip_UART_SendRB(LPC_USART0, &txring, &byte, 1);
             frame_rx(byte);
+            //Chip_UART_SendRB(LPC_USART0, &txring, &byte, 1);
             //if(frame_rx(byte) == 0) {
                 //Chip_UART_IntDisable(LPC_USART0, UART_INTEN_RXRDY);
             //}
@@ -854,6 +863,7 @@ int main( void )
 #endif
                 break;
             }
+#if 0
             case DEVICE_STATE_SEND:
             {
                 if( NextTx == true )
@@ -889,8 +899,28 @@ int main( void )
                 //TimerStart( &TxNextPacketTimer );
                 break;
             }
+#endif
             case DEVICE_STATE_SLEEP:
             {
+                //funWkt[wktType]();
+                if(LoRaMacState == 0)
+                {
+                    if((TimerGetElapsedTime(uartflashtimer) > 10) && (RingBuffer_IsEmpty(&txring)))
+                    {
+                        enablePio4IntToWakeup();
+                        WakeupTest(WKT_CLKSRC_10KHZ,persist.joinpar.alarm,PMU_MCU_POWER_DOWN);
+                        enableUart();
+                        //Chip_UART_SendRB(LPC_USART0, &txring, "PIN4 WAKEUP\r\n", 13);
+                    }
+                    else
+                    {
+                        WakeupTest(WKT_CLKSRC_10KHZ,0xfffffffe,PMU_MCU_SLEEP);
+                    }
+                }
+                else
+                {
+                    WakeupTest(WKT_CLKSRC_10KHZ,0xfffffffe,PMU_MCU_SLEEP);
+                }
                 // Wake up through events
                 //TimerLowPowerHandler( );
                 break;

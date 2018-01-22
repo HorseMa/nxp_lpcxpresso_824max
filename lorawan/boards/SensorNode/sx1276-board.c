@@ -186,7 +186,7 @@ void SX1276IoIrqInit( void )
 
   /* Enable interrupt in the NVIC */
   NVIC_EnableIRQ(PININT2_IRQn);
-
+#if 0
   /* Configure channel 0 interrupt as edge sensitive and falling edge interrupt */
   Chip_PININT_SetPinModeEdge(LPC_PININT, PININTCH3);
   Chip_PININT_EnableIntHigh(LPC_PININT, PININTCH3);
@@ -200,7 +200,7 @@ void SX1276IoIrqInit( void )
 
   /* Enable interrupt in the NVIC */
   NVIC_EnableIRQ(PININT4_IRQn);
-#if 0
+
   /* Configure channel 0 interrupt as edge sensitive and falling edge interrupt */
   Chip_PININT_SetPinModeEdge(LPC_PININT, PININTCH5);
   Chip_PININT_EnableIntHigh(LPC_PININT, PININTCH5);
