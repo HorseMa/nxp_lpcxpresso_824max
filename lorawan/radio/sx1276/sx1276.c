@@ -228,17 +228,6 @@ void SX1276Init( RadioEvents_t *events )
     TimerInit( &RxTimeoutSyncWord, SX1276OnTimeoutIrq );
     SX1276IoInit();
     SX1276Reset( );
-    // test spi ok?
-    SX1276ReadBuffer(0x61,chip_version,3);
-    chip_version[0] = 1;
-    chip_version[1] = 2;
-    chip_version[2] = 3;
-    SX1276WriteBuffer(0x61,chip_version,3);
-    chip_version[0] = 0;
-    chip_version[1] = 0;
-    chip_version[2] = 0;
-    SX1276ReadBuffer(0x61,chip_version,3);
-    chip_version[0] = SX1276Read(0x42);
     
     RxChainCalibration( );
 
@@ -1297,6 +1286,7 @@ void SX1276WriteBuffer( uint8_t addr, uint8_t *buffer, uint8_t size )
         temp = Chip_SPI_ReceiveFrame(LPC_SPI1);
         loop ++;
     }
+    Chip_SPI_SetControlInfo(LPC_SPI1, 8, SPI_TXCTL_DEASSERT_SSEL);
 }
 
 void SX1276ReadBuffer( uint8_t addr, uint8_t *buffer, uint8_t size )
@@ -1325,6 +1315,7 @@ void SX1276ReadBuffer( uint8_t addr, uint8_t *buffer, uint8_t size )
       while (!(Chip_SPI_GetStatus(LPC_SPI1) & SPI_STAT_RXRDY)) {};
       buffer[loop++] = Chip_SPI_ReceiveFrame(LPC_SPI1);
   }
+  Chip_SPI_SetControlInfo(LPC_SPI1, 8, SPI_TXCTL_DEASSERT_SSEL);
 }
 
 void SX1276WriteFifo( uint8_t *buffer, uint8_t size )
@@ -1734,7 +1725,7 @@ void PININT1_IRQHandler( void )
             break;
     }
 }
-
+#if 0
 void PININT2_IRQHandler( void )
 {
     Chip_PININT_ClearIntStatus(LPC_PININT, PININTCH2);
@@ -1807,7 +1798,7 @@ void PININT2_IRQHandler( void )
             break;
     }
 }
-#if 0
+
 void PININT3_IRQHandler( void )
 {
     Chip_PININT_ClearIntStatus(LPC_PININT, PININTCH3);

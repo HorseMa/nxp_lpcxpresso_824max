@@ -62,6 +62,7 @@ void SX1276IoInit( void )
 {
   SPI_DELAY_CONFIG_T DelayConfigStruct;
   Chip_Clock_EnablePeriphClock(SYSCTL_CLOCK_SWM);
+
   /* Configure interrupt channel 0 for the GPIO pin in SysCon block */
   //Chip_SWM_MovablePinAssign(SWM_SCT_IN0_I, 19);
   Chip_SYSCTL_SetPinInterrupt(0, 19);   // DIO0
@@ -84,14 +85,15 @@ void SX1276IoInit( void )
 
   /* Configure interrupt channel 0 for the GPIO pin in SysCon block */
   //Chip_SWM_MovablePinAssign(SWM_SCT_IN2_I, 17);
-  Chip_SYSCTL_SetPinInterrupt(2, 17);   // DIO2
+  //Chip_SYSCTL_SetPinInterrupt(2, 17);   // DIO2,but it is not DIO2 ,It is antana switch ctrl,this pin must pull down before sleep; Pull up before Rx, Pull down before Tx
 
   /* Configure channel 0 as wake up interrupt in SysCon block */
-  Chip_SYSCTL_EnablePINTWakeup(2);
+  //Chip_SYSCTL_EnablePINTWakeup(2);
 
   /* Configure GPIO pin as input pin */
-  Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, 0, 17);
-
+  Chip_IOCON_PinDisableOpenDrainMode(LPC_IOCON,IOCON_PIO17);
+  Chip_GPIO_SetPinDIROutput(LPC_GPIO_PORT, 0, 17);
+#if 0
   /* Configure interrupt channel 0 for the GPIO pin in SysCon block */
   //Chip_SWM_MovablePinAssign(SWM_SCT_IN3_I, 21);
   Chip_SYSCTL_SetPinInterrupt(3, 21);   // DIO3
@@ -112,7 +114,7 @@ void SX1276IoInit( void )
   /* Configure GPIO pin as input pin */
   Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, 0, 20);
   
-  #if 0   // dio5 is not used, interrupt too often
+  // dio5 is not used, interrupt too often
   /* Configure interrupt channel 0 for the GPIO pin in SysCon block */
   //Chip_SWM_MovablePinAssign(SWM_SCT_IN5_I, 22);
   Chip_SYSCTL_SetPinInterrupt(5, 22);   // DIO5
@@ -123,23 +125,26 @@ void SX1276IoInit( void )
   /* Configure GPIO pin as input pin */
   Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, 0, 22);
 #endif
-  
+  Chip_IOCON_PinDisableOpenDrainMode(LPC_IOCON,IOCON_PIO23);
   Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,23,TRUE); // NRESET
-  Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO23,PIN_MODE_PULLUP);
-  
+  //Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO23,PIN_MODE_PULLUP);
+#if 0
   Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,14,TRUE); // SSEL
-  Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO14,PIN_MODE_PULLUP);
+  //Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO14,PIN_MODE_PULLUP);
   Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,25,TRUE); // SCK
-  Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO25,PIN_MODE_PULLUP);
+  //Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO25,PIN_MODE_PULLUP);
   Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,7,FALSE); // MISO
   Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO7,PIN_MODE_INACTIVE);
   Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,6,TRUE); // MOSI
-  Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO6,PIN_MODE_PULLUP);
-  
-  
+  //Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO6,PIN_MODE_PULLUP);
+#endif
+  Chip_IOCON_PinDisableOpenDrainMode(LPC_IOCON,IOCON_PIO14);
   Chip_SWM_MovablePinAssign(SWM_SPI1_SSEL0_IO, 14);
+  Chip_IOCON_PinDisableOpenDrainMode(LPC_IOCON,IOCON_PIO25);
   Chip_SWM_MovablePinAssign(SWM_SPI1_SCK_IO, 25);
+  //Chip_IOCON_PinDisableOpenDrainMode(LPC_IOCON,IOCON_PIO17);
   Chip_SWM_MovablePinAssign(SWM_SPI1_MISO_IO, 7);
+  Chip_IOCON_PinDisableOpenDrainMode(LPC_IOCON,IOCON_PIO6);
   Chip_SWM_MovablePinAssign(SWM_SPI1_MOSI_IO, 6);
   Chip_Clock_DisablePeriphClock(SYSCTL_CLOCK_SWM);
   /*
@@ -179,14 +184,14 @@ void SX1276IoIrqInit( void )
 
   /* Enable interrupt in the NVIC */
   NVIC_EnableIRQ(PININT1_IRQn);
-
+#if 0
   /* Configure channel 0 interrupt as edge sensitive and falling edge interrupt */
   Chip_PININT_SetPinModeEdge(LPC_PININT, PININTCH2);
   Chip_PININT_EnableIntHigh(LPC_PININT, PININTCH2);
 
   /* Enable interrupt in the NVIC */
   NVIC_EnableIRQ(PININT2_IRQn);
-#if 0
+
   /* Configure channel 0 interrupt as edge sensitive and falling edge interrupt */
   Chip_PININT_SetPinModeEdge(LPC_PININT, PININTCH3);
   Chip_PININT_EnableIntHigh(LPC_PININT, PININTCH3);
@@ -297,7 +302,8 @@ uint8_t SX1276GetPaSelect( uint32_t channel )
         return RF_PACONFIG_PASELECT_RFO;
     }
 }
-
+                        
+extern RINGBUFF_T txring, rxring;
 void SX1276SetAntSwLowPower( bool status )
 {
     if( RadioIsActive != status )
@@ -307,9 +313,11 @@ void SX1276SetAntSwLowPower( bool status )
         if( status == false )
         {
             SX1276AntSwInit( );
+            //Chip_UART_SendRB(LPC_USART0, &txring, "wakeup\r\n", 8);
         }
         else
         {
+            //Chip_UART_SendRB(LPC_USART0, &txring, "sleep\r\n", 7);
             SX1276AntSwDeInit( );
         }
     }
@@ -319,12 +327,18 @@ void SX1276AntSwInit( void )
 {
     //GpioInit( &AntSwitchLf, RADIO_ANT_SWITCH_LF, PIN_OUTPUT, PIN_PUSH_PULL, PIN_PULL_UP, 1 );
     //GpioInit( &AntSwitchHf, RADIO_ANT_SWITCH_HF, PIN_OUTPUT, PIN_PUSH_PULL, PIN_PULL_UP, 0 );
+    Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO17,PIN_MODE_REPEATER);
+    Chip_GPIO_SetPinDIROutput(LPC_GPIO_PORT, 0, 17);
+    
 }
 
 void SX1276AntSwDeInit( void )
 {
     //GpioInit( &AntSwitchLf, RADIO_ANT_SWITCH_LF, PIN_OUTPUT, PIN_OPEN_DRAIN, PIN_NO_PULL, 0 );
     //GpioInit( &AntSwitchHf, RADIO_ANT_SWITCH_HF, PIN_OUTPUT, PIN_OPEN_DRAIN, PIN_NO_PULL, 0 );
+    Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO17,PIN_MODE_INACTIVE);
+    Chip_GPIO_SetPinDIROutput(LPC_GPIO_PORT, 0, 17);
+    Chip_GPIO_SetPinOutLow(LPC_GPIO_PORT,0,17);
 }
 
 void SX1276SetAntSw( uint8_t opMode )
@@ -332,6 +346,8 @@ void SX1276SetAntSw( uint8_t opMode )
     switch( opMode )
     {
     case RFLR_OPMODE_TRANSMITTER:
+        Chip_GPIO_SetPinOutLow(LPC_GPIO_PORT,0,17);
+        //Chip_UART_SendRB(LPC_USART0, &txring, "low\r\n", 5);
         //GpioWrite( &AntSwitchLf, 0 );
         //GpioWrite( &AntSwitchHf, 1 );
         break;
@@ -341,6 +357,8 @@ void SX1276SetAntSw( uint8_t opMode )
     default:
         //GpioWrite( &AntSwitchLf, 1 );
         //GpioWrite( &AntSwitchHf, 0 );
+        Chip_GPIO_SetPinOutHigh(LPC_GPIO_PORT,0,17);
+        //Chip_UART_SendRB(LPC_USART0, &txring, "high\r\n", 6);
         break;
     }
 }

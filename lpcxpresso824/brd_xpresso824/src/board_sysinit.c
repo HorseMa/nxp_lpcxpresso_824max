@@ -66,20 +66,6 @@ void Board_SetupClocking(void)
 	 * but not connected by default.
 	 */
 	Chip_SetupIrcClocking();
-        Chip_Clock_EnablePeriphClock(SYSCTL_CLOCK_SWM);
-  	/* Enable power to the system osc */
-	Chip_SYSCTL_PowerUp(SYSCTL_SLPWAKE_SYSOSC_PD);
-
-	/* Set the P0.8 and P0.9 pin modes to no pull-up or pull-down */
-	Chip_IOCON_PinSetMode(LPC_IOCON, IOCON_PIO8, PIN_MODE_INACTIVE);
-	Chip_IOCON_PinSetMode(LPC_IOCON, IOCON_PIO9, PIN_MODE_INACTIVE);
-
-	/* Enable SYSOSC function on the pins */
-	Chip_SWM_FixedPinEnable(SWM_FIXED_XTALIN, true);
-	Chip_SWM_FixedPinEnable(SWM_FIXED_XTALOUT, true);
-        Chip_Clock_DisablePeriphClock(SYSCTL_CLOCK_SWM);
-        
-	//Chip_SetupXtalClocking();
 	SystemCoreClockUpdate();
 }
 

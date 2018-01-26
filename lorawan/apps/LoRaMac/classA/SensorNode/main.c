@@ -23,7 +23,7 @@ Maintainer: Miguel Luis and Gregory Cristian
 #include "Region.h"
 #include "Commissioning.h"
 #include "modem.h"
-
+#include "radio.h"
 /*!
  * Defines the application data transmission duty cycle. 5s, value in [ms].
  */
@@ -734,12 +734,13 @@ int main( void )
     modem_init();
     Chip_UART_SendRB(LPC_USART0, &txring, "PIN4 WAKEUP\r\n", 13);
     DeviceState = DEVICE_STATE_INIT;
-    modem_wkt_init();
+    //modem_wkt_init();
     uartflashtimer = TimerGetCurrentTime();
+    //LoRaMacState = 0;
     //modem_wwdt_init();
     while( 1 )
     {
-        Chip_WWDT_Feed(LPC_WWDT);
+        //Chip_WWDT_Feed(LPC_WWDT);
         bytes = Chip_UART_ReadRB(LPC_USART0, &rxring, &byte, 1);
         if(bytes > 0)
         {
@@ -752,6 +753,7 @@ int main( void )
             //}
         }
         //Chip_UART_SendRB(LPC_USART0, &txring, &byte, 1);
+
         switch( DeviceState )
         {
             case DEVICE_STATE_INIT:
@@ -920,20 +922,57 @@ int main( void )
                 {
                     if((TimerGetElapsedTime(uartflashtimer) > 10) && (RingBuffer_IsEmpty(&txring)))
                     {
-                        Chip_PMU_SetPowerDownControl(LPC_PMU, PMU_DPDCTRL_WAKEUPPHYS | PMU_DPDCTRL_LPOSCDPDEN);
+                        NVIC_DisableIRQ(PININT0_IRQn);
+                        NVIC_DisableIRQ(PININT1_IRQn);
+                        Radio.Sleep( );
+                        uint32_t cmdData[3];
+                        uint32_t response;
+                        uint32_t sleepFlags;
+                        Chip_SYSCTL_DisablePINTWakeup(0);
+                        Chip_SYSCTL_DisablePINTWakeup(1);
+                        Chip_Clock_SetMainClockSource(SYSCTL_MAINCLKSRC_IRC);
+                        sleepFlags = Chip_PMU_GetSleepFlags(LPC_PMU);
+                        Chip_PMU_ClearSleepFlags(LPC_PMU, PMU_PCON_DPDFLAG);
+
+                        /* Only do this if restarting from a COLD reset */
+                        if (!(sleepFlags & PMU_PCON_DPDFLAG)) {
+
+                        /* Set default state of LED to ON */
+                        //Board_LED_Set(0, true);
+                        }
+                        /* Set power state (Not required but shown for reference) */
+                        cmdData[0] = 12;
+                        cmdData[1] = PWR_EFFICIENCY;
+                        cmdData[2] = 12;
+                        __disable_irq();
+                        LPC_ROM_API->pPWRD->set_power(cmdData, &response);
+                        __enable_irq();
+
+                        /* if failure response don't proceed */
+                        if (response) {
+                            while (1) {
+                                //blinkLEDCount(2);
+                            }
+                        }
+                        /* Configure ARM to only allow enabled IRQ's to wake us up */
+                        SCB->SCR &= ~(SCB_SCR_SEVONPEND_Msk);
+                        Chip_PMU_DeepPowerDownState(LPC_PMU);
+                        //Chip_PMU_SetPowerDownControl(LPC_PMU, PMU_DPDCTRL_WAKEUPPHYS | PMU_DPDCTRL_LPOSCDPDEN);
                         //enablePio4IntToWakeup();
-                        WakeupTest(WKT_CLKSRC_10KHZ,persist.sesspar.alarm,PMU_MCU_DEEP_PWRDOWN);
+                        //WakeupTest(WKT_CLKSRC_10KHZ,persist.sesspar.alarm,PMU_MCU_DEEP_PWRDOWN);
+                        NVIC_EnableIRQ(PININT0_IRQn);
+                        NVIC_EnableIRQ(PININT1_IRQn);
                         //enableUart();
                         //Chip_UART_SendRB(LPC_USART0, &txring, "PIN4 WAKEUP\r\n", 13);
                     }
-                    else
+                    //else
                     {
-                        WakeupTest(WKT_CLKSRC_10KHZ,0xfffffffe,PMU_MCU_SLEEP);
+                    //    WakeupTest(WKT_CLKSRC_10KHZ,0xfffffffe,PMU_MCU_SLEEP);
                     }
                 }
                 else
                 {
-                    WakeupTest(WKT_CLKSRC_10KHZ,0xfffffffe,PMU_MCU_SLEEP);
+                    //WakeupTest(WKT_CLKSRC_10KHZ,0xfffffffe,PMU_MCU_SLEEP);
                 }
                 // Wake up through events
                 //TimerLowPowerHandler( );

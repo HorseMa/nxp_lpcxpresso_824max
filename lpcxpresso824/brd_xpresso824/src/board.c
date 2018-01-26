@@ -193,98 +193,95 @@ void Board_Debug_Init(void)
 
 void Board_GPIO_Init(void)
 {
-	uint32_t mask;
-
-        Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO0,PIN_MODE_INACTIVE);
-	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO1,PIN_MODE_INACTIVE);
-	//Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO2,PIN_MODE_INACTIVE);
-	//Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO3,PIN_MODE_INACTIVE);
-	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO4,PIN_MODE_PULLUP);
-	//Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO5,PIN_MODE_INACTIVE);
-	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO6,PIN_MODE_PULLUP);
-	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO7,PIN_MODE_INACTIVE);
-	//Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO8,PIN_MODE_INACTIVE);
-	//Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO9,PIN_MODE_INACTIVE);
-	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO10,PIN_MODE_INACTIVE);
-	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO11,PIN_MODE_INACTIVE);
-	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO12,PIN_MODE_INACTIVE);
-	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO13,PIN_MODE_INACTIVE);
-	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO14,PIN_MODE_PULLUP);
-	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO15,PIN_MODE_INACTIVE);
-	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO16,PIN_MODE_INACTIVE);
-	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO17,PIN_MODE_PULLUP);
-	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO18,PIN_MODE_PULLUP);
-	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO19,PIN_MODE_PULLUP);
-	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO20,PIN_MODE_PULLUP);
-	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO21,PIN_MODE_PULLUP);
-	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO22,PIN_MODE_PULLUP);
-	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO23,PIN_MODE_PULLUP);
-	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO24,PIN_MODE_INACTIVE);
-	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO25,PIN_MODE_PULLUP);
-	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO26,PIN_MODE_INACTIVE);
-	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO27,PIN_MODE_INACTIVE);
-	Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO28,PIN_MODE_INACTIVE);
+    Chip_Clock_EnablePeriphClock(SYSCTL_CLOCK_SWM);        
+    Chip_SWM_DisableFixedPin(SWM_FIXED_ACMP_I1);
+    Chip_SWM_DisableFixedPin(SWM_FIXED_ACMP_I2);
+    Chip_SWM_DisableFixedPin(SWM_FIXED_ACMP_I3);
+    Chip_SWM_DisableFixedPin(SWM_FIXED_ACMP_I4);
+    //Chip_SWM_DisableFixedPin(SWM_FIXED_SWCLK);
+    //Chip_SWM_DisableFixedPin(SWM_FIXED_SWDIO);
+    Chip_SWM_DisableFixedPin(SWM_FIXED_XTALIN);
+    Chip_SWM_DisableFixedPin(SWM_FIXED_XTALOUT);
+    //Chip_SWM_DisableFixedPin(SWM_FIXED_RST);
+    Chip_SWM_DisableFixedPin(SWM_FIXED_CLKIN);
+    Chip_SWM_DisableFixedPin(SWM_FIXED_VDDCMP);
+    Chip_SWM_DisableFixedPin(SWM_FIXED_I2C0_SDA);
+    Chip_SWM_DisableFixedPin(SWM_FIXED_I2C0_SCL);
+    Chip_SWM_DisableFixedPin(SWM_FIXED_ADC0);
+    Chip_SWM_DisableFixedPin(SWM_FIXED_ADC1);
+    Chip_SWM_DisableFixedPin(SWM_FIXED_ADC2);
+    Chip_SWM_DisableFixedPin(SWM_FIXED_ADC3);
+    Chip_SWM_DisableFixedPin(SWM_FIXED_ADC4);
+    Chip_SWM_DisableFixedPin(SWM_FIXED_ADC5);
+    Chip_SWM_DisableFixedPin(SWM_FIXED_ADC6);
+    Chip_SWM_DisableFixedPin(SWM_FIXED_ADC7);
+    Chip_SWM_DisableFixedPin(SWM_FIXED_ADC8);
+    Chip_SWM_DisableFixedPin(SWM_FIXED_ADC9);
+    Chip_SWM_DisableFixedPin(SWM_FIXED_ADC10);
+    Chip_SWM_DisableFixedPin(SWM_FIXED_ADC11);
+    Chip_Clock_DisablePeriphClock(SYSCTL_CLOCK_SWM);
         
-        Chip_Clock_EnablePeriphClock(SYSCTL_CLOCK_SWM);
-        //Chip_Clock_DisablePeriphClock(SYSCTL_CLOCK_SWM);
-        
-	Chip_SWM_DisableFixedPin(SWM_FIXED_ACMP_I1);
-	Chip_SWM_DisableFixedPin(SWM_FIXED_ACMP_I2);
-	Chip_SWM_DisableFixedPin(SWM_FIXED_ACMP_I3);
-	Chip_SWM_DisableFixedPin(SWM_FIXED_ACMP_I4);
-	//Chip_SWM_EnableFixedPin(SWM_FIXED_SWCLK);
-	//Chip_SWM_EnableFixedPin(SWM_FIXED_SWDIO);
-	//Chip_SWM_EnableFixedPin(SWM_FIXED_XTALIN);
-	//Chip_SWM_EnableFixedPin(SWM_FIXED_XTALOUT);
-	//Chip_SWM_DisableFixedPin(SWM_FIXED_RST);
-	Chip_SWM_DisableFixedPin(SWM_FIXED_CLKIN);
-	Chip_SWM_DisableFixedPin(SWM_FIXED_VDDCMP);
-	Chip_SWM_DisableFixedPin(SWM_FIXED_I2C0_SDA);
-	Chip_SWM_DisableFixedPin(SWM_FIXED_I2C0_SCL);
-	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC0);
-	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC1);
-	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC2);
-	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC3);
-	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC4);
-	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC5);
-	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC6);
-	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC7);
-	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC8);
-	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC9);
-	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC10);
-	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC11);
-#if 0   // move xtal setup to lib board
-	/* Enable power to the system osc */
-	Chip_SYSCTL_PowerUp(SYSCTL_SLPWAKE_SYSOSC_PD);
-
-	/* Set the P0.8 and P0.9 pin modes to no pull-up or pull-down */
-	Chip_IOCON_PinSetMode(LPC_IOCON, IOCON_PIO8, PIN_MODE_INACTIVE);
-	Chip_IOCON_PinSetMode(LPC_IOCON, IOCON_PIO9, PIN_MODE_INACTIVE);
-
-	/* Enable SYSOSC function on the pins */
-	Chip_SWM_FixedPinEnable(SWM_FIXED_XTALIN, true);
-	Chip_SWM_FixedPinEnable(SWM_FIXED_XTALOUT, true);
-#endif
-#if 0
-	//Chip_SWM_MovablePinAssign(SWM_SCT_IN1_I, 4);
-
-	/* Configure channel 0 interrupt as edge sensitive and falling edge interrupt */
-	Chip_PININT_SetPinModeEdge(LPC_PININT, PININTCH6);
-	Chip_PININT_EnableIntLow(LPC_PININT, PININTCH6);
-
-	/* Configure interrupt channel 0 for the GPIO pin in SysCon block */
-	Chip_SYSCTL_SetPinInterrupt(6, 4);
-
-	/* Configure channel 0 as wake up interrupt in SysCon block */
-	Chip_SYSCTL_EnablePINTWakeup(6);
-
-	/* Configure GPIO pin as input pin */
-	Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, 0, 4);
-
-	/* Enable interrupt in the NVIC */
-	NVIC_EnableIRQ(PININT6_IRQn);
-#endif
-        Chip_Clock_DisablePeriphClock(SYSCTL_CLOCK_SWM);
+    Chip_GPIO_SetPortDIRInput(LPC_GPIO_PORT,0,0x1FFFFFFF);
+    //Chip_GPIO_SetPortValue(LPC_GPIO_PORT,0,~0x1FFFF7DF);
+    Chip_IOCON_PinEnableOpenDrainMode(LPC_IOCON,IOCON_PIO0);
+    Chip_IOCON_PinEnableOpenDrainMode(LPC_IOCON,IOCON_PIO1);
+    //Chip_IOCON_PinEnableOpenDrainMode(LPC_IOCON,IOCON_PIO2);
+    //Chip_IOCON_PinEnableOpenDrainMode(LPC_IOCON,IOCON_PIO3);
+    Chip_IOCON_PinEnableOpenDrainMode(LPC_IOCON,IOCON_PIO4);
+    Chip_IOCON_PinEnableOpenDrainMode(LPC_IOCON,IOCON_PIO5);
+    Chip_IOCON_PinEnableOpenDrainMode(LPC_IOCON,IOCON_PIO6);
+    Chip_IOCON_PinEnableOpenDrainMode(LPC_IOCON,IOCON_PIO7);
+    Chip_IOCON_PinEnableOpenDrainMode(LPC_IOCON,IOCON_PIO8);
+    Chip_IOCON_PinEnableOpenDrainMode(LPC_IOCON,IOCON_PIO9);
+    Chip_IOCON_PinEnableOpenDrainMode(LPC_IOCON,IOCON_PIO10);
+    Chip_IOCON_PinEnableOpenDrainMode(LPC_IOCON,IOCON_PIO11);
+    Chip_IOCON_PinEnableOpenDrainMode(LPC_IOCON,IOCON_PIO12);
+    Chip_IOCON_PinEnableOpenDrainMode(LPC_IOCON,IOCON_PIO13);
+    Chip_IOCON_PinEnableOpenDrainMode(LPC_IOCON,IOCON_PIO14);
+    Chip_IOCON_PinEnableOpenDrainMode(LPC_IOCON,IOCON_PIO15);
+    Chip_IOCON_PinEnableOpenDrainMode(LPC_IOCON,IOCON_PIO16);
+    Chip_IOCON_PinEnableOpenDrainMode(LPC_IOCON,IOCON_PIO17);
+    Chip_IOCON_PinEnableOpenDrainMode(LPC_IOCON,IOCON_PIO18);
+    Chip_IOCON_PinEnableOpenDrainMode(LPC_IOCON,IOCON_PIO19);
+    Chip_IOCON_PinEnableOpenDrainMode(LPC_IOCON,IOCON_PIO20);
+    Chip_IOCON_PinEnableOpenDrainMode(LPC_IOCON,IOCON_PIO21);
+    Chip_IOCON_PinEnableOpenDrainMode(LPC_IOCON,IOCON_PIO22);
+    Chip_IOCON_PinEnableOpenDrainMode(LPC_IOCON,IOCON_PIO23);
+    Chip_IOCON_PinEnableOpenDrainMode(LPC_IOCON,IOCON_PIO24);
+    Chip_IOCON_PinEnableOpenDrainMode(LPC_IOCON,IOCON_PIO25);
+    Chip_IOCON_PinEnableOpenDrainMode(LPC_IOCON,IOCON_PIO26);
+    Chip_IOCON_PinEnableOpenDrainMode(LPC_IOCON,IOCON_PIO27);
+    Chip_IOCON_PinEnableOpenDrainMode(LPC_IOCON,IOCON_PIO28);
+    
+    Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO0,PIN_MODE_INACTIVE);
+    Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO1,PIN_MODE_INACTIVE);
+    //Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO2,PIN_MODE_INACTIVE);
+    //Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO3,PIN_MODE_INACTIVE);
+    Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO4,PIN_MODE_INACTIVE);
+    Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO5,PIN_MODE_INACTIVE);
+    Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO6,PIN_MODE_INACTIVE);
+    Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO7,PIN_MODE_INACTIVE);
+    Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO8,PIN_MODE_INACTIVE);
+    Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO9,PIN_MODE_INACTIVE);
+    Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO10,PIN_MODE_INACTIVE);
+    Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO11,PIN_MODE_INACTIVE);
+    Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO12,PIN_MODE_INACTIVE);
+    Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO13,PIN_MODE_INACTIVE);
+    Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO14,PIN_MODE_INACTIVE);
+    Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO15,PIN_MODE_INACTIVE);
+    Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO16,PIN_MODE_INACTIVE);
+    Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO17,PIN_MODE_INACTIVE);
+    Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO18,PIN_MODE_INACTIVE);
+    Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO19,PIN_MODE_INACTIVE);
+    Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO20,PIN_MODE_INACTIVE);
+    Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO21,PIN_MODE_INACTIVE);
+    Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO22,PIN_MODE_INACTIVE);
+    Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO23,PIN_MODE_INACTIVE);
+    Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO24,PIN_MODE_INACTIVE);
+    Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO25,PIN_MODE_INACTIVE);
+    Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO26,PIN_MODE_INACTIVE);
+    Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO27,PIN_MODE_INACTIVE);
+    Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO28,PIN_MODE_INACTIVE);
 }
 
 /* Set up and initialize all required blocks and functions related to the
@@ -295,8 +292,8 @@ void Board_Init(void)
 	Chip_GPIO_Init(LPC_GPIO_PORT);
 	Board_GPIO_Init();
 	/* Initialize the LEDs */
-	Board_LED_Init();
+	//Board_LED_Init();
         /* Sets up DEBUG UART */
-	DEBUGINIT();
+	//DEBUGINIT();
 
 }
