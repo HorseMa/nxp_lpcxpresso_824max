@@ -734,7 +734,7 @@ int main( void )
     modem_init();
     Chip_UART_SendRB(LPC_USART0, &txring, "PIN4 WAKEUP\r\n", 13);
     DeviceState = DEVICE_STATE_INIT;
-    //modem_wkt_init();
+    modem_wkt_init();
     uartflashtimer = TimerGetCurrentTime();
     //LoRaMacState = 0;
     //modem_wwdt_init();
@@ -747,12 +747,7 @@ int main( void )
             uartflashtimer = TimerGetCurrentTime();
             //Chip_UART_SendRB(LPC_USART0, &txring, &byte, 1);
             frame_rx(byte);
-            //Chip_UART_SendRB(LPC_USART0, &txring, &byte, 1);
-            //if(frame_rx(byte) == 0) {
-                //Chip_UART_IntDisable(LPC_USART0, UART_INTEN_RXRDY);
-            //}
         }
-        //Chip_UART_SendRB(LPC_USART0, &txring, &byte, 1);
 
         switch( DeviceState )
         {
@@ -922,57 +917,44 @@ int main( void )
                 {
                     if((TimerGetElapsedTime(uartflashtimer) > 10) && (RingBuffer_IsEmpty(&txring)))
                     {
+                        extern uint32_t UpLinkCounter;
+                        if(UpLinkCounter == 0)
+                        {
+                            funWktAlarm();
+                            break;
+                        }
                         NVIC_DisableIRQ(PININT0_IRQn);
                         NVIC_DisableIRQ(PININT1_IRQn);
                         Radio.Sleep( );
-                        uint32_t cmdData[3];
-                        uint32_t response;
-                        uint32_t sleepFlags;
-                        Chip_SYSCTL_DisablePINTWakeup(0);
-                        Chip_SYSCTL_DisablePINTWakeup(1);
-                        Chip_Clock_SetMainClockSource(SYSCTL_MAINCLKSRC_IRC);
-                        sleepFlags = Chip_PMU_GetSleepFlags(LPC_PMU);
-                        Chip_PMU_ClearSleepFlags(LPC_PMU, PMU_PCON_DPDFLAG);
 
-                        /* Only do this if restarting from a COLD reset */
-                        if (!(sleepFlags & PMU_PCON_DPDFLAG)) {
-
-                        /* Set default state of LED to ON */
-                        //Board_LED_Set(0, true);
-                        }
-                        /* Set power state (Not required but shown for reference) */
-                        cmdData[0] = 12;
-                        cmdData[1] = PWR_EFFICIENCY;
-                        cmdData[2] = 12;
-                        __disable_irq();
-                        LPC_ROM_API->pPWRD->set_power(cmdData, &response);
-                        __enable_irq();
-
-                        /* if failure response don't proceed */
-                        if (response) {
-                            while (1) {
-                                //blinkLEDCount(2);
-                            }
-                        }
-                        /* Configure ARM to only allow enabled IRQ's to wake us up */
-                        SCB->SCR &= ~(SCB_SCR_SEVONPEND_Msk);
-                        Chip_PMU_DeepPowerDownState(LPC_PMU);
-                        //Chip_PMU_SetPowerDownControl(LPC_PMU, PMU_DPDCTRL_WAKEUPPHYS | PMU_DPDCTRL_LPOSCDPDEN);
+                        Chip_PMU_SetPowerDownControl(LPC_PMU, PMU_DPDCTRL_LPOSCDPDEN);
                         //enablePio4IntToWakeup();
-                        //WakeupTest(WKT_CLKSRC_10KHZ,persist.sesspar.alarm,PMU_MCU_DEEP_PWRDOWN);
+                        /*Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO23,PIN_MODE_INACTIVE);
+                        Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO14,PIN_MODE_INACTIVE);
+                        Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO25,PIN_MODE_INACTIVE);
+                        Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO6,PIN_MODE_INACTIVE);
+                        Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,23,FALSE); // NRESET
+                        Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,14,FALSE); // SSEL
+                        Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,25,FALSE); // SCK
+                        Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,6,FALSE); // MOSI*/
+                        WakeupTest(WKT_CLKSRC_10KHZ,persist.sesspar.alarm,PMU_MCU_DEEP_PWRDOWN);
+                        /*Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,23,TRUE); // NRESET
+                        Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,14,TRUE); // SSEL
+                        Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,25,TRUE); // SCK
+                        Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,6,TRUE); // MOSI*/
                         NVIC_EnableIRQ(PININT0_IRQn);
                         NVIC_EnableIRQ(PININT1_IRQn);
                         //enableUart();
                         //Chip_UART_SendRB(LPC_USART0, &txring, "PIN4 WAKEUP\r\n", 13);
                     }
-                    //else
+                    else
                     {
-                    //    WakeupTest(WKT_CLKSRC_10KHZ,0xfffffffe,PMU_MCU_SLEEP);
+                        WakeupTest(WKT_CLKSRC_10KHZ,0xfffffffe,PMU_MCU_SLEEP);
                     }
                 }
                 else
                 {
-                    //WakeupTest(WKT_CLKSRC_10KHZ,0xfffffffe,PMU_MCU_SLEEP);
+                    WakeupTest(WKT_CLKSRC_10KHZ,0xfffffffe,PMU_MCU_SLEEP);
                 }
                 // Wake up through events
                 //TimerLowPowerHandler( );

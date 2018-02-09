@@ -138,13 +138,13 @@ void SX1276IoInit( void )
   Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,6,TRUE); // MOSI
   //Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO6,PIN_MODE_PULLUP);
 #endif
-  Chip_IOCON_PinDisableOpenDrainMode(LPC_IOCON,IOCON_PIO14);
+  //Chip_IOCON_PinDisableOpenDrainMode(LPC_IOCON,IOCON_PIO14);
   Chip_SWM_MovablePinAssign(SWM_SPI1_SSEL0_IO, 14);
-  Chip_IOCON_PinDisableOpenDrainMode(LPC_IOCON,IOCON_PIO25);
+  //Chip_IOCON_PinDisableOpenDrainMode(LPC_IOCON,IOCON_PIO25);
   Chip_SWM_MovablePinAssign(SWM_SPI1_SCK_IO, 25);
-  //Chip_IOCON_PinDisableOpenDrainMode(LPC_IOCON,IOCON_PIO17);
+  Chip_IOCON_PinDisableOpenDrainMode(LPC_IOCON,IOCON_PIO7);
   Chip_SWM_MovablePinAssign(SWM_SPI1_MISO_IO, 7);
-  Chip_IOCON_PinDisableOpenDrainMode(LPC_IOCON,IOCON_PIO6);
+  //Chip_IOCON_PinDisableOpenDrainMode(LPC_IOCON,IOCON_PIO6);
   Chip_SWM_MovablePinAssign(SWM_SPI1_MOSI_IO, 6);
   Chip_Clock_DisablePeriphClock(SYSCTL_CLOCK_SWM);
   /*
@@ -336,8 +336,8 @@ void SX1276AntSwDeInit( void )
 {
     //GpioInit( &AntSwitchLf, RADIO_ANT_SWITCH_LF, PIN_OUTPUT, PIN_OPEN_DRAIN, PIN_NO_PULL, 0 );
     //GpioInit( &AntSwitchHf, RADIO_ANT_SWITCH_HF, PIN_OUTPUT, PIN_OPEN_DRAIN, PIN_NO_PULL, 0 );
-    Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO17,PIN_MODE_INACTIVE);
-    Chip_GPIO_SetPinDIROutput(LPC_GPIO_PORT, 0, 17);
+    //Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO17,PIN_MODE_INACTIVE);
+    //Chip_GPIO_SetPinDIROutput(LPC_GPIO_PORT, 0, 17);
     Chip_GPIO_SetPinOutLow(LPC_GPIO_PORT,0,17);
 }
 

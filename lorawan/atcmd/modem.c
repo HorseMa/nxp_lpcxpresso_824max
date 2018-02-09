@@ -109,7 +109,7 @@ void enablePio4IntToWakeup(void)
     /* Enable interrupt in the NVIC */
     NVIC_EnableIRQ(PININT7_IRQn);
 }
-static void funWktAlarm(void)
+void funWktAlarm(void)
 {
     uint8_t txcycledata[] = {0x00 ,0x01 ,0x02 ,0x0A ,0x0B};
     wktType = 0;
@@ -661,6 +661,7 @@ static void persist_init (uint8_t factory) {
 extern bool PublicNetwork;
 // called by initial job
 void modem_init () {
+    usart_init();
     // clear modem state
     memset(&MODEM, 0, sizeof(MODEM));
 
@@ -677,7 +678,6 @@ void modem_init () {
     //queue_init();
 
     // initialize USART
-    usart_init();
 
     // start reception of command
     frame_init(&rxframe, MODEM.cmdbuf, sizeof(MODEM.cmdbuf));

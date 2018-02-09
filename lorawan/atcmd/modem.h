@@ -338,6 +338,7 @@ void modem_wwdt_init(void);
 void WakeupTest(WKT_CLKSRC_T clkSrc, uint32_t timeoutInSecs, CHIP_PMU_MCUPOWER_T powerTest);
 void AlarmStart(void);
 void AlarmEnd(void);
+void funWktAlarm(void);
 uint8_t isAlarmDuty(void);
 void enablePio4IntToWakeup(void);
 
