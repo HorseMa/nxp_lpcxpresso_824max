@@ -938,6 +938,7 @@ int main( void )
                         Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,25,FALSE); // SCK
                         Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,6,FALSE); // MOSI*/
                         WakeupTest(WKT_CLKSRC_10KHZ,persist.sesspar.alarm,PMU_MCU_DEEP_PWRDOWN);
+                        //WakeupTest(WKT_CLKSRC_10KHZ,persist.sesspar.alarm,PMU_MCU_SLEEP);
                         /*Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,23,TRUE); // NRESET
                         Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,14,TRUE); // SSEL
                         Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,25,TRUE); // SCK

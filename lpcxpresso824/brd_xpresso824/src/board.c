@@ -198,8 +198,8 @@ void Board_GPIO_Init(void)
     Chip_SWM_DisableFixedPin(SWM_FIXED_ACMP_I2);
     Chip_SWM_DisableFixedPin(SWM_FIXED_ACMP_I3);
     Chip_SWM_DisableFixedPin(SWM_FIXED_ACMP_I4);
-    Chip_SWM_DisableFixedPin(SWM_FIXED_SWCLK);
-    Chip_SWM_DisableFixedPin(SWM_FIXED_SWDIO);
+    //Chip_SWM_DisableFixedPin(SWM_FIXED_SWCLK);
+    //Chip_SWM_DisableFixedPin(SWM_FIXED_SWDIO);
     Chip_SWM_DisableFixedPin(SWM_FIXED_XTALIN);
     Chip_SWM_DisableFixedPin(SWM_FIXED_XTALOUT);
     //Chip_SWM_DisableFixedPin(SWM_FIXED_RST);
@@ -225,8 +225,8 @@ void Board_GPIO_Init(void)
     //Chip_GPIO_SetPortValue(LPC_GPIO_PORT,0,~0x1FFFF7DF);
     Chip_IOCON_PinEnableOpenDrainMode(LPC_IOCON,IOCON_PIO0);
     Chip_IOCON_PinEnableOpenDrainMode(LPC_IOCON,IOCON_PIO1);
-    Chip_IOCON_PinEnableOpenDrainMode(LPC_IOCON,IOCON_PIO2);
-    Chip_IOCON_PinEnableOpenDrainMode(LPC_IOCON,IOCON_PIO3);
+    //Chip_IOCON_PinEnableOpenDrainMode(LPC_IOCON,IOCON_PIO2);
+    //Chip_IOCON_PinEnableOpenDrainMode(LPC_IOCON,IOCON_PIO3);
     Chip_IOCON_PinEnableOpenDrainMode(LPC_IOCON,IOCON_PIO4);
     Chip_IOCON_PinEnableOpenDrainMode(LPC_IOCON,IOCON_PIO5);
     Chip_IOCON_PinEnableOpenDrainMode(LPC_IOCON,IOCON_PIO6);
@@ -255,8 +255,8 @@ void Board_GPIO_Init(void)
     
     Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO0,PIN_MODE_INACTIVE);
     Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO1,PIN_MODE_INACTIVE);
-    Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO2,PIN_MODE_INACTIVE);
-    Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO3,PIN_MODE_INACTIVE);
+    //Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO2,PIN_MODE_INACTIVE);
+    //Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO3,PIN_MODE_INACTIVE);
     Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO4,PIN_MODE_INACTIVE);
     Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO5,PIN_MODE_INACTIVE);
     Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO6,PIN_MODE_INACTIVE);

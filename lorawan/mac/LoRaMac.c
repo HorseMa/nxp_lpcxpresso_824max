@@ -702,6 +702,7 @@ static void OnRadioRxDone( uint8_t *payload, uint16_t size, int16_t rssi, int8_t
     PhyParam_t phyParam;
     bool skipIndication = false;
 
+    static uint8_t DRsSnrTbl[6] = {-17,-17,-14,-11,-8,-5};
     uint8_t pktHeaderLen = 0;
     uint32_t address = 0;
     uint8_t appPayloadStartIndex = 0;
@@ -741,6 +742,23 @@ static void OnRadioRxDone( uint8_t *payload, uint16_t size, int16_t rssi, int8_t
     Radio.Sleep( );
     TimerStop( &RxWindowTimer2 );
 
+    extern uint8_t PRIVATE_NET_DR_MAX;
+    extern uint8_t PRIVATE_NET_DR_MIN;
+    if( IsLoRaMacNetworkJoined == true )
+    {
+        for(uint8_t loop = 0; loop < 3; loop ++)
+        {
+            if(snr > DRsSnrTbl[PRIVATE_NET_DR_MAX - loop])
+            {
+                if((PRIVATE_NET_DR_MAX - loop - 1) != persist.sesspar.JoinRequestTrials)
+                {
+                    persist.sesspar.JoinRequestTrials = PRIVATE_NET_DR_MAX - loop - 1;
+                    eeprom_write();
+                }
+                break;
+            }
+        }
+    }
     macHdr.Value = payload[pktHeaderLen++];
 
     switch( macHdr.Bits.MType )
@@ -1350,6 +1368,8 @@ static void OnMacStateCheckTimerEvent( void )
             {
                 AckTimeoutRetriesCounter++;
 
+                if(PERSIST->joinpar.isPublic)
+                {
                 if( ( AckTimeoutRetriesCounter % 2 ) == 1 )
                 {
                     getPhy.Attribute = PHY_NEXT_LOWER_TX_DR;
@@ -1357,6 +1377,16 @@ static void OnMacStateCheckTimerEvent( void )
                     getPhy.Datarate = LoRaMacParams.ChannelsDatarate;
                     phyParam = RegionGetPhyParam( LoRaMacRegion, &getPhy );
                     LoRaMacParams.ChannelsDatarate = phyParam.Value;
+                }
+                }
+                else
+                {
+                extern uint8_t PRIVATE_NET_DR_MAX;
+                extern uint8_t PRIVATE_NET_DR_MIN;
+                if(PRIVATE_NET_DR_MIN < LoRaMacParams.ChannelsDatarate)
+                {
+                    LoRaMacParams.ChannelsDatarate -= 1;
+                }
                 }
                 // Try to send the frame again
                 if( ScheduleTx( ) == LORAMAC_STATUS_OK )

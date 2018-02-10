@@ -719,7 +719,8 @@ uint8_t RegionCN470DlChannelReq( DlChannelReqParams_t* dlChannelReq )
 {
     return 0;
 }
-
+uint8_t PRIVATE_NET_DR_MAX;
+uint8_t PRIVATE_NET_DR_MIN;
 int8_t RegionCN470AlternateDr( AlternateDrParams_t* alternateDr )
 {
     int8_t datarate = 0;
@@ -748,6 +749,8 @@ int8_t RegionCN470AlternateDr( AlternateDrParams_t* alternateDr )
                   enabledChannels[j+1] = swap;   
             }   
         }
+        PRIVATE_NET_DR_MAX = enabledChannels[0];
+        PRIVATE_NET_DR_MIN = enabledChannels[2];
         datarate = enabledChannels[(alternateDr->NbTrials - 1) % 3];
     }
     else

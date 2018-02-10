@@ -113,7 +113,7 @@ void funWktAlarm(void)
 {
     uint8_t txcycledata[] = {0x00 ,0x01 ,0x02 ,0x0A ,0x0B};
     wktType = 0;
-    IsTxConfirmed = false;
+    IsTxConfirmed = true;
     AlarmStart();
     PrepareTxFrame( 2 ,txcycledata,5);
     SendFrame();
@@ -125,21 +125,22 @@ void funWktAlarm(void)
  * @return	Nothing
  */
 extern void enableUart(void);
+
 void WKT_IRQHandler(void)
 {
 	/* Clear WKT interrupt request */
 	Chip_WKT_ClearIntStatus(LPC_WKT);
 
-        funWktAlarm();
+        //funWktAlarm();
 	/* LED will toggle state on wakeup event */
 	//Board_LED_Toggle(0);
 }
-
+#if 0
 void PININT7_IRQHandler( void )
 {
     Chip_PININT_ClearIntStatus(LPC_PININT, PININTCH7);
 }
-
+#endif
 void WakeupTest(WKT_CLKSRC_T clkSrc, uint32_t timeoutInSecs, CHIP_PMU_MCUPOWER_T powerTest)
 {
     /* 10KHz clock source */
@@ -200,13 +201,13 @@ void modem_wkt_init(void)
      *	This code clears DPDFLAG (by writing a one to it)
      *	then sets the RED LED for about 500ms.
      */
-    if (LPC_PMU->PCON & PMU_PCON_DPDFLAG) {
+    /*if (LPC_PMU->PCON & PMU_PCON_DPDFLAG) {
         regVal = LPC_PMU->PCON;
         regVal |= PMU_PCON_DPDFLAG;
         LPC_PMU->PCON = regVal;
         //Board_LED_Set(0, true);
         //delay(0x100000);
-    }
+    }*/
 }
 
 void WDT_IRQHandler(void)
