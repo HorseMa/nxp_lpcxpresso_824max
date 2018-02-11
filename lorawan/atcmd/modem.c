@@ -436,7 +436,7 @@ static void OnLed1TimerEventNetOffline( void )
         break;
     }
 }*/
-
+/*
 void LedIndication(LedSension_t senssion)
 {
     TimerStop( &Led1Timer_Tx );
@@ -478,7 +478,7 @@ void LedIndication(LedSension_t senssion)
         default:
         break;
     }
-}
+}*/
 /*
 // start transmission of prepared response or queued event message
 static void modem_starttx () {
@@ -512,8 +512,13 @@ void onEvent (ev_t ev) {
     // take action on specific events
     switch(ev) {
     case EV_JOINING:
+      Board_LED_Set(0,0);
+      TimerSetValue( &Led1Timer_OffLine, 10 );
+      TimerStart(&Led1Timer_OffLine);
     break;
     case EV_JOINED: {
+      TimerStop( &Led1Timer_OffLine );
+      Board_LED_Set(0,0);
     //LedIndication(EN_LED_SENSSION_NET);
     // save newly established session
     /*sessparam_t newsession;
@@ -682,8 +687,8 @@ void modem_init () {
 
     // start reception of command
     frame_init(&rxframe, MODEM.cmdbuf, sizeof(MODEM.cmdbuf));
-    TimerInit( &Led1Timer_Tx,OnLed1TimerEventTx);
-    TimerInit( &Led1Timer_Rx,OnLed1TimerEventRx);
+    //TimerInit( &Led1Timer_Tx,OnLed1TimerEventTx);
+    //TimerInit( &Led1Timer_Rx,OnLed1TimerEventRx);
     //TimerInit( &Led1Timer_OnLine, OnLed1TimerEventNetOnline );
     TimerInit( &Led1Timer_OffLine, OnLed1TimerEventNetOffline );
     //TimerSetValue(&Led1Timer,1000);

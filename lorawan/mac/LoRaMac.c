@@ -608,7 +608,7 @@ static void OnRadioTxDone( void )
     SetBandTxDoneParams_t txDone;
     TimerTime_t curTime = TimerGetCurrentTime( );
     //onEvent(EV_TXCOMPLETE);
-    LedIndication(EN_LED_SENSSION_TX);
+    //LedIndication(EN_LED_SENSSION_TX);
     //LMIC.txrxFlags = 0;
     if( LoRaMacDeviceClass != CLASS_C )
     {
@@ -723,7 +723,7 @@ static void OnRadioRxDone( uint8_t *payload, uint16_t size, int16_t rssi, int8_t
     uint8_t multicast = 0;
 
     bool isMicOk = false;
-    LedIndication(EN_LED_SENSSION_RX);
+    //LedIndication(EN_LED_SENSSION_RX);
     //onEvent(EV_RXCOMPLETE);
     McpsConfirm.AckReceived = false;
     McpsIndication.Rssi = rssi;

@@ -292,7 +292,7 @@ void Board_Init(void)
 	Chip_GPIO_Init(LPC_GPIO_PORT);
 	Board_GPIO_Init();
 	/* Initialize the LEDs */
-	//Board_LED_Init();
+	Board_LED_Init();
         /* Sets up DEBUG UART */
 	//DEBUGINIT();
 
