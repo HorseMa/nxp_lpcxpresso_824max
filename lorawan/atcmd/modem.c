@@ -657,6 +657,9 @@ static void persist_init (uint8_t factory) {
         persist.seqnoDn = 0;
         persist.seqnoUp = 0;
         persist.eventmask = ~0;
+        persist.startchannelid = 0;
+        persist.channeltoenable = 3;
+        persist.nodetype = CLASS_A;
         eeprom_write();
     }
     else
@@ -753,7 +756,6 @@ void modem_rxdone () {
     }
     }*/ else if(cmd == 's' && len >= 2) { // SESSION parameters
     if(MODEM.cmdbuf[1] == '?' && len == 2) { // ATS? query (netid,devaddr,seqnoup,seqnodn)
-        if(PERSIST->flags & FLAGS_SESSPAR) {
         rspbuf += cpystr(rspbuf, "OK,");
         rspbuf += int2hex(rspbuf, PERSIST->sesspar.netid);
         *rspbuf++ = ',';
@@ -763,7 +765,6 @@ void modem_rxdone () {
         *rspbuf++ = ',';
         rspbuf += int2hex(rspbuf, PERSIST->seqnoDn);
         ok = 1;
-        }
     } else if(MODEM.cmdbuf[1] == '=' && len == 2+8+1+8+1+32+1+32) { // ATS= set (netid,devaddr,nwkkey,artkey)
         sessparam_t par;
         if( hex2int(&par.netid, MODEM.cmdbuf+2, 8) &&
@@ -782,12 +783,14 @@ void modem_rxdone () {
         memcpy(&persist.sesspar,&par,sizeof(par));
         persist.seqnoUp = LMIC.seqnoUp;
         persist.seqnoDn = LMIC.seqnoDn;
-        persist.flags = PERSIST->flags | FLAGS_SESSPAR;
+        persist.flags &= ~FLAGS_JOINPAR;
+        persist.flags |= FLAGS_SESSPAR;
+        //persist.flags = PERSIST->flags | FLAGS_SESSPAR;
         
         //eeprom_erase();
         eeprom_write();
-        Radio.Sleep( );
-        rst = true;
+        //Radio.Sleep( );
+        //rst = true;
         //eeprom_copy(&PERSIST->sesspar, &par, sizeof(par));
         //eeprom_write(&PERSIST->seqnoUp, LMIC.seqnoUp);
         //eeprom_write(&PERSIST->seqnoDn, LMIC.seqnoDn);
@@ -797,7 +800,6 @@ void modem_rxdone () {
     }
     }else if(cmd == 'j' && len >= 2) { // JOIN parameters
     if(MODEM.cmdbuf[1] == '?' && len == 2) { // ATJ? query (deveui,appeui)
-        if(PERSIST->flags & FLAGS_JOINPAR) {
         uint8_t tmp[8];
         rspbuf += cpystr(rspbuf, "OK,");
         reverse(tmp, PERSIST->joinpar.deveui, 8);
@@ -806,7 +808,6 @@ void modem_rxdone () {
         reverse(tmp, PERSIST->joinpar.appeui, 8);
         rspbuf += puthex(rspbuf, tmp, 8);
         ok = 1;
-        }
     } else if(MODEM.cmdbuf[1] == '=' && len == 2+16+1+16+1+32) { // ATJ= set (deveui,appeui,devkey)
         joinparam_t par;
         if( gethex(par.deveui, MODEM.cmdbuf+2,           16) == 8 &&
@@ -819,11 +820,45 @@ void modem_rxdone () {
         
         memcpy(&persist.joinpar,&par,sizeof(par));
         persist.flags |= FLAGS_JOINPAR;
-        persist.flags &= FLAGS_SESSPAR;
+        persist.flags &= ~FLAGS_SESSPAR;
         //eeprom_erase();
         eeprom_write();
-        Radio.Sleep( );
-        rst = true;
+        //Radio.Sleep( );
+        //rst = true;
+        //eeprom_copy(&PERSIST->joinpar, &par, sizeof(par));
+        //eeprom_write(&PERSIST->flags, PERSIST->flags | FLAGS_JOINPAR);
+        ok = 1;
+        }
+    }
+    }
+    else if(cmd == 'g' && len >= 2) { // Global parameters
+    if(MODEM.cmdbuf[1] == '?' && len == 2) { // ATG? query (deveui,appeui)
+        rspbuf += cpystr(rspbuf, "OK,");
+        rspbuf += puthex(rspbuf, &persist.startchannelid, 1);
+        *rspbuf++ = ',';
+        rspbuf += puthex(rspbuf, &persist.channeltoenable, 1);
+        *rspbuf++ = ',';
+        rspbuf += puthex(rspbuf, &persist.nodetype, 1);
+        *rspbuf++ = ',';
+        rspbuf += puthex(rspbuf, &persist.flags, 1);
+        ok = 1;
+    } else if(MODEM.cmdbuf[1] == '=' && len == 2+2+1+2+1+2) { // ATG= set (deveui,appeui,devkey)
+        uint8_t startchannelid;
+        uint8_t channeltoenable;
+        uint8_t nodetype;
+        
+        if( gethex(&startchannelid, MODEM.cmdbuf+2,           2) == 1 &&
+        MODEM.cmdbuf[2+2] == ',' &&
+        gethex(&channeltoenable, MODEM.cmdbuf+2+2+1,      2) == 1 &&
+        MODEM.cmdbuf[2+2+1+2] == ',' &&
+        gethex(&nodetype, MODEM.cmdbuf+2+2+1+2+1, 2) == 1 ) {
+        persist.startchannelid = startchannelid;
+        persist.channeltoenable = channeltoenable;
+        persist.nodetype = nodetype;
+        //eeprom_erase();
+        eeprom_write();
+        //Radio.Sleep( );
+        //rst = true;
         //eeprom_copy(&PERSIST->joinpar, &par, sizeof(par));
         //eeprom_write(&PERSIST->flags, PERSIST->flags | FLAGS_JOINPAR);
         ok = 1;

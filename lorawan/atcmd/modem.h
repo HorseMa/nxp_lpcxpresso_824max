@@ -124,12 +124,15 @@ typedef struct {
 // persistent state
 typedef struct {
     uint32_t cfghash;
-    uint32_t flags;
+    uint8_t flags;
     joinparam_t joinpar;
     sessparam_t sesspar;
     uint32_t seqnoDn;
     uint32_t seqnoUp;
     uint32_t eventmask;
+    uint8_t startchannelid;
+    uint8_t channeltoenable;
+    uint8_t nodetype;
 } persist_t;
 
 typedef              uint8_t* xref2u1_t;
