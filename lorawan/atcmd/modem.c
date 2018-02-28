@@ -83,6 +83,7 @@ static const char* evnames[] = {
     [EV_LINK_ALIVE]     = "LINK_ALIVE",
 };
 
+uint8_t atcmdtoactivaty = false;
 extern uint8_t DevEui[];
 extern uint8_t AppEui[];
 extern uint8_t AppKey[];
@@ -376,7 +377,7 @@ static void OnLed1TimerEventNetOffline( void )
         TimerStop( &Led1Timer_OffLine );
         // Switch LED 1 ON
         Board_LED_Set(0,1);
-        TimerSetValue( &Led1Timer_OffLine, 100 );
+        TimerSetValue( &Led1Timer_OffLine, 20 );
         TimerStart( &Led1Timer_OffLine );
         state = 1;
         break;
@@ -392,7 +393,7 @@ static void OnLed1TimerEventNetOffline( void )
         TimerStop( &Led1Timer_OffLine );
         // Switch LED 1 ON
         Board_LED_Set(0,1);
-        TimerSetValue( &Led1Timer_OffLine, 100 );
+        TimerSetValue( &Led1Timer_OffLine, 20 );
         TimerStart( &Led1Timer_OffLine );
         state = 3;
         break;
@@ -864,13 +865,14 @@ void modem_rxdone () {
         ok = 1;
         }
     }
-    }/* else if(cmd == 'j' && len == 1) { // ATJ join network
+    } else if(cmd == 'j' && len == 1) { // ATJ join network
     if(PERSIST->flags & FLAGS_JOINPAR) {
         //LMIC_reset(); // force join
         //LMIC_startJoining();
+        atcmdtoactivaty = true;
         ok = 1;
     }
-    } *//*else if(cmd == 't' && len >= 1) { // ATT transmit
+    } /*else if(cmd == 't' && len >= 1) { // ATT transmit
     if(len == 1) { // no conf, no port, no data
         if(LMIC.devaddr || (PERSIST->flags & FLAGS_JOINPAR)) { // implicitely join!
         //LMIC_sendAlive(); // send empty frame
@@ -917,13 +919,13 @@ void modem_rxdone () {
     if(MODEM.cmdbuf[1] == '?' && len == 2) { // ATA? query (alarm timer)
         uint8_t tmp[10] = {0};
         rspbuf += cpystr(rspbuf, "OK,");
-        int2hex(tmp,PERSIST->timer);
+        int2hex(tmp,sesscfg.param.alarm);
         rspbuf += cpystr(rspbuf, tmp);
         ok = 1;
     } else if(MODEM.cmdbuf[1] == '=' && (((len - 2) % 2) == 0) && (((len - 2) / 2) > 0)) { // ATA= set (alarm timer)
         uint32_t secs;
         if(hex2int(&secs, MODEM.cmdbuf+2, len-2)) {
-            persist.sesspar.alarm = secs;
+            sesscfg.param.alarm = secs;
             //os_setTimedCallback(&MODEM.alarmjob, os_getTime()+sec2osticks(secs), onAlarm);
             eeprom_write();
             ok = 1;

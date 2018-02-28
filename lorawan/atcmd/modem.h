@@ -133,7 +133,6 @@ typedef struct {
     uint8_t startchannelid;
     uint8_t channeltoenable;
     uint8_t nodetype;
-    uint32_t timer;
 } persist_t;
 
 typedef              uint8_t* xref2u1_t;
@@ -284,6 +283,7 @@ typedef struct {
     uint8_t lrc;
  } FRAME;
 
+extern uint8_t atcmdtoactivaty;
 extern TimerEvent_t Led1Timer_Tx;
 extern TimerEvent_t Led1Timer_Rx;
 extern TimerEvent_t Led1Timer_OnLine;

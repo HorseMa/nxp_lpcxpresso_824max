@@ -723,15 +723,15 @@ int main( void )
     MibRequestConfirm_t mibReq;
     int bytes;
     uint8_t byte;
+    
     //BoardInitMcu( );
     //BoardInitPeriph( );
-    
+    prvSetupHardware();
+    modem_init();
     /* Enable SysTick Timer */
     SystemCoreClockUpdate();
     Chip_Clock_EnablePeriphClock(SYSCTL_CLOCK_SYS);
     SysTick_Config(SystemCoreClock / 1000);
-    prvSetupHardware();
-    modem_init();
     //Chip_UART_SendRB(LPC_USART0, &txring, "PIN4 WAKEUP\r\n", 13);
     DeviceState = DEVICE_STATE_INIT;
     modem_wkt_init();
@@ -812,7 +812,7 @@ int main( void )
 #endif
 
 #endif
-                DeviceState = DEVICE_STATE_JOIN;
+                DeviceState = DEVICE_STATE_SLEEP;
                 break;
             }
             case DEVICE_STATE_JOIN:
@@ -918,8 +918,13 @@ int main( void )
                     if((TimerGetElapsedTime(uartflashtimer) > 10) && (RingBuffer_IsEmpty(&txring)))
                     {
 #if 1
+                        if(( persist.flags & FLAGS_JOINPAR ) && (atcmdtoactivaty == true))
+                        {
+                            DeviceState = DEVICE_STATE_JOIN;
+                            continue;
+                        }
                         extern uint32_t UpLinkCounter;
-                        if(UpLinkCounter == 0)
+                        if((UpLinkCounter == 0) && ( persist.flags & FLAGS_SESSPAR ))
                         {
                             funWktAlarm();
                             break;
@@ -927,8 +932,14 @@ int main( void )
                         NVIC_DisableIRQ(PININT0_IRQn);
                         NVIC_DisableIRQ(PININT1_IRQn);
                         Radio.Sleep( );
-
-                        Chip_PMU_SetPowerDownControl(LPC_PMU, PMU_DPDCTRL_LPOSCDPDEN);
+                        if( persist.flags & FLAGS_JOINPAR )
+                        {
+                            Chip_PMU_ClearPowerDownControl(LPC_PMU, PMU_DPDCTRL_LPOSCDPDEN);
+                        }
+                        else
+                        {
+                            Chip_PMU_SetPowerDownControl(LPC_PMU, PMU_DPDCTRL_LPOSCDPDEN);
+                        }
                         //enablePio4IntToWakeup();
                         /*Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO23,PIN_MODE_INACTIVE);
                         Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO14,PIN_MODE_INACTIVE);
