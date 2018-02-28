@@ -913,13 +913,22 @@ void modem_rxdone () {
         }
     }
     }*/ else if(cmd == 'a' && len >= 2) { // ATA set alarm timer
-    uint32_t secs;
-    if(hex2int(&secs, MODEM.cmdbuf+1, len-1)) {
-        persist.sesspar.alarm = secs;
-        eeprom_write();
-        //os_setTimedCallback(&MODEM.alarmjob, os_getTime()+sec2osticks(secs), onAlarm);
+    
+    if(MODEM.cmdbuf[1] == '?' && len == 2) { // ATA? query (alarm timer)
+        uint8_t tmp[10] = {0};
+        rspbuf += cpystr(rspbuf, "OK,");
+        int2hex(tmp,PERSIST->timer);
+        rspbuf += cpystr(rspbuf, tmp);
         ok = 1;
-    }
+    } else if(MODEM.cmdbuf[1] == '=' && (((len - 2) % 2) == 0) && (((len - 2) / 2) > 0)) { // ATA= set (alarm timer)
+        uint32_t secs;
+        if(hex2int(&secs, MODEM.cmdbuf+2, len-2)) {
+            persist.sesspar.alarm = secs;
+            //os_setTimedCallback(&MODEM.alarmjob, os_getTime()+sec2osticks(secs), onAlarm);
+            eeprom_write();
+            ok = 1;
+        }
+        }
     }
 
     // send response

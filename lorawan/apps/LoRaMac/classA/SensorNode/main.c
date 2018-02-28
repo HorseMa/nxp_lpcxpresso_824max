@@ -737,10 +737,10 @@ int main( void )
     modem_wkt_init();
     uartflashtimer = TimerGetCurrentTime();
     //LoRaMacState = 0;
-    modem_wwdt_init();
+    //modem_wwdt_init();
     while( 1 )
     {
-        Chip_WWDT_Feed(LPC_WWDT);
+        //Chip_WWDT_Feed(LPC_WWDT);
         bytes = Chip_UART_ReadRB(LPC_USART0, &rxring, &byte, 1);
         if(bytes > 0)
         {
@@ -917,7 +917,7 @@ int main( void )
                 {
                     if((TimerGetElapsedTime(uartflashtimer) > 10) && (RingBuffer_IsEmpty(&txring)))
                     {
-#if 0
+#if 1
                         extern uint32_t UpLinkCounter;
                         if(UpLinkCounter == 0)
                         {
@@ -938,8 +938,8 @@ int main( void )
                         Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,14,FALSE); // SSEL
                         Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,25,FALSE); // SCK
                         Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,6,FALSE); // MOSI*/
-                        //WakeupTest(WKT_CLKSRC_10KHZ,persist.sesspar.alarm,PMU_MCU_DEEP_PWRDOWN);
-                        WakeupTest(WKT_CLKSRC_10KHZ,persist.sesspar.alarm,PMU_MCU_SLEEP);
+                        WakeupTest(WKT_CLKSRC_10KHZ,persist.sesspar.alarm,PMU_MCU_DEEP_PWRDOWN);
+                        //WakeupTest(WKT_CLKSRC_10KHZ,persist.sesspar.alarm,PMU_MCU_SLEEP);
                         /*Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,23,TRUE); // NRESET
                         Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,14,TRUE); // SSEL
                         Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,25,TRUE); // SCK
