@@ -344,12 +344,16 @@ void RegionCN470InitDefaults( InitType_t type )
             if(!PERSIST->joinpar.isPublic)
             {
                 // Initialize the channels default mask
-                ChannelsDefaultMask[0] = 0x0007;
+                ChannelsDefaultMask[0] = 0x0000;
                 ChannelsDefaultMask[1] = 0x0000;
                 ChannelsDefaultMask[2] = 0x0000;
                 ChannelsDefaultMask[3] = 0x0000;
                 ChannelsDefaultMask[4] = 0x0000;
                 ChannelsDefaultMask[5] = 0x0000;
+                for(int loop = 0;loop < persist.channeltoenable;loop++)
+                {
+                    ChannelsDefaultMask[(persist.startchannelid + loop) / 16] |= (1 << ((persist.startchannelid + loop) % 16));
+                }
             }
             else
             {

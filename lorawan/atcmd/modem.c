@@ -31,6 +31,7 @@
 #include "utilities.h"
 #include "timer.h"
 #include "radio.h"
+#include "Commissioning.h"
 
 //////////////////////////////////////////////////
 // CONFIGURATION (WILL BE PATCHED)
@@ -336,7 +337,7 @@ void os_getArtEui (uint8_t* buf) {
 extern FRAME rxframe;
 extern FRAME txframe;
 
-
+#if 0
 // blink session led
 static void blinkfunc () {
     static uint8_t ledstate;
@@ -367,7 +368,7 @@ static void OnLed1TimerEventTx( void )
     Board_LED_Set(0,1);
     LedIndication(EN_LED_SENSSION_NET);
 }
-
+#endif
 static void OnLed1TimerEventNetOffline( void )
 {
     static uint8_t state = 0;
@@ -377,7 +378,7 @@ static void OnLed1TimerEventNetOffline( void )
         TimerStop( &Led1Timer_OffLine );
         // Switch LED 1 ON
         Board_LED_Set(0,1);
-        TimerSetValue( &Led1Timer_OffLine, 20 );
+        TimerSetValue( &Led1Timer_OffLine, 100 );
         TimerStart( &Led1Timer_OffLine );
         state = 1;
         break;
@@ -393,7 +394,7 @@ static void OnLed1TimerEventNetOffline( void )
         TimerStop( &Led1Timer_OffLine );
         // Switch LED 1 ON
         Board_LED_Set(0,1);
-        TimerSetValue( &Led1Timer_OffLine, 20 );
+        TimerSetValue( &Led1Timer_OffLine, 100 );
         TimerStart( &Led1Timer_OffLine );
         state = 3;
         break;
@@ -401,8 +402,8 @@ static void OnLed1TimerEventNetOffline( void )
         TimerStop( &Led1Timer_OffLine );
         // Switch LED 1 OFF
         Board_LED_Set(0,0);
-        TimerSetValue( &Led1Timer_OffLine, 1000 );
-        TimerStart( &Led1Timer_OffLine );
+        //TimerSetValue( &Led1Timer_OffLine, 1000 );
+        //TimerStart( &Led1Timer_OffLine );
         state = 0;
         break;
         default:
@@ -437,6 +438,12 @@ static void OnLed1TimerEventNetOffline( void )
         break;
     }
 }*/
+void LedIndication(void)
+{
+    Board_LED_Set(0,0);
+    TimerSetValue( &Led1Timer_OffLine, 10 );
+    TimerStart(&Led1Timer_OffLine);
+}
 /*
 void LedIndication(LedSension_t senssion)
 {
@@ -513,9 +520,9 @@ void onEvent (ev_t ev) {
     // take action on specific events
     switch(ev) {
     case EV_JOINING:
-      Board_LED_Set(0,0);
-      TimerSetValue( &Led1Timer_OffLine, 10 );
-      TimerStart(&Led1Timer_OffLine);
+      //Board_LED_Set(0,0);
+      //TimerSetValue( &Led1Timer_OffLine, 10 );
+      //TimerStart(&Led1Timer_OffLine);
     break;
     case EV_JOINED: {
       TimerStop( &Led1Timer_OffLine );
@@ -647,8 +654,10 @@ static void persist_init (uint8_t factory) {
         Chip_IAP_ReadUID(unique_id);
         memcpy(&DevEui,&unique_id[2],8);
         memcpy(joincfg.param.deveui,DevEui,8);
-        memcpy(joincfg.param.appeui,AppEui,8);
-        memcpy(joincfg.param.devkey,AppKey,16);
+        uint8_t appEui[] = LORAWAN_APPLICATION_EUI;
+        uint8_t appKey[] = LORAWAN_APPLICATION_KEY;
+        memcpy(joincfg.param.appeui,appEui,8);
+        memcpy(joincfg.param.devkey,appKey,16);
         joincfg.param.isPublic = false;
         sesscfg.param.alarm = 60;//seconds
     
@@ -870,8 +879,9 @@ void modem_rxdone () {
         //LMIC_reset(); // force join
         //LMIC_startJoining();
         atcmdtoactivaty = true;
-        ok = 1;
+        
     }
+    ok = 1;
     } /*else if(cmd == 't' && len >= 1) { // ATT transmit
     if(len == 1) { // no conf, no port, no data
         if(LMIC.devaddr || (PERSIST->flags & FLAGS_JOINPAR)) { // implicitely join!
@@ -895,6 +905,7 @@ void modem_rxdone () {
             else{
             IsTxConfirmed = LMIC.pendTxConf;
             PrepareTxFrame( LMIC.pendTxPort ,LMIC.pendTxData ,LMIC.pendTxLen);
+            Chip_UART_SendRB(LPC_USART0, &txring, "1\r\n", 3);
             if(SendFrame() == true)
             {
                 ok = 1;
@@ -919,13 +930,13 @@ void modem_rxdone () {
     if(MODEM.cmdbuf[1] == '?' && len == 2) { // ATA? query (alarm timer)
         uint8_t tmp[10] = {0};
         rspbuf += cpystr(rspbuf, "OK,");
-        int2hex(tmp,sesscfg.param.alarm);
+        int2hex(tmp,persist.sesspar.alarm);
         rspbuf += cpystr(rspbuf, tmp);
         ok = 1;
     } else if(MODEM.cmdbuf[1] == '=' && (((len - 2) % 2) == 0) && (((len - 2) / 2) > 0)) { // ATA= set (alarm timer)
         uint32_t secs;
         if(hex2int(&secs, MODEM.cmdbuf+2, len-2)) {
-            sesscfg.param.alarm = secs;
+            persist.sesspar.alarm = secs;
             //os_setTimedCallback(&MODEM.alarmjob, os_getTime()+sec2osticks(secs), onAlarm);
             eeprom_write();
             ok = 1;

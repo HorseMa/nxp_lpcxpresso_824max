@@ -320,7 +320,7 @@ void usart_startrx (void);
 
 void leds_init (void);
 void leds_set (uint8_t id, uint8_t state);
-void LedIndication(LedSension_t senssion);
+void LedIndication(void);
 
 uint8_t gethex (uint8_t* dst, const uint8_t* src, uint16_t len);
 uint8_t puthex (uint8_t* dst, const uint8_t* src, uint8_t len);

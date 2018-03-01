@@ -721,7 +721,7 @@ int main( void )
     LoRaMacPrimitives_t LoRaMacPrimitives;
     LoRaMacCallback_t LoRaMacCallbacks;
     MibRequestConfirm_t mibReq;
-    int bytes;
+    //int bytes;
     uint8_t byte;
     
     //BoardInitMcu( );
@@ -737,15 +737,14 @@ int main( void )
     modem_wkt_init();
     uartflashtimer = TimerGetCurrentTime();
     //LoRaMacState = 0;
-    //modem_wwdt_init();
+    modem_wwdt_init();
     while( 1 )
     {
-        //Chip_WWDT_Feed(LPC_WWDT);
-        bytes = Chip_UART_ReadRB(LPC_USART0, &rxring, &byte, 1);
-        if(bytes > 0)
+        Chip_WWDT_Feed(LPC_WWDT);
+        while(Chip_UART_ReadRB(LPC_USART0, &rxring, &byte, 1) > 0)
         {
+            Chip_WWDT_Feed(LPC_WWDT);
             uartflashtimer = TimerGetCurrentTime();
-            //Chip_UART_SendRB(LPC_USART0, &txring, &byte, 1);
             frame_rx(byte);
         }
 
@@ -782,6 +781,10 @@ int main( void )
 #endif
                 //TimerInit( &TxNextPacketTimer, OnTxNextPacketTimerEvent );
 
+                mibReq.Type = MIB_DEVICE_CLASS;
+                mibReq.Param.Class = persist.nodetype;
+                LoRaMacMibSetRequestConfirm( &mibReq );
+                
                 mibReq.Type = MIB_ADR;
                 mibReq.Param.AdrEnable = LORAWAN_ADR_ON;
                 LoRaMacMibSetRequestConfirm( &mibReq );
@@ -812,7 +815,14 @@ int main( void )
 #endif
 
 #endif
-                DeviceState = DEVICE_STATE_SLEEP;
+                if(persist.flags & FLAGS_JOINPAR)
+                {
+                    DeviceState = DEVICE_STATE_SLEEP;
+                }
+                else
+                {
+                    DeviceState = DEVICE_STATE_JOIN;
+                }
                 break;
             }
             case DEVICE_STATE_JOIN:
@@ -915,7 +925,11 @@ int main( void )
                 //funWkt[wktType]();
                 if(LoRaMacState == 0)
                 {
-                    if((TimerGetElapsedTime(uartflashtimer) > 10) && (RingBuffer_IsEmpty(&txring)))
+                    if((!RingBuffer_IsEmpty(&txring)) || (!RingBuffer_IsEmpty(&rxring)))
+                    {
+                      uartflashtimer = TimerGetCurrentTime();
+                    }
+                    if(TimerGetElapsedTime(uartflashtimer) > 10)
                     {
 #if 1
                         if(( persist.flags & FLAGS_JOINPAR ) && (atcmdtoactivaty == true))
@@ -926,6 +940,7 @@ int main( void )
                         extern uint32_t UpLinkCounter;
                         if((UpLinkCounter == 0) && ( persist.flags & FLAGS_SESSPAR ))
                         {
+                            Chip_UART_SendRB(LPC_USART0, &txring, "2\r\n", 3);
                             funWktAlarm();
                             break;
                         }

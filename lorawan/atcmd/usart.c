@@ -50,7 +50,7 @@
 RINGBUFF_T txring, rxring;
 
 /* Ring buffer size */
-#define UART_RB_SIZE 64
+#define UART_RB_SIZE 1024
 
 /* Set the default UART, IRQ number, and IRQ handler name */
 #define LPC_USART       LPC_USART0
