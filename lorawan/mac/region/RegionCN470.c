@@ -66,7 +66,7 @@ static int8_t GetNextLowerTxDr( int8_t dr, int8_t minDr )
     uint8_t nbEnabledChannels = 0;
     uint8_t enabledChannels[CN470_MAX_NB_CHANNELS] = { 0 };
     uint8_t swap;
-    if(!PERSIST->joinpar.isPublic)
+    if(!persist.joinpar.isPublic)
     {
         for( uint8_t i = 0, k = 0; i < CN470_MAX_NB_CHANNELS; i += 16, k++ )
         {
@@ -731,7 +731,7 @@ int8_t RegionCN470AlternateDr( AlternateDrParams_t* alternateDr )
     uint8_t nbEnabledChannels = 0;
     uint8_t enabledChannels[CN470_MAX_NB_CHANNELS] = { 0 };
     uint8_t swap;
-    if(!PERSIST->joinpar.isPublic)
+    if(!persist.joinpar.isPublic)
     {
         for( uint8_t i = 0, k = 0; i < CN470_MAX_NB_CHANNELS; i += 16, k++ )
         {
@@ -843,7 +843,7 @@ bool RegionCN470NextChannel( NextChanParams_t* nextChanParams, uint8_t* channel,
     if( nbEnabledChannels > 0 )
     {
         // We found a valid channel
-        if(PERSIST->joinpar.isPublic)
+        if(persist.joinpar.isPublic)
         {
             *channel = enabledChannels[randr( 0, nbEnabledChannels - 1 )];
         }

@@ -283,6 +283,17 @@ typedef struct {
     uint8_t lrc;
  } FRAME;
 
+typedef enum
+{
+    DEVICE_STATE_INIT,
+    DEVICE_STATE_JOIN,
+    DEVICE_STATE_SEND,
+    DEVICE_STATE_CYCLE,
+    DEVICE_STATE_SLEEP,
+    DEVICE_STATE_POWER_DOWN
+}eDeviceState;
+
+extern eDeviceState DeviceState;
 extern uint8_t atcmdtoactivaty;
 extern uint8_t atcmdtosenddata;
 extern TimerEvent_t Led1Timer_Tx;

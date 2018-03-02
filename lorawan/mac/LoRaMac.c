@@ -1368,7 +1368,7 @@ static void OnMacStateCheckTimerEvent( void )
             {
                 AckTimeoutRetriesCounter++;
 
-                if(PERSIST->joinpar.isPublic)
+                if(persist.joinpar.isPublic)
                 {
                 if( ( AckTimeoutRetriesCounter % 2 ) == 1 )
                 {

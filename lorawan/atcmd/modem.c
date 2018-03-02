@@ -543,7 +543,7 @@ void onEvent (ev_t ev) {
     }
 
     // report events (selected by eventmask)
-    if(PERSIST->eventmask & (1 << ev)) {
+    if(persist.eventmask & (1 << ev)) {
     uint8_t len = strlen(evnames[ev]);
     switch(ev) {
     case EV_TXCOMPLETE:
@@ -616,7 +616,7 @@ static void modem_reset () {
     //LMIC_reset();
 
     // check for existing session
-    if(PERSIST->flags & FLAGS_SESSPAR) {
+    if(persist.flags & FLAGS_SESSPAR) {
     // configure session
     //LMIC_setSession(PERSIST->sesspar.netid, PERSIST->sesspar.devaddr, PERSIST->sesspar.nwkkey, PERSIST->sesspar.artkey);
     //LMIC.seqnoDn = PERSIST->seqnoDn;
@@ -659,7 +659,7 @@ static void persist_init (uint8_t factory) {
         uint8_t appKey[] = LORAWAN_APPLICATION_KEY;
         memcpy(joincfg.param.appeui,appEui,8);
         memcpy(joincfg.param.devkey,appKey,16);
-        joincfg.param.isPublic = 0;
+        joincfg.param.isPublic = false;
         sesscfg.param.alarm = 60;//seconds
     
         memcpy(&persist.joinpar,&joincfg,sizeof(joinparam_t));
@@ -686,10 +686,6 @@ void modem_init () {
     // clear modem state
     memset(&MODEM, 0, sizeof(MODEM));
 
-    memcpy(DevEui,PERSIST->joinpar.deveui,8);
-    memcpy(AppEui,PERSIST->joinpar.appeui,8);
-    memcpy(AppKey,PERSIST->joinpar.devkey,16);
-    PublicNetwork = PERSIST->joinpar.isPublic;
     //leds_init();
 
     //modem_reset();
@@ -729,6 +725,7 @@ void modem_rxdone () {
     rst = true;
     ok = 1;
     } else if(cmd == '&' && len == 2 && tolower(MODEM.cmdbuf[1]) == 'f') { // AT&F factory reset
+    Radio.Sleep( );
     persist_init(1);
     rst = true;
     ok = 1;
@@ -791,6 +788,8 @@ void modem_rxdone () {
         // switch on LED
         //leds_set(LED_SESSION, 1);
         // save parameters
+        par.alarm = persist.sesspar.alarm;
+        par.JoinRequestTrials = persist.sesspar.JoinRequestTrials;
         memcpy(&persist.sesspar,&par,sizeof(par));
         persist.seqnoUp = LMIC.seqnoUp;
         persist.seqnoDn = LMIC.seqnoDn;
@@ -799,6 +798,7 @@ void modem_rxdone () {
         //persist.flags = PERSIST->flags | FLAGS_SESSPAR;
         
         //eeprom_erase();
+        DeviceState = DEVICE_STATE_INIT;
         eeprom_write();
         //Radio.Sleep( );
         //rst = true;
@@ -833,6 +833,7 @@ void modem_rxdone () {
         memcpy(&persist.joinpar,&par,sizeof(par));
         persist.flags |= FLAGS_JOINPAR;
         persist.flags &= ~FLAGS_SESSPAR;
+        DeviceState = DEVICE_STATE_INIT;
         //eeprom_erase();
         eeprom_write();
         //Radio.Sleep( );
@@ -868,6 +869,7 @@ void modem_rxdone () {
         persist.channeltoenable = channeltoenable;
         persist.nodetype = nodetype;
         //eeprom_erase();
+        DeviceState = DEVICE_STATE_INIT;
         eeprom_write();
         //Radio.Sleep( );
         //rst = true;
@@ -877,7 +879,7 @@ void modem_rxdone () {
         }
     }
     } else if(cmd == 'j' && len == 1) { // ATJ join network
-    if(PERSIST->flags & FLAGS_JOINPAR) {
+    if(persist.flags & FLAGS_JOINPAR) {
         //LMIC_reset(); // force join
         //LMIC_startJoining();
         atcmdtoactivaty = true;
@@ -909,8 +911,16 @@ void modem_rxdone () {
             PrepareTxFrame( LMIC.pendTxPort ,LMIC.pendTxData ,LMIC.pendTxLen);
             if(persist.nodetype == CLASS_A)
             {
-                atcmdtosenddata = true;
-                goto jumpforatt;
+                Chip_PMU_ClearPowerDownControl(LPC_PMU, PMU_DPDCTRL_LPOSCDPDEN);
+                if(0 == LoRaMacState)//LORAMAC_IDLE 
+                {
+                    atcmdtosenddata = true;
+                    goto jumpforatt;
+                }
+                else
+                {
+                    ok = 0;
+                }
             }
             Chip_UART_SendRB(LPC_USART0, &txring, "1\r\n", 3);
             if(SendFrame() == true)

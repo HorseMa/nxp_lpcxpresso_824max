@@ -167,14 +167,7 @@ extern RINGBUFF_T txring, rxring;
 /*!
  * Device states
  */
-static enum eDeviceState
-{
-    DEVICE_STATE_INIT,
-    DEVICE_STATE_JOIN,
-    DEVICE_STATE_SEND,
-    DEVICE_STATE_CYCLE,
-    DEVICE_STATE_SLEEP
-}DeviceState;
+eDeviceState DeviceState;
 
 /*!
  * LoRaWAN compliance tests support data
@@ -663,7 +656,7 @@ static void MlmeConfirm( MlmeConfirm_t *mlmeConfirm )
             {
                 // Status is OK, node has joined the network
                 DeviceState = DEVICE_STATE_SLEEP;
-                atcmdtoactivaty == false;
+                atcmdtoactivaty = false;
                 onEvent(EV_JOINED);
                 Board_LED_Set(0,0);
             }
@@ -791,7 +784,7 @@ int main( void )
                 LoRaMacMibSetRequestConfirm( &mibReq );
 
                 mibReq.Type = MIB_PUBLIC_NETWORK;
-                mibReq.Param.EnablePublicNetwork = LORAWAN_PUBLIC_NETWORK;
+                mibReq.Param.EnablePublicNetwork = persist.joinpar.isPublic;
                 LoRaMacMibSetRequestConfirm( &mibReq );
 
 #if defined( REGION_EU868 )
@@ -837,9 +830,9 @@ int main( void )
 
                     mlmeReq.Type = MLME_JOIN;
 
-                    mlmeReq.Req.Join.DevEui = DevEui;
-                    mlmeReq.Req.Join.AppEui = AppEui;
-                    mlmeReq.Req.Join.AppKey = AppKey;
+                    mlmeReq.Req.Join.DevEui = persist.joinpar.deveui;
+                    mlmeReq.Req.Join.AppEui = persist.joinpar.appeui;
+                    mlmeReq.Req.Join.AppKey = persist.joinpar.devkey;
                     mlmeReq.Req.Join.NbTrials = 3;
 
                     if( NextTx == true )
@@ -923,85 +916,81 @@ int main( void )
 #endif
             case DEVICE_STATE_SLEEP:
             {
-                //funWkt[wktType]();
-                if(LoRaMacState == 0)
+                if(persist.nodetype == CLASS_C)
                 {
-                    if((!RingBuffer_IsEmpty(&txring)) || (!RingBuffer_IsEmpty(&rxring)))
+                    if(( persist.flags & FLAGS_JOINPAR ) && (atcmdtoactivaty == true))
                     {
-                      uartflashtimer = TimerGetCurrentTime();
+                        DeviceState = DEVICE_STATE_JOIN;
+                        atcmdtoactivaty = false;
+                        break;
                     }
-                    if(TimerGetElapsedTime(uartflashtimer) > 10)
-                    {
-#if 1
-                        if(( persist.flags & FLAGS_JOINPAR ) && (atcmdtoactivaty == true))
-                        {
-                            DeviceState = DEVICE_STATE_JOIN;
-                            atcmdtoactivaty == false;
-                            continue;
-                        }
-                        if(( persist.flags & FLAGS_SESSPAR ) && ( persist.nodetype == CLASS_A ) && (atcmdtosenddata == true))
-                        {
-                            atcmdtosenddata = false;
-                            if(SendFrame() == true)
-                            {
-                                Chip_UART_SendRB(LPC_USART0, &txring, "OK\r\n", 4);
-                            }
-                            else
-                            {
-                                Chip_UART_SendRB(LPC_USART0, &txring, "ERROR\r\n", 7);
-                            }
-                            continue;
-                        }
-                        extern uint32_t UpLinkCounter;
-                        if((UpLinkCounter == 0) && ( persist.flags & FLAGS_SESSPAR ))
-                        {
-                            Chip_UART_SendRB(LPC_USART0, &txring, "2\r\n", 3);
-                            funWktAlarm();
-                            break;
-                        }
-                        NVIC_DisableIRQ(PININT0_IRQn);
-                        NVIC_DisableIRQ(PININT1_IRQn);
-                        Radio.Sleep( );
-                        if( persist.flags & FLAGS_JOINPAR )
-                        {
-                            Chip_PMU_ClearPowerDownControl(LPC_PMU, PMU_DPDCTRL_LPOSCDPDEN);
-                        }
-                        else
-                        {
-                            Chip_PMU_SetPowerDownControl(LPC_PMU, PMU_DPDCTRL_LPOSCDPDEN);
-                        }
-                        //enablePio4IntToWakeup();
-                        /*Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO23,PIN_MODE_INACTIVE);
-                        Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO14,PIN_MODE_INACTIVE);
-                        Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO25,PIN_MODE_INACTIVE);
-                        Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO6,PIN_MODE_INACTIVE);
-                        Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,23,FALSE); // NRESET
-                        Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,14,FALSE); // SSEL
-                        Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,25,FALSE); // SCK
-                        Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,6,FALSE); // MOSI*/
-                        WakeupTest(WKT_CLKSRC_10KHZ,persist.sesspar.alarm,PMU_MCU_DEEP_PWRDOWN);
-                        //WakeupTest(WKT_CLKSRC_10KHZ,persist.sesspar.alarm,PMU_MCU_SLEEP);
-                        /*Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,23,TRUE); // NRESET
-                        Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,14,TRUE); // SSEL
-                        Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,25,TRUE); // SCK
-                        Chip_GPIO_SetPinDIR(LPC_GPIO_PORT,0,6,TRUE); // MOSI*/
-                        NVIC_EnableIRQ(PININT0_IRQn);
-                        NVIC_EnableIRQ(PININT1_IRQn);
-                        //enableUart();
-                        //Chip_UART_SendRB(LPC_USART0, &txring, "PIN4 WAKEUP\r\n", 13);
-#endif
-                    }
-                    else
-                    {
-                        WakeupTest(WKT_CLKSRC_10KHZ,0xfffffffe,PMU_MCU_SLEEP);
-                    }
+                    Chip_PMU_ClearPowerDownControl(LPC_PMU, PMU_DPDCTRL_LPOSCDPDEN);
+                    WakeupTest(WKT_CLKSRC_10KHZ,0xfffffffe,PMU_MCU_SLEEP);
                 }
                 else
                 {
-                    WakeupTest(WKT_CLKSRC_10KHZ,0xfffffffe,PMU_MCU_SLEEP);
+                    if(LoRaMacState == 0)
+                    {
+                        if((!RingBuffer_IsEmpty(&txring)) || (!RingBuffer_IsEmpty(&rxring)))
+                        {
+                            uartflashtimer = TimerGetCurrentTime();
+                        }
+                        if(TimerGetElapsedTime(uartflashtimer) > 10)
+                        {
+                              DeviceState = DEVICE_STATE_POWER_DOWN;
+                        }
+                        Chip_PMU_ClearPowerDownControl(LPC_PMU, PMU_DPDCTRL_LPOSCDPDEN);
+                        WakeupTest(WKT_CLKSRC_10KHZ,0xfffffffe,PMU_MCU_SLEEP);
+                    }
                 }
-                // Wake up through events
-                //TimerLowPowerHandler( );
+                break;
+            }
+            case DEVICE_STATE_POWER_DOWN:
+            {
+                if(( persist.flags & FLAGS_JOINPAR ) && (atcmdtoactivaty == true))
+                {
+                    DeviceState = DEVICE_STATE_JOIN;
+                    atcmdtoactivaty = false;
+                    break;
+                }
+                if(( persist.flags & FLAGS_SESSPAR ) && ( persist.nodetype == CLASS_A ) && (atcmdtosenddata == true))
+                {
+                    atcmdtosenddata = false;
+                    Chip_PMU_ClearPowerDownControl(LPC_PMU, PMU_DPDCTRL_LPOSCDPDEN);
+                    if(SendFrame() == true)
+                    {
+                        Chip_UART_SendRB(LPC_USART0, &txring, "OK\r\n", 4);
+                    }
+                    else
+                    {
+                        Chip_UART_SendRB(LPC_USART0, &txring, "ERROR\r\n", 7);
+                    }
+                    DeviceState = DEVICE_STATE_SLEEP;
+                    break;;
+                }
+                extern uint32_t UpLinkCounter;
+                if((UpLinkCounter == 0) && ( persist.flags & FLAGS_SESSPAR ))
+                {
+                    Chip_UART_SendRB(LPC_USART0, &txring, "2\r\n", 3);
+                    funWktAlarm();
+                    DeviceState = DEVICE_STATE_SLEEP;
+                    break;
+                }
+                NVIC_DisableIRQ(PININT0_IRQn);
+                NVIC_DisableIRQ(PININT1_IRQn);
+                Radio.Sleep( );
+                if( persist.flags & FLAGS_JOINPAR )
+                {
+                    Chip_PMU_ClearPowerDownControl(LPC_PMU, PMU_DPDCTRL_LPOSCDPDEN);
+                }
+                else
+                {
+                    Chip_PMU_SetPowerDownControl(LPC_PMU, PMU_DPDCTRL_LPOSCDPDEN);
+                }
+                WakeupTest(WKT_CLKSRC_10KHZ,persist.sesspar.alarm,PMU_MCU_DEEP_PWRDOWN);
+                //WakeupTest(WKT_CLKSRC_10KHZ,persist.sesspar.alarm,PMU_MCU_SLEEP);
+                NVIC_EnableIRQ(PININT0_IRQn);
+                NVIC_EnableIRQ(PININT1_IRQn);
                 break;
             }
             default:
