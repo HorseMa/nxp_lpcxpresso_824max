@@ -341,7 +341,7 @@ void RegionCN470InitDefaults( InitType_t type )
                 Channels[i].DrRange.Value = ( DR_5 << 4 ) | DR_0;
                 Channels[i].Band = 0;
             }
-            if(!PERSIST->joinpar.isPublic)
+            if(!persist.joinpar.isPublic)
             {
                 // Initialize the channels default mask
                 ChannelsDefaultMask[0] = 0x0000;

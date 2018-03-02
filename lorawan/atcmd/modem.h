@@ -284,6 +284,7 @@ typedef struct {
  } FRAME;
 
 extern uint8_t atcmdtoactivaty;
+extern uint8_t atcmdtosenddata;
 extern TimerEvent_t Led1Timer_Tx;
 extern TimerEvent_t Led1Timer_Rx;
 extern TimerEvent_t Led1Timer_OnLine;

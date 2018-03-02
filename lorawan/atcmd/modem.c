@@ -39,14 +39,14 @@
 
 static union {
     joinparam_t param;
-    uint8_t pattern[sizeof(joinparam_t)];
+    //uint8_t pattern[sizeof(joinparam_t)];
 } joincfg;// = {
     //.pattern = { PATTERN_JOINCFG_STR }
 //};
 
 static union {
     sessparam_t param;
-    uint8_t pattern[sizeof(sessparam_t)];
+    //uint8_t pattern[sizeof(sessparam_t)];
 } sesscfg;// = {
     //.pattern = { PATTERN_SESSCFG_STR }
 //};
@@ -85,6 +85,7 @@ static const char* evnames[] = {
 };
 
 uint8_t atcmdtoactivaty = false;
+uint8_t atcmdtosenddata = false;
 extern uint8_t DevEui[];
 extern uint8_t AppEui[];
 extern uint8_t AppKey[];
@@ -596,7 +597,7 @@ void AlarmStart(void)
 void AlarmEnd(void)
 {
     isAlarm = false;
-    Chip_UART_SendRB(LPC_USART0, &txring, "EV_ALARM\r\n", 10);
+    //Chip_UART_SendRB(LPC_USART0, &txring, "EV_ALARM\r\n", 10);
 }
 
 uint8_t isAlarmDuty(void)
@@ -658,7 +659,7 @@ static void persist_init (uint8_t factory) {
         uint8_t appKey[] = LORAWAN_APPLICATION_KEY;
         memcpy(joincfg.param.appeui,appEui,8);
         memcpy(joincfg.param.devkey,appKey,16);
-        joincfg.param.isPublic = false;
+        joincfg.param.isPublic = 0;
         sesscfg.param.alarm = 60;//seconds
     
         memcpy(&persist.joinpar,&joincfg,sizeof(joinparam_t));
@@ -680,11 +681,11 @@ static void persist_init (uint8_t factory) {
 extern bool PublicNetwork;
 // called by initial job
 void modem_init () {
+    persist_init(0);
     usart_init();
     // clear modem state
     memset(&MODEM, 0, sizeof(MODEM));
 
-    persist_init(0);
     memcpy(DevEui,PERSIST->joinpar.deveui,8);
     memcpy(AppEui,PERSIST->joinpar.appeui,8);
     memcpy(AppKey,PERSIST->joinpar.devkey,16);
@@ -820,6 +821,7 @@ void modem_rxdone () {
         ok = 1;
     } else if(MODEM.cmdbuf[1] == '=' && len == 2+16+1+16+1+32) { // ATJ= set (deveui,appeui,devkey)
         joinparam_t par;
+        par.isPublic = false;
         if( gethex(par.deveui, MODEM.cmdbuf+2,           16) == 8 &&
         MODEM.cmdbuf[2+16] == ',' &&
         gethex(par.appeui, MODEM.cmdbuf+2+16+1,      16) == 8 &&
@@ -905,6 +907,11 @@ void modem_rxdone () {
             else{
             IsTxConfirmed = LMIC.pendTxConf;
             PrepareTxFrame( LMIC.pendTxPort ,LMIC.pendTxData ,LMIC.pendTxLen);
+            if(persist.nodetype == CLASS_A)
+            {
+                atcmdtosenddata = true;
+                goto jumpforatt;
+            }
             Chip_UART_SendRB(LPC_USART0, &txring, "1\r\n", 3);
             if(SendFrame() == true)
             {
@@ -961,6 +968,7 @@ void modem_rxdone () {
         while(1);//Delay(100);
         //Reset_Handler();
     }
+jumpforatt:
     frame_init(&rxframe, MODEM.cmdbuf, sizeof(MODEM.cmdbuf));
     //modem_starttx();
 }

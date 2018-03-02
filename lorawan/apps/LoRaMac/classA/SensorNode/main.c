@@ -663,6 +663,7 @@ static void MlmeConfirm( MlmeConfirm_t *mlmeConfirm )
             {
                 // Status is OK, node has joined the network
                 DeviceState = DEVICE_STATE_SLEEP;
+                atcmdtoactivaty == false;
                 onEvent(EV_JOINED);
                 Board_LED_Set(0,0);
             }
@@ -935,6 +936,20 @@ int main( void )
                         if(( persist.flags & FLAGS_JOINPAR ) && (atcmdtoactivaty == true))
                         {
                             DeviceState = DEVICE_STATE_JOIN;
+                            atcmdtoactivaty == false;
+                            continue;
+                        }
+                        if(( persist.flags & FLAGS_SESSPAR ) && ( persist.nodetype == CLASS_A ) && (atcmdtosenddata == true))
+                        {
+                            atcmdtosenddata = false;
+                            if(SendFrame() == true)
+                            {
+                                Chip_UART_SendRB(LPC_USART0, &txring, "OK\r\n", 4);
+                            }
+                            else
+                            {
+                                Chip_UART_SendRB(LPC_USART0, &txring, "ERROR\r\n", 7);
+                            }
                             continue;
                         }
                         extern uint32_t UpLinkCounter;
