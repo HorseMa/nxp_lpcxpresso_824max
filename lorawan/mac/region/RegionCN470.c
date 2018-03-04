@@ -754,8 +754,15 @@ int8_t RegionCN470AlternateDr( AlternateDrParams_t* alternateDr )
             }   
         }
         PRIVATE_NET_DR_MAX = enabledChannels[0];
-        PRIVATE_NET_DR_MIN = enabledChannels[2];
-        datarate = enabledChannels[(alternateDr->NbTrials - 1) % 3];
+        PRIVATE_NET_DR_MIN = enabledChannels[nbEnabledChannels - 1];
+        if(nbEnabledChannels > 1)
+        {
+            datarate = enabledChannels[(alternateDr->NbTrials - 1) % nbEnabledChannels];
+        }
+        else
+        {
+            datarate = PRIVATE_NET_DR_MAX;
+        }
     }
     else
     {
