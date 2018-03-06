@@ -2317,7 +2317,7 @@ LoRaMacStatus_t SendFrameOnChannel( uint8_t channel )
 
     if( IsLoRaMacNetworkJoined == false )
     {
-        LedIndication();
+        //LedIndication();
         JoinRequestTrials++;
     }
 

@@ -322,17 +322,17 @@ static struct {
 
 // provide device EUI (LSBF)
 void os_getDevEui (uint8_t* buf) {
-    memcpy(buf, PERSIST->joinpar.deveui, 8);
+    memcpy(buf, persist.joinpar.deveui, 8);
 }
 
 // provide device key
 void os_getDevKey (uint8_t* buf) {
-    memcpy(buf, PERSIST->joinpar.devkey, 16);
+    memcpy(buf, persist.joinpar.devkey, 16);
 }
 
 // provide application EUI (LSBF)
 void os_getArtEui (uint8_t* buf) {
-    memcpy(buf, PERSIST->joinpar.appeui, 8);
+    memcpy(buf, persist.joinpar.appeui, 8);
 }
 
 extern FRAME rxframe;
@@ -403,8 +403,8 @@ static void OnLed1TimerEventNetOffline( void )
         TimerStop( &Led1Timer_OffLine );
         // Switch LED 1 OFF
         Board_LED_Set(0,0);
-        //TimerSetValue( &Led1Timer_OffLine, 1000 );
-        //TimerStart( &Led1Timer_OffLine );
+        TimerSetValue( &Led1Timer_OffLine, 1000 );
+        TimerStart( &Led1Timer_OffLine );
         state = 0;
         break;
         default:
@@ -521,6 +521,7 @@ void onEvent (ev_t ev) {
     // take action on specific events
     switch(ev) {
     case EV_JOINING:
+      LedIndication();
       //Board_LED_Set(0,0);
       //TimerSetValue( &Led1Timer_OffLine, 10 );
       //TimerStart(&Led1Timer_OffLine);
@@ -765,13 +766,13 @@ void modem_rxdone () {
     }*/ else if(cmd == 's' && len >= 2) { // SESSION parameters
     if(MODEM.cmdbuf[1] == '?' && len == 2) { // ATS? query (netid,devaddr,seqnoup,seqnodn)
         rspbuf += cpystr(rspbuf, "OK,");
-        rspbuf += int2hex(rspbuf, PERSIST->sesspar.netid);
+        rspbuf += int2hex(rspbuf, persist.sesspar.netid);
         *rspbuf++ = ',';
-        rspbuf += int2hex(rspbuf, PERSIST->sesspar.devaddr);
+        rspbuf += int2hex(rspbuf, persist.sesspar.devaddr);
         *rspbuf++ = ',';
-        rspbuf += int2hex(rspbuf, PERSIST->seqnoUp);
+        rspbuf += int2hex(rspbuf, persist.seqnoUp);
         *rspbuf++ = ',';
-        rspbuf += int2hex(rspbuf, PERSIST->seqnoDn);
+        rspbuf += int2hex(rspbuf, persist.seqnoDn);
         ok = 1;
     } else if(MODEM.cmdbuf[1] == '=' && len == 2+8+1+8+1+32+1+32) { // ATS= set (netid,devaddr,nwkkey,artkey)
         sessparam_t par;
@@ -813,10 +814,10 @@ void modem_rxdone () {
     if(MODEM.cmdbuf[1] == '?' && len == 2) { // ATJ? query (deveui,appeui)
         uint8_t tmp[8];
         rspbuf += cpystr(rspbuf, "OK,");
-        reverse(tmp, PERSIST->joinpar.deveui, 8);
+        reverse(tmp, persist.joinpar.deveui, 8);
         rspbuf += puthex(rspbuf, tmp, 8);
         *rspbuf++ = ',';
-        reverse(tmp, PERSIST->joinpar.appeui, 8);
+        reverse(tmp, persist.joinpar.appeui, 8);
         rspbuf += puthex(rspbuf, tmp, 8);
         ok = 1;
     } else if(MODEM.cmdbuf[1] == '=' && len == 2+16+1+16+1+32) { // ATJ= set (deveui,appeui,devkey)
