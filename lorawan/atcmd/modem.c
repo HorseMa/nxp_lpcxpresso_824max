@@ -923,7 +923,6 @@ void modem_rxdone () {
                     ok = 0;
                 }
             }
-            Chip_UART_SendRB(LPC_USART0, &txring, "1\r\n", 3);
             if(SendFrame() == true)
             {
                 ok = 1;

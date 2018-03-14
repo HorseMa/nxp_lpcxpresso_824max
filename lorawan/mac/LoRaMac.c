@@ -3310,6 +3310,10 @@ LoRaMacStatus_t LoRaMacMcpsRequest( McpsReq_t *mcpsRequest )
     }
 
     macHdr.Value = 0;
+    if(!persist.joinpar.isPublic)
+    {
+        macHdr.Bits.RFU = persist.nodetype;
+    }
     memset1 ( ( uint8_t* ) &McpsConfirm, 0, sizeof( McpsConfirm ) );
     McpsConfirm.Status = LORAMAC_EVENT_INFO_STATUS_ERROR;
 

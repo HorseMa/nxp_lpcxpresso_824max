@@ -971,7 +971,6 @@ int main( void )
                 extern uint32_t UpLinkCounter;
                 if((UpLinkCounter == 0) && ( persist.flags & FLAGS_SESSPAR ))
                 {
-                    Chip_UART_SendRB(LPC_USART0, &txring, "2\r\n", 3);
                     funWktAlarm();
                     DeviceState = DEVICE_STATE_SLEEP;
                     break;
