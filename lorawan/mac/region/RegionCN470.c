@@ -145,7 +145,25 @@ static uint8_t CountNbOfEnabledChannels( uint8_t datarate, uint16_t* channelsMas
 {
     uint8_t nbEnabledChannels = 0;
     uint8_t delayTransmission = 0;
-
+    
+    if(!persist.joinpar.isPublic)
+    {
+        for( uint8_t i = 0, k = 0; i < CN470_MAX_NB_CHANNELS; i += 16, k++ )
+        {
+            for( uint8_t j = 0; j < 16; j++ )
+            {
+                if( ( channelsMask[k] & ( 1 << j ) ) != 0 )
+                {
+                    if( channels[i + j].Frequency == 0 )
+                    { // Check if the channel is enabled
+                        continue;
+                    }
+                    enabledChannels[nbEnabledChannels++] = i + j;
+                }
+            }
+        }
+        return nbEnabledChannels;
+    }
     for( uint8_t i = 0, k = 0; i < CN470_MAX_NB_CHANNELS; i += 16, k++ )
     {
         for( uint8_t j = 0; j < 16; j++ )
@@ -310,6 +328,15 @@ PhyParam_t RegionCN470GetPhyParam( GetPhyParams_t* getPhy )
         case PHY_NB_JOIN_TRIALS:
         case PHY_DEF_NB_JOIN_TRIALS:
         {
+            if(!persist.joinpar.isPublic)
+            {
+                uint8_t enabledChannels[CN470_MAX_NB_CHANNELS] = { 0 };
+                uint8_t nbEnabledChannels = CountNbOfEnabledChannels( 0,
+                                                      ChannelsMask, Channels,
+                                                      0, enabledChannels, 0 );
+                phyParam.Value = nbEnabledChannels ;//* 3;
+                break;
+            }
             phyParam.Value = 48;
             break;
         }
@@ -827,7 +854,40 @@ bool RegionCN470NextChannel( NextChanParams_t* nextChanParams, uint8_t* channel,
         ChannelsMask[4] = 0xFFFF;
         ChannelsMask[5] = 0xFFFF;
     }
-
+    if(!persist.joinpar.isPublic)
+    {
+        if(persist.flags & FLAGS_SESSPAR)
+        {
+            *time = 0;
+        }
+        else
+        {
+            if(TimerGetElapsedTime( nextChanParams->LastAggrTx ) > 6000 + 100)
+            {
+                *time = 0;
+            }
+            else
+            {
+                *time = 6000 - TimerGetElapsedTime( nextChanParams->LastAggrTx ) + randr(100 , 6000);
+            }
+        }
+        nbEnabledChannels = CountNbOfEnabledChannels( nextChanParams->Datarate,
+                                                      ChannelsMask, Channels,
+                                                      Bands, enabledChannels, &delayTx );
+        for(loop = 0;loop < nbEnabledChannels;loop ++)
+        {
+            if(enabledChannels[loop] % 6 == nextChanParams->Datarate)
+            {
+                *channel = enabledChannels[loop];
+                break;
+            }
+        }
+        if(loop >= nbEnabledChannels)
+        {
+            *channel = 0;
+        }
+        return true;
+    }
     if( nextChanParams->AggrTimeOff <= TimerGetElapsedTime( nextChanParams->LastAggrTx ) )
     {
         // Reset Aggregated time off

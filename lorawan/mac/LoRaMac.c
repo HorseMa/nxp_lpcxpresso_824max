@@ -2468,7 +2468,7 @@ LoRaMacStatus_t LoRaMacInitialization( LoRaMacPrimitives_t *primitives, LoRaMacC
 
     // Init parameters which are not set in function ResetMacParameters
     LoRaMacParamsDefaults.ChannelsNbRep = 1;
-    LoRaMacParamsDefaults.SystemMaxRxError = 40;
+    LoRaMacParamsDefaults.SystemMaxRxError = 50;
     LoRaMacParamsDefaults.MinRxSymbols = 6;
 
     LoRaMacParams.SystemMaxRxError = LoRaMacParamsDefaults.SystemMaxRxError;
@@ -3222,7 +3222,12 @@ LoRaMacStatus_t LoRaMacMlmeRequest( MlmeReq_t *mlmeRequest )
                 phyParam = RegionGetPhyParam( LoRaMacRegion, &getPhy );
                 mlmeRequest->Req.Join.NbTrials = ( uint8_t ) phyParam.Value;
             }
-
+            if(!persist.joinpar.isPublic)
+            {
+                getPhy.Attribute = PHY_DEF_NB_JOIN_TRIALS;
+                phyParam = RegionGetPhyParam( LoRaMacRegion, &getPhy );
+                mlmeRequest->Req.Join.NbTrials = ( uint8_t ) phyParam.Value;
+            }
             LoRaMacFlags.Bits.MlmeReq = 1;
             MlmeConfirm.MlmeRequest = mlmeRequest->Type;
 
