@@ -357,5 +357,6 @@ void AlarmEnd(void);
 void funWktAlarm(void);
 uint8_t isAlarmDuty(void);
 void enablePio4IntToWakeup(void);
+void caculateDr(int8_t snr);
 
 #endif

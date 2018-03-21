@@ -836,7 +836,7 @@ void RegionCN470CalcBackOff( CalcBackOffParams_t* calcBackOff )
 
     RegionCommonCalcBackOff( &calcBackOffParams );
 }
-
+bool sendoverflag = 0;
 bool RegionCN470NextChannel( NextChanParams_t* nextChanParams, uint8_t* channel, TimerTime_t* time, TimerTime_t* aggregatedTimeOff )
 {
     uint8_t nbEnabledChannels = 0;
@@ -858,17 +858,34 @@ bool RegionCN470NextChannel( NextChanParams_t* nextChanParams, uint8_t* channel,
     {
         if(persist.flags & FLAGS_SESSPAR)
         {
-            *time = 0;
-        }
-        else
-        {
-            if(TimerGetElapsedTime( nextChanParams->LastAggrTx ) > 6000 + 100)
+            if(sendoverflag == 0)
             {
-                *time = 0;
+                extern uint8_t AckTimeoutRetriesCounter;
+                if(AckTimeoutRetriesCounter == 1)
+                {
+                    *time = 0;
+                }
+                else
+                {
+                    *time = randr(1 , 3000);
+                    sendoverflag = 1;
+                }
             }
             else
             {
-                *time = 6000 - TimerGetElapsedTime( nextChanParams->LastAggrTx ) + randr(100 , 6000);
+                *time = 0;
+            }
+        }
+        else
+        {
+            if(sendoverflag == 0)
+            {
+                *time = randr(1 , 6000);
+                sendoverflag = 1;
+            }
+            else
+            {
+                *time = 0;
             }
         }
         nbEnabledChannels = CountNbOfEnabledChannels( nextChanParams->Datarate,
@@ -977,4 +994,32 @@ uint8_t RegionCN470ApplyDrOffset( uint8_t downlinkDwellTime, int8_t dr, int8_t d
         datarate = DR_0;
     }
     return datarate;
+}
+
+void caculateDr(int8_t snr)
+{
+    extern uint8_t PRIVATE_NET_DR_MAX;
+    extern uint8_t PRIVATE_NET_DR_MIN;
+    uint8_t loop;
+    static int8_t DRsSnrTbl[6] = {-17,-14,-11,-8,-5,-2};
+    uint8_t nbEnabledChannels = 0;
+    uint8_t enabledChannels[CN470_MAX_NB_CHANNELS] = { 0 };
+    uint32_t trials = 0;
+      
+    nbEnabledChannels = CountNbOfEnabledChannels( 0,
+                                                      ChannelsMask, Channels,
+                                                      0, enabledChannels, 0 );
+    for(loop = PRIVATE_NET_DR_MIN; loop < PRIVATE_NET_DR_MAX; loop ++)
+    {
+        if(snr < DRsSnrTbl[loop])
+        {
+            break;
+        }
+    }
+    trials = nbEnabledChannels - (loop % nbEnabledChannels);
+    if(trials != persist.sesspar.JoinRequestTrials)
+    {
+        persist.sesspar.JoinRequestTrials = trials;
+        eeprom_write();
+    }
 }

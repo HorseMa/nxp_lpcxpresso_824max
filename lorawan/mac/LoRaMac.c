@@ -358,7 +358,7 @@ static uint8_t AckTimeoutRetries = 1;
 /*!
  * Number of trials to get a frame acknowledged
  */
-static uint8_t AckTimeoutRetriesCounter = 1;
+uint8_t AckTimeoutRetriesCounter = 1;
 
 /*!
  * Indicates if the AckTimeout timer has expired or not
@@ -702,7 +702,6 @@ static void OnRadioRxDone( uint8_t *payload, uint16_t size, int16_t rssi, int8_t
     PhyParam_t phyParam;
     bool skipIndication = false;
 
-    static uint8_t DRsSnrTbl[6] = {-17,-17,-14,-11,-8,-5};
     uint8_t pktHeaderLen = 0;
     uint32_t address = 0;
     uint8_t appPayloadStartIndex = 0;
@@ -742,23 +741,6 @@ static void OnRadioRxDone( uint8_t *payload, uint16_t size, int16_t rssi, int8_t
     Radio.Sleep( );
     TimerStop( &RxWindowTimer2 );
 
-    extern uint8_t PRIVATE_NET_DR_MAX;
-    extern uint8_t PRIVATE_NET_DR_MIN;
-    if( IsLoRaMacNetworkJoined == true )
-    {
-        for(uint8_t loop = 0; loop < 3; loop ++)
-        {
-            if(snr > DRsSnrTbl[PRIVATE_NET_DR_MAX - loop])
-            {
-                if((PRIVATE_NET_DR_MAX - loop - 1) != persist.sesspar.JoinRequestTrials)
-                {
-                    persist.sesspar.JoinRequestTrials = PRIVATE_NET_DR_MAX - loop - 1;
-                    eeprom_write();
-                }
-                break;
-            }
-        }
-    }
     macHdr.Value = payload[pktHeaderLen++];
 
     switch( macHdr.Bits.MType )
@@ -801,6 +783,7 @@ static void OnRadioRxDone( uint8_t *payload, uint16_t size, int16_t rssi, int8_t
                 persist.sesspar.JoinRequestTrials = JoinRequestTrials;
                 persist.flags &= ~FLAGS_JOINPAR;
                 persist.flags |= FLAGS_SESSPAR;
+                caculateDr(snr);
                 eeprom_write();
                 // DLSettings
                 LoRaMacParams.Rx1DrOffset = ( LoRaMacRxPayload[11] >> 4 ) & 0x07;
@@ -938,6 +921,7 @@ static void OnRadioRxDone( uint8_t *payload, uint16_t size, int16_t rssi, int8_t
 
                 if( isMicOk == true )
                 {
+                    caculateDr(snr);
                     McpsIndication.Status = LORAMAC_EVENT_INFO_STATUS_OK;
                     McpsIndication.Multicast = multicast;
                     McpsIndication.FramePending = fCtrl.Bits.FPending;
@@ -2321,6 +2305,8 @@ LoRaMacStatus_t SendFrameOnChannel( uint8_t channel )
         JoinRequestTrials++;
     }
 
+    extern bool sendoverflag;
+    sendoverflag = 0;
     // Send now
     Radio.Send( LoRaMacBuffer, LoRaMacBufferPktLen );
 
@@ -2503,8 +2489,8 @@ LoRaMacStatus_t LoRaMacInitialization( LoRaMacPrimitives_t *primitives, LoRaMacC
     Radio.Init( &RadioEvents );
 
     // Random seed initialization
-    srand1( Radio.Random( ) );
-
+    //srand1( Radio.Random( ) );
+    srand1( persist.joinpar.deveui[0] | (persist.joinpar.deveui[1] << 8) | (persist.joinpar.deveui[2] << 16) | (persist.joinpar.deveui[3] << 24));
     PublicNetwork = true;
     Radio.SetPublicNetwork( PublicNetwork );
     Radio.Sleep( );

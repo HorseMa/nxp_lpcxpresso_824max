@@ -663,6 +663,8 @@ static void MlmeConfirm( MlmeConfirm_t *mlmeConfirm )
             else
             {
                 // Join was not successful. Try to join again
+                onEvent(EV_JOIN_FAILED);
+                //DeviceState = DEVICE_STATE_SLEEP;
                 DeviceState = DEVICE_STATE_JOIN;
             }
             break;
@@ -809,11 +811,11 @@ int main( void )
 #endif
 
 #endif
-                if(persist.flags & FLAGS_JOINPAR)
+                //if(persist.flags & FLAGS_JOINPAR)
                 {
-                    DeviceState = DEVICE_STATE_SLEEP;
+                //    DeviceState = DEVICE_STATE_SLEEP;
                 }
-                else
+                //else
                 {
                     DeviceState = DEVICE_STATE_JOIN;
                 }

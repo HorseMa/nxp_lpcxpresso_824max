@@ -87,7 +87,7 @@ void eeprom_write (void) {
     //for (i=0; i<4; i++) {
         //Print_Val("0x", unique_id[i]);
     //}
-
+    Chip_WWDT_Feed(LPC_WWDT);
     /* Disable interrupt mode so it doesn't fire during FLASH updates */
     hal_disableIRQs();
 #if 1
