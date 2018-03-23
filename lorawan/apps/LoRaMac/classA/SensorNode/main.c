@@ -949,6 +949,13 @@ int main( void )
             }
             case DEVICE_STATE_POWER_DOWN:
             {
+                extern bool SrvAckRequested;
+                if(SrvAckRequested == true)
+                {
+                    funSendAck();
+                    DeviceState = DEVICE_STATE_SLEEP;
+                    break;
+                }
                 if(( persist.flags & FLAGS_JOINPAR ) && (atcmdtoactivaty == true))
                 {
                     DeviceState = DEVICE_STATE_JOIN;

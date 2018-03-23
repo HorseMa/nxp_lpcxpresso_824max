@@ -198,7 +198,7 @@ static bool NodeAckRequested = false;
  * If the server has sent a FRAME_TYPE_DATA_CONFIRMED_DOWN this variable indicates
  * if the ACK bit must be set for the next transmission
  */
-static bool SrvAckRequested = false;
+bool SrvAckRequested = false;
 
 /*!
  * Indicates if the MAC layer wants to send MAC commands

@@ -122,6 +122,16 @@ void funWktAlarm(void)
     SendFrame();
     return;
 }
+void funSendAck(void)
+{
+    uint8_t txcycledata[] = {0x55 ,0x01 ,0x02 ,0x0A ,0x0B};
+    wktType = 0;
+    IsTxConfirmed = false;
+    AlarmStart();
+    PrepareTxFrame( 2 ,txcycledata,0);
+    SendFrame();
+    return;
+}
 
 /**
  * @brief	Handle interrupt from Wake-up timer

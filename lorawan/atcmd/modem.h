@@ -355,6 +355,7 @@ void WakeupTest(WKT_CLKSRC_T clkSrc, uint32_t timeoutInSecs, CHIP_PMU_MCUPOWER_T
 void AlarmStart(void);
 void AlarmEnd(void);
 void funWktAlarm(void);
+void funSendAck(void);
 uint8_t isAlarmDuty(void);
 void enablePio4IntToWakeup(void);
 void caculateDr(int8_t snr);
