@@ -164,6 +164,7 @@ static bool NextTx = true;
 
 extern RINGBUFF_T txring, rxring;
 
+bool classcrx = 1;
 /*!
  * Device states
  */
@@ -417,6 +418,9 @@ static void funMcpsConfirm( McpsConfirm_t *mcpsConfirm )
  *               containing indication attributes.
  */
 extern McpsConfirm_t McpsConfirm;
+static uint32_t acktimeer;
+uint32_t classcalarmtimer;
+
 static void McpsIndication( McpsIndication_t *mcpsIndication )
 {
     if( mcpsIndication->Status != LORAMAC_EVENT_INFO_STATUS_OK )
@@ -437,6 +441,7 @@ static void McpsIndication( McpsIndication_t *mcpsIndication )
         }
         case MCPS_CONFIRMED:
         {
+            acktimeer = TimerGetCurrentTime();
             break;
         }
         case MCPS_PROPRIETARY:
@@ -636,7 +641,16 @@ static void McpsIndication( McpsIndication_t *mcpsIndication )
     }
     else
     {
-        onEvent(EV_TXCOMPLETE);
+        extern uint8_t RxSlot;
+        if(classcrx == 0)
+        {
+            classcrx = 1;
+            onEvent(EV_TXCOMPLETE);
+        }
+        else
+        {
+            onEvent(EV_RXCOMPLETE);
+        }
     }
 }
 
@@ -657,6 +671,7 @@ static void MlmeConfirm( MlmeConfirm_t *mlmeConfirm )
                 // Status is OK, node has joined the network
                 DeviceState = DEVICE_STATE_SLEEP;
                 atcmdtoactivaty = false;
+                funWktAlarm();
                 onEvent(EV_JOINED);
                 Board_LED_Set(0,0);
             }
@@ -925,6 +940,18 @@ int main( void )
                         DeviceState = DEVICE_STATE_JOIN;
                         atcmdtoactivaty = false;
                         break;
+                    }
+                    extern bool SrvAckRequested;                    
+                    if((SrvAckRequested == true) && (TimerGetElapsedTime(acktimeer) > 100))
+                    {
+                        funSendAck();
+                        DeviceState = DEVICE_STATE_SLEEP;
+                        break;
+                    }
+                    if(( persist.flags & FLAGS_SESSPAR ) && (TimerGetElapsedTime(classcalarmtimer) > persist.sesspar.alarm * 1000))
+                    {
+                        classcalarmtimer = TimerGetCurrentTime();
+                        funWktAlarm();
                     }
                     Chip_PMU_ClearPowerDownControl(LPC_PMU, PMU_DPDCTRL_LPOSCDPDEN);
                     WakeupTest(WKT_CLKSRC_10KHZ,0xfffffffe,PMU_MCU_SLEEP);

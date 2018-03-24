@@ -1180,7 +1180,7 @@ static void OnRadioRxError( void )
         LoRaMacFlags.Bits.MacDone = 1;
     }
 }
-
+extern bool classcrx;
 static void OnRadioRxTimeout( void )
 {
     //LMIC.txrxFlags = TXRX_NOPORT;
@@ -1191,6 +1191,7 @@ static void OnRadioRxTimeout( void )
     }
     else
     {
+        classcrx = 1;
         OnRxWindow2TimerEvent( );
     }
 
@@ -2126,6 +2127,10 @@ LoRaMacStatus_t PrepareFrame( LoRaMacHeader_t *macHdr, LoRaMacFrameCtrl_t *fCtrl
 
     LoRaMacTxPayloadLen = fBufferSize;
 
+    if(!persist.joinpar.isPublic)
+    {
+        macHdr->Bits.RFU = persist.nodetype;
+    }
     LoRaMacBuffer[pktHeaderLen++] = macHdr->Value;
 
     switch( macHdr->Bits.MType )
@@ -2308,6 +2313,9 @@ LoRaMacStatus_t SendFrameOnChannel( uint8_t channel )
     extern bool sendoverflag;
     sendoverflag = 0;
     // Send now
+    classcrx = 0;
+    extern uint32_t classcalarmtimer;
+    classcalarmtimer = TimerGetCurrentTime();
     Radio.Send( LoRaMacBuffer, LoRaMacBufferPktLen );
 
     LoRaMacState |= LORAMAC_TX_RUNNING;

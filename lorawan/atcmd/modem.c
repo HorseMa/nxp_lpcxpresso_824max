@@ -115,10 +115,12 @@ void enablePio4IntToWakeup(void)
 void funWktAlarm(void)
 {
     uint8_t txcycledata[] = {0x00 ,0x01 ,0x02 ,0x0A ,0x0B};
+    txcycledata[0] = Radio.Read(0x3c);
+    //txcycledata[1] = 
     wktType = 0;
     IsTxConfirmed = true;
     AlarmStart();
-    PrepareTxFrame( 2 ,txcycledata,5);
+    PrepareTxFrame( 2 ,txcycledata,1);
     SendFrame();
     return;
 }
@@ -129,7 +131,11 @@ void funSendAck(void)
     IsTxConfirmed = false;
     AlarmStart();
     PrepareTxFrame( 2 ,txcycledata,0);
-    SendFrame();
+    if(SendFrame())
+    {
+        extern bool SrvAckRequested;
+        SrvAckRequested = false;
+    }
     return;
 }
 
