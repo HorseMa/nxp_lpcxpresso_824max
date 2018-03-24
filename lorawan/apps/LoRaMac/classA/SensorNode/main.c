@@ -942,19 +942,17 @@ int main( void )
                         break;
                     }
                     extern bool SrvAckRequested;                    
-                    if((SrvAckRequested == true) && (TimerGetElapsedTime(acktimeer) > 100))
+                    if((LoRaMacState == 0) && (SrvAckRequested == true) && (TimerGetElapsedTime(acktimeer) > 100))
                     {
                         funSendAck();
                         DeviceState = DEVICE_STATE_SLEEP;
                         break;
                     }
-                    if(( persist.flags & FLAGS_SESSPAR ) && (TimerGetElapsedTime(classcalarmtimer) > persist.sesspar.alarm * 1000))
+                    if((LoRaMacState == 0) && ( persist.flags & FLAGS_SESSPAR ) && (TimerGetElapsedTime(classcalarmtimer) > persist.sesspar.alarm * 1000))
                     {
                         classcalarmtimer = TimerGetCurrentTime();
                         funWktAlarm();
                     }
-                    Chip_PMU_ClearPowerDownControl(LPC_PMU, PMU_DPDCTRL_LPOSCDPDEN);
-                    WakeupTest(WKT_CLKSRC_10KHZ,0xfffffffe,PMU_MCU_SLEEP);
                 }
                 else
                 {
@@ -968,10 +966,9 @@ int main( void )
                         {
                               DeviceState = DEVICE_STATE_POWER_DOWN;
                         }
-                        Chip_PMU_ClearPowerDownControl(LPC_PMU, PMU_DPDCTRL_LPOSCDPDEN);
-                        WakeupTest(WKT_CLKSRC_10KHZ,0xfffffffe,PMU_MCU_SLEEP);
                     }
                 }
+                Chip_PMU_Sleep(LPC_PMU, PMU_MCU_SLEEP);
                 break;
             }
             case DEVICE_STATE_POWER_DOWN:
@@ -992,7 +989,6 @@ int main( void )
                 if(( persist.flags & FLAGS_SESSPAR ) && ( persist.nodetype == CLASS_A ) && (atcmdtosenddata == true))
                 {
                     atcmdtosenddata = false;
-                    Chip_PMU_ClearPowerDownControl(LPC_PMU, PMU_DPDCTRL_LPOSCDPDEN);
                     if(SendFrame() == true)
                     {
                         Chip_UART_SendRB(LPC_USART0, &txring, "OK\r\n", 4);
@@ -1016,12 +1012,13 @@ int main( void )
                 Radio.Sleep( );
                 if( persist.flags & FLAGS_JOINPAR )
                 {
-                    Chip_PMU_ClearPowerDownControl(LPC_PMU, PMU_DPDCTRL_LPOSCDPDEN);
+                    Chip_PMU_ClearPowerDownControl(LPC_PMU, PMU_DPDCTRL_LPOSCEN | PMU_DPDCTRL_LPOSCDPDEN);
                 }
                 else
                 {
-                    Chip_PMU_SetPowerDownControl(LPC_PMU, PMU_DPDCTRL_LPOSCDPDEN);
+                    Chip_PMU_SetPowerDownControl(LPC_PMU, PMU_DPDCTRL_LPOSCEN | PMU_DPDCTRL_LPOSCDPDEN);
                 }
+                Chip_PMU_SetPowerDownControl(LPC_PMU, PMU_DPDCTRL_WAKEUPPHYS);
                 WakeupTest(WKT_CLKSRC_10KHZ,persist.sesspar.alarm,PMU_MCU_DEEP_PWRDOWN);
                 //WakeupTest(WKT_CLKSRC_10KHZ,persist.sesspar.alarm,PMU_MCU_SLEEP);
                 NVIC_EnableIRQ(PININT0_IRQn);

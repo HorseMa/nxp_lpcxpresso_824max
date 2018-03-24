@@ -206,7 +206,7 @@ void modem_wkt_init(void)
     /* Disable wakeup hysteresis by setting the bit (set to disable),
     enable 10KHz oscillator for all power down modes including deep
     power-down */
-    Chip_PMU_SetPowerDownControl(LPC_PMU, PMU_DPDCTRL_WAKEUPPHYS | PMU_DPDCTRL_LPOSCEN |
+    Chip_PMU_SetPowerDownControl(LPC_PMU,
                                  PMU_DPDCTRL_LPOSCDPDEN);
 
     /* Enable WKT interrupt */
